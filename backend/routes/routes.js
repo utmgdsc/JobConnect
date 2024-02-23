@@ -59,4 +59,4 @@ router.get('/assetprov/:id', assetprovController.getAssetprov), async (req, res)
     res.status(200).json(['test'])
 }
 
-export default router
+module.exports = router
