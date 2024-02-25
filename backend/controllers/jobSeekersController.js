@@ -48,4 +48,53 @@ const registerJobSeeker = async (req, res) => {
     }
 };
 
-module.exports = { registerJobSeeker };
+const deleteJobSeeker = asyncHandler(async (req, res) => {
+    await JobSeeker.findOneAndDelete({"_id": req.params.id}, (err, JobSeeker) => {
+        if(err){
+            console.log("error while deleting user");
+        }else{
+            console.log("User deleted successfully");  
+        }
+    }) 
+        
+});
+
+const getJobSeeker = asyncHandler(async (req, res) => {
+    jobSeeker = await JobSeeker.findOne({"_id": req.params.id})
+    if (!jobSeeker) {
+        res.status(404).json({ message: "Job seeker not found" });
+    } else {
+        res.status(200).json(jobSeeker);
+    }
+        
+});
+const updateJobSeeker = asyncHandler(async (req, res) => {
+    const updates = req.body;
+    const { id } = req.params;
+
+    // Optionally validate the updates against the schema, and handle errors or forbidden updates
+
+    try {
+        const jobSeeker = await JobSeeker.findOneAndUpdate(
+            { _id: id },
+            { $set: updates },
+            { new: true, runValidators: false }
+        );
+
+        if (!jobSeeker) {
+            return res.status(404).json({ message: "Job seeker not found" });
+        }
+
+        res.status(200).json(jobSeeker);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+module.exports = { 
+    registerJobSeeker,
+    deleteJobSeeker,
+    getJobSeeker,
+    updateJobSeeker
+ };
