@@ -1,16 +1,24 @@
 const express = require('express')
 const router = express.Router()
 const {                 
-    getJobSeeker,
-    setJobSeeker,
+    getJobSeeker, 
+    registerJobSeeker,
     updateJobSeeker,
-    deleteCandidate,
+    addJobSeekerInfo,
+    deleteJobSeeker,
 } = require('../controllers/jobSeekersController')
 
 // router.route("/:id").get(getJobSeeker)
-router.get('/', (req, res) => {
-    res.status(200).json({message: "Get Goals"})
-})
+router.get('/:id', getJobSeeker)
+
+router.post('/', registerJobSeeker)
+
+router.put('/replace/:id', updateJobSeeker);
+router.patch('/add/:id', addJobSeekerInfo);
 
 
-export default router
+router.delete('/:id', deleteJobSeeker);
+
+
+
+module.exports = router
