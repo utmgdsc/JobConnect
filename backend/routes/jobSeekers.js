@@ -4,6 +4,7 @@ const {
     getJobSeeker, 
     registerJobSeeker,
     updateJobSeeker,
+    addJobSeekerInfo,
     deleteJobSeeker,
 } = require('../controllers/jobSeekersController')
 
@@ -12,7 +13,8 @@ router.get('/:id', getJobSeeker)
 
 router.post('/', registerJobSeeker)
 
-router.put('/:id', updateJobSeeker);
+router.put('/replace/:id', updateJobSeeker);
+router.patch('/add/:id', addJobSeekerInfo);
 
 
 router.delete('/:id', deleteJobSeeker);

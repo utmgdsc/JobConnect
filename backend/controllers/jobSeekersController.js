@@ -92,9 +92,59 @@ const updateJobSeeker = asyncHandler(async (req, res) => {
     }
 });
 
+const addJobSeekerInfo = asyncHandler(async (req, res) => {
+    const updates = req.body;
+    const { id } = req.params;
+    const updateQuery = {};
+
+    // Check and build update query for professionalProfile.skills
+    if (updates.professionalProfile && Array.isArray(updates.professionalProfile.skills)) {
+        updateQuery['professionalProfile.skills'] = { $each: updates.professionalProfile.skills };
+    }
+
+    // Check and build update query for professionalProfile.experience
+    if (updates.professionalProfile && Array.isArray(updates.professionalProfile.experience)) {
+        updateQuery['professionalProfile.experience'] = { $each: updates.professionalProfile.experience };
+    }
+
+    // Check and build update query for professionalProfile.education
+    if (updates.professionalProfile && Array.isArray(updates.professionalProfile.education)) {
+        updateQuery['professionalProfile.education'] = { $each: updates.professionalProfile.education };
+    }
+
+    if (updates.professionalProfile && Array.isArray(updates.jobPreferences)) {
+        updateQuery['jobPrferences'] = { $each: updates.jobPreferences };
+    }
+
+    // Check and build update query for applicationHistory
+    if (Array.isArray(updates.applicationHistory)) {
+        updateQuery['applicationHistory'] = { $each: updates.applicationHistory };
+    }
+
+    try {
+        const jobSeeker = await JobSeeker.findOneAndUpdate(
+            { _id: id },
+            { $addToSet: updateQuery },
+            { new: true, runValidators: true }
+        );
+
+        if (!jobSeeker) {
+            return res.status(404).json({ message: "Job seeker not found" });
+        }
+
+        res.status(200).json(jobSeeker);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+
 module.exports = { 
     registerJobSeeker,
     deleteJobSeeker,
     getJobSeeker,
-    updateJobSeeker
+    updateJobSeeker,
+    addJobSeekerInfo
  };
