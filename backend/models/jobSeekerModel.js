@@ -17,6 +17,10 @@ const jobSeekerSchema = mongoose.Schema({
             type: String,
             required: true
 
+        },
+        username: {
+            type: String,
+            required: true
         }
     },
     professionalProfile: {
@@ -58,8 +62,11 @@ const jobSeekerSchema = mongoose.Schema({
         }
     },
     applicationHistory: [{
-        jobTitle: String,
-        company: String,
+        jobPosting: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'JobPosting',
+            required: true
+        },
         applyDate: Date,
         status: {
             type: String,
