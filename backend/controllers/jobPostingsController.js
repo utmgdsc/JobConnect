@@ -29,6 +29,10 @@ const getJobPostingById = async (req, res) => {
 const createJobPosting = async (req, res) => {
     const { company, jobTitle, location, jobType, details, noDegreeMentioned, benefits } = req.body;
 
+    if (!company || !jobTitle || !location || !jobType || !details) {
+        return res.status(400).json({ message: 'Please fill in all required fields' });
+    }
+
     const newJobPosting = new JobPosting({
         company,
         jobTitle,
@@ -37,22 +41,7 @@ const createJobPosting = async (req, res) => {
         details,
         noDegreeMentioned,
         benefits
-    });
-
-    if (!company || !jobTitle || !location || !jobType || !details) {
-        return res.status(400).json({ message: 'Please fill in all required fields' });
-    }
-
-    // check if job already exists
-    try {
-        const existingJob = await JobPosting.findOne({ jobTitle });
-
-        if (existingJob) {
-            return res.status(400).json({ message: 'Job posting already exists' });
-        }
-    } catch (error) {
-            res.status(500).json({ message: 'Error checking for existing job posting' });
-    }
+    })
 
     try {
         await newJobPosting.save();
@@ -67,11 +56,18 @@ const deleteJobPosting = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send('Invalid job posting ID')
+    }
+
+    // check if it exists
+    const jP = await JobPosting.findById(id);
+    if (!jP) {
         return res.status(404).send('Job posting not found')
     }
 
     const jobPosting = await JobPosting.findOneAndDelete({ _id: id });
 
+    // check if job posting was found
     if (!jobPosting) {
         return res.status(404).send('Job posting not found')
     }
@@ -83,8 +79,14 @@ const deleteJobPosting = async (req, res) => {
 const updateJobPosting = async (req, res) => {
     const { id } = req.params
     const { company, jobTitle, location, jobType, details, noDegreeMentioned, benefits } = req.body;
-
+    
     if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send('Invalid job posting ID')
+    }
+
+    // check if it exists
+    const jP = await JobPosting.findById(id);
+    if (!jP) {
         return res.status(404).send('Job posting not found')
     }
 
