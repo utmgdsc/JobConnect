@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const assetPostingSchema = new mongoose.Schema({
-    owner: {
+    company: {
         type: String,
         required: true
     },
@@ -29,7 +29,7 @@ const assetPostingSchema = new mongoose.Schema({
         },
         // Additional details specific to the asset can be added here
     },
-    price: {
+    value: {
         type: Number,
         required: true
     },

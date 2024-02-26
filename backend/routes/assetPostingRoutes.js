@@ -6,7 +6,7 @@ const {
     deleteAssetPosting,
     getAssetPostingById,
     updateAssetPosting
-} = require('../controllers/AssetsController')
+} = require('../controllers/assetsPostingController')
 
 const router = express.Router()
 
