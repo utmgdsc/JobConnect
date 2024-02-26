@@ -51,9 +51,9 @@ const registerJobSeeker = async (req, res) => {
 const deleteJobSeeker = asyncHandler(async (req, res) => {
     await JobSeeker.findOneAndDelete({"_id": req.params.id}, (err, JobSeeker) => {
         if(err){
-            console.log("error while deleting user");
+            res.status(500).json({ message: 'Error deleting user ' });
         }else{
-            console.log("User deleted successfully");  
+            res.status(200).json({ message: 'Usser deleted successfully' });
         }
     }) 
         
