@@ -62,8 +62,11 @@ const jobSeekerSchema = mongoose.Schema({
         }
     },
     applicationHistory: [{
-        jobTitle: String,
-        company: String,
+        jobPosting: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'JobPosting',
+            required: true
+        },
         applyDate: Date,
         status: {
             type: String,
