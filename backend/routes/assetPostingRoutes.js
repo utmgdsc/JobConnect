@@ -1,23 +1,28 @@
+const express = require('express')
 
-import express from 'express'
-
-import JobPostings from '../models/jobPostingsModel'
-import JobSeeker from '../models/JobSeekerModel'
-import Employer from '../models/EmployerModel'
-import Assets from '../models/AssetsModel'
-import AssetProvider from '../models/AssetProviderModel'
-import AssetPosting from '../models/AssetsPostingsModel'
+const {
+    getAssetPostings,
+    createAssetPosting,
+    deleteAssetPosting,
+    getAssetPostingById,
+    updateAssetPosting
+} = require('../controllers/AssetsController')
 
 const router = express.Router()
 
-router.get('/assets-posting', assetsPostingController.getAssets), async (req, res) => {
-    // Get all assets posting
-    res.status(200).json(['test'])
-}
+// GET all Asset postings
+router.get('/', getAssetPostings)
 
-router.get('/assets-posting/:id', assetsPostingController.getAsset), async (req, res) => {
-    // Get an asset posting by id
-    res.status(200).json(['test'])
-}
+// GET a Asset posting by ID
+router.get('/:id', getAssetPostingById)
 
-export default router
+// POST a new Asset posting
+router.post('/', createAssetPosting)
+
+// DELETE a Asset posting by ID
+router.delete('/:id', deleteAssetPosting)
+
+// PUT (update) a Asset posting by ID
+router.put('/:id', updateAssetPosting)
+
+module.exports = router
