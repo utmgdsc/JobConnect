@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const AssetsProviderSchema = new mongoose.Schema({
+    _id: {
+        type: Number,
+        required: true
+    },
     company: {
         type: String,
         required: true
@@ -36,7 +40,11 @@ const AssetsProviderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    benefits: [String]
+    benefits: [String],
+    assets: {
+        type: Boolean,
+        required: true
+    }
 }, {
     timestamps: true
 });
