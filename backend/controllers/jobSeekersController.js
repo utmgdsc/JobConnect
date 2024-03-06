@@ -49,14 +49,19 @@ const registerJobSeeker = async (req, res) => {
 };
 
 const deleteJobSeeker = asyncHandler(async (req, res) => {
-    await JobSeeker.findOneAndDelete({"_id": req.params.id}, (err, JobSeeker) => {
-        if(err){
-            res.status(500).json({ message: 'Error deleting user ' });
-        }else{
-            res.status(200).json({ message: 'Usser deleted successfully' });
+    try {
+        const deletedJobSeeker = await JobSeeker.findOneAndDelete({ "_id": req.params.id });
+
+        if (!deletedJobSeeker) {
+            return res.status(404).json({ message: "Job seeker not found" });
         }
-    }) 
-        
+
+        // Optionally, send some response or the deleted job seeker's information
+        res.status(200).json({ message: "Job seeker deleted successfully", data: deletedJobSeeker });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {

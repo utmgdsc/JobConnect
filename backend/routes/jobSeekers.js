@@ -13,7 +13,7 @@ router.get('/:id', getJobSeeker)
 
 router.post('/', registerJobSeeker)
 
-router.put('/replace/:id', updateJobSeeker);
+router.patch('/replace/:id', updateJobSeeker);
 router.patch('/add/:id', addJobSeekerInfo);
 
 
