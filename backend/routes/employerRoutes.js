@@ -1,11 +1,20 @@
 import express from 'express'
-
-import JobPostings from '../models/jobPostingsModel'
-import JobSeeker from '../models/JobSeekerModel'
-import Employer from '../models/EmployerModel'
-import Assets from '../models/AssetsModel'
-import AssetProvider from '../models/AssetProviderModel'
+const express = require('express')
 
 const router = express.Router()
 
-export default router
+const {
+    getEmployer,
+    registerEmployer,
+    updateEmployer,
+    addEmployerInfo,
+    deleteEmployer,
+} = require('../controllers/employerController')
+
+router.get('/:id', getEmployer)
+router.post('/', registerEmployer)
+router.put('/replace/:id', updateEmployer);
+router.patch('/add/:id', addEmployerInfo);
+router.delete('/:id', deleteEmployer);
+
+module.exports = router
