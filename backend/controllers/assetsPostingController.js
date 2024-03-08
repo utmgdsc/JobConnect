@@ -17,7 +17,7 @@ const getAssetPostingById = async (req, res) => {
 
     const assetPosting = await AssetPosting.findById(id);
 
-    if (!AssetPosting) {
+    if (!assetPosting) {
         return res.status(404).send('Asset posting not found')
     }
 
@@ -28,15 +28,6 @@ const getAssetPostingById = async (req, res) => {
 const createAssetPosting = async (req, res) => {
     const { company, assetType, location, availability, details, value, benefits } = req.body;
 
-    const newAssetPosting = new AssetPosting({
-        company,
-        assetType,
-        location,
-        availability,
-        details,
-        value,
-        benefits
-    });
 
     if (!company || !assetType || !location || !availability || !details || !value) {
         return res.status(400).json({ message: 'Please fill in all required fields' });
@@ -52,6 +43,15 @@ const createAssetPosting = async (req, res) => {
     } catch (error) {
             res.status(500).json({ message: 'Error checking for existing asset posting' });
     }
+    const newAssetPosting = new AssetPosting({
+        company,
+        assetType,
+        location,
+        availability,
+        details,
+        value,
+        benefits
+    });
 
     try {
         await newAssetPosting.save();
@@ -83,7 +83,14 @@ const updateAssetPosting = async (req, res) => {
     const { id } = req.params
     const { company, assetType, location, availability, details, value, benefits } = req.body;
 
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send('Please input a valid id!')
+    }
+
+    const assetPosting = await AssetPosting.findById(id);
+
+    if (!assetPosting) {
         return res.status(404).send('Asset posting not found')
     }
 
