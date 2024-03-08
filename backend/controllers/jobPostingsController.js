@@ -1,5 +1,5 @@
 const { mongo, default: mongoose } = require('mongoose');
-const JobPosting = require('../models/jobPostingModel');
+const JobPosting = require('../models/jobPostingsModel');
 
 // get all job postings
 const getJobPostings = async (req, res) => {
