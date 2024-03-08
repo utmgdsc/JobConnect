@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
-const jobPostingSchema = new mongoose.Schema({
+const AssetsProviderSchema = new mongoose.Schema({
+    _id: {
+        type: Number,
+        required: true
+    },
     company: {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: 'Employer',
+        type: String,
         required: true
     },
     jobTitle: {
@@ -37,11 +40,15 @@ const jobPostingSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    benefits: [String]
+    benefits: [String],
+    assets: {
+        type: Boolean,
+        required: true
+    }
 }, {
     timestamps: true
 });
 
-const JobPosting = mongoose.model('JobPosting', jobPostingSchema);
+const AssetsProvider = mongoose.model('AssetsProvider', AssetsProviderSchema);
 
-module.exports = JobPosting;
+module.exports = AssetsProvider;
