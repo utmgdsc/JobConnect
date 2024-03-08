@@ -1,11 +1,4 @@
-
-import express from 'express'
-
-import JobPostings from '../models/jobPostingsModel'
-import JobSeeker from '../models/JobSeekerModel'
-import Employer from '../models/EmployerModel'
-import Assets from '../models/AssetsModel'
-import AssetProvider from '../models/AssetProviderModel'
+const express = require('express')
 
 const router = express.Router()
 
