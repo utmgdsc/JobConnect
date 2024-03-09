@@ -1,24 +1,38 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'; // Import Routes instead of Switch
-import JobSeekerFetcher from './components/ApplicantsLV'; // Adjust the import path as necessary
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
+import ProfileDashboard from './components/ProfileDashboard';
+import ApplicantsList from './components/ApplicantsList';
 import './App.css';
+
+// Define a Header component that only shows navigation links on the home page ('/')
+function Header() {
+  const location = useLocation();
+
+  return (
+    location.pathname === '/' && (
+      <header className="App-header">
+        <nav>
+          <Link to="/fetch-job-seeker" className="App-link">Fetch Job Seeker</Link>
+        </nav>
+        <nav>
+          <Link to="/get-applicants" className="App-link">Get Applicants list</Link>
+        </nav>
+      </header>
+    )
+  );
+}
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
-          <nav>
-            {/* Link to navigate to the JobSeekerFetcher component */}
-            <Link to="/fetch-job-seeker" className="App-link">Fetch Job Seeker</Link>
-          </nav>
-
-          {/* A <Routes> component instead of <Switch> to match the current URL to a <Route> */}
-          <Routes>
-            <Route path="/fetch-job-seeker" element={<JobSeekerFetcher />} />
-            {/* You can add more <Route> components here for other paths, using the element prop */}
-          </Routes>
-        </header>
+        <Header />
+        <Routes>
+          <Route path="/" element={<ProfileDashboard />} />
+          <Route path="/fetch-job-seeker" element={<ProfileDashboard />} />
+          <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
+          {/* If you have a home component or any other route, define them here */}
+        </Routes>
       </div>
     </Router>
   );

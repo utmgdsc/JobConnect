@@ -20,5 +20,4 @@ router.patch('/add/:id', addJobSeekerInfo);
 router.delete('/:id', deleteJobSeeker);
 
 
-
 module.exports = router
