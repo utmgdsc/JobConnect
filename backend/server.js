@@ -16,7 +16,13 @@ app.listen(port, () => console.log(`Server started on port ${port}`))
 
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
 app.use('/api/jobPostingsRoutes', require("./routes/jobPostingRoutes"))
+try {
+    app.use('/api/jobPostingsRoutes', require("./routes/jobPostingRoutes"))
+} catch (error) {
+    console.log("not working")
+}
 app.use('/api/employerRoutes', require("./routes/employerRoutes"))
 app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))
+app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))
 
 connectDB()
