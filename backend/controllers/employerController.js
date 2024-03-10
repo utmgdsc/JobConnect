@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const employer = require('../models/employerModel');
+const Employer = require('../models/employerModel');
 
 const registerEmployer = async (req, res) => {
     // Destructuring nested properties from req.body
@@ -20,7 +20,7 @@ const registerEmployer = async (req, res) => {
 
     // Check if job employer already exists
     try {
-        const employerExists = await employer.findOne({ email: email });
+        const employerExists = await Employer.findOne({ email: email });
 
         if (employerExists) {
             return res.status(400).json({ message: 'Employer with this email already exists' });
@@ -56,7 +56,7 @@ const registerEmployer = async (req, res) => {
 };
 
 const deleteEmployer = asyncHandler(async (req, res) => {
-    await employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
+    await Employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
         if (err) {
             res.status(500).json({ message: 'Error deleting user ' });
         } else {
@@ -67,7 +67,7 @@ const deleteEmployer = asyncHandler(async (req, res) => {
 });
 
 const getEmployer = asyncHandler(async (req, res) => {
-    employer = await employer.findOne({ "_id": req.params.id })
+    const employer = await Employer.findOne({ "_id": req.params.id })
     if (!employer) {
         res.status(404).json({ message: "Job employer not found" });
     } else {
@@ -82,7 +82,7 @@ const updateEmployer = asyncHandler(async (req, res) => {
     // Optionally validate the updates against the schema, and handle errors or forbidden updates
 
     try {
-        const employer = await employer.findOneAndUpdate(
+        const employer = await Employer.findOneAndUpdate(
             { _id: id },
             { $set: updates },
             { new: true, runValidators: false }
@@ -110,7 +110,7 @@ const addEmployerInfo = asyncHandler(async (req, res) => {
     }
 
     try {
-        const employer = await employer.findOneAndUpdate(
+        const employer = await Employer.findOneAndUpdate(
             { _id: id },
             { $addToSet: updateQuery },
             { new: true, runValidators: true }
