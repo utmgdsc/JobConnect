@@ -26,6 +26,8 @@ const registerEmployer = async (req, res) => {
             return res.status(400).json({ message: 'Employer with this email already exists' });
         }
 
+        const ObjectId = mongoose.Types.ObjectId;
+
         // Create a new employer record
         const employer = await Employer.create({
             _id: ObjectId(),
