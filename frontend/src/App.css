@@ -32,7 +32,52 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+
+/* JobSeekerFetcher.css */
+
+.dashboard {
+  max-width: 800px;
+  margin: auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  background: #161515;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h3 {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.section p {
+  margin: 5px 0;
+}
+
+ul.application-history {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.application-history li {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
 }

@@ -6,11 +6,11 @@ const port = process.env.PORT || 5000;
 const app = express()
 app.use(express.json());
 
-app.listen(port, () => console.log(`Server started on port ${port}`))
+app.listen(port, () => console.log(`Server started on PORT ${port}`))
 
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
 app.use('/api/jobPostingsRoutes', require("./routes/jobPostingRoutes"))
-app.use('/api/employerRoutes', require("./routes/employerRoutes"))
+app.use('/api/employer', require("./routes/employerRoutes"))
 app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))
 
 connectDB()

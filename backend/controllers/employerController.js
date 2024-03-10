@@ -1,57 +1,51 @@
 const asyncHandler = require('express-async-handler');
-const employer = require('../models/employerModel');
+const Employer = require('../models/employerModel');
 
 const registerEmployer = async (req, res) => {
     // Destructuring nested properties from req.body
     const { company,
-        jobTitle,
+        email,
+        password,
+        description,
         location,
-        jobType,
-        details,
-        noDegreeMentioned,
-        benefits,
-        assets
+        category,
+        website,
+        phone,
+        reviews
     } = req.body;
 
-    // Further destructuring to get name, email, and other fields from personalInformation
-    const { description, responsibilities, requirements } = details || {};
-
     // Basic validation to check if essential fields are present
-    if (!company || !jobTitle || !location || !jobType || !description || !benefits || !assets) {
+    if (!company || !email || !description || !location || !category || !password) {
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
     // Check if job employer already exists
     try {
-        const employerExists = await employer.findOne({ 'jobTitle': jobTitle, 'company': company, 'location': location, 'jobType': jobType });
+        const employerExists = await Employer.findOne({ email: email });
 
         if (employerExists) {
-            return res.status(400).json({ message: 'Job employer with this email already exists' });
+            return res.status(400).json({ message: 'Employer with this email already exists' });
         }
 
         // Create a new employer record
-        const employer = await employer.create({
-            _id: ObjectId(),
+        const employer = await Employer.create({
             company,
-            jobTitle,
+            email,
+            password,
+            description,
             location,
-            jobType,
-            details: {
-                description,
-                responsibilities,
-                requirements
-            },
-            noDegreeMentioned,
-            benefits,
-            assets,
+            category,
+            website,
+            phone,
+            reviews
         });
 
         if (employer) {
             res.status(201).json({
                 _id: employer._id,
                 company: employer.company,
-                jobTitle: employer.jobTitle,
-                jobType: employer.jobType,
+                email: employer.email,
+                description: employer.description,
             });
         } else {
             res.status(400).json({ message: 'Invalid job employer data' });
@@ -63,18 +57,18 @@ const registerEmployer = async (req, res) => {
 };
 
 const deleteEmployer = asyncHandler(async (req, res) => {
-    await employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
+    await Employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
         if (err) {
-            res.status(500).json({ message: 'Error deleting user ' });
+            res.status(500).json({ message: 'Error deleting employer ' });
         } else {
-            res.status(200).json({ message: 'Usser deleted successfully' });
+            res.status(200).json({ message: 'Employer deleted successfully' });
         }
     })
 
 });
 
 const getEmployer = asyncHandler(async (req, res) => {
-    employer = await employer.findOne({ "_id": req.params.id })
+    const employer = await Employer.findOne({ "_id": req.params.id })
     if (!employer) {
         res.status(404).json({ message: "Job employer not found" });
     } else {
@@ -89,7 +83,7 @@ const updateEmployer = asyncHandler(async (req, res) => {
     // Optionally validate the updates against the schema, and handle errors or forbidden updates
 
     try {
-        const employer = await employer.findOneAndUpdate(
+        const employer = await Employer.findOneAndUpdate(
             { _id: id },
             { $set: updates },
             { new: true, runValidators: false }
@@ -112,22 +106,12 @@ const addEmployerInfo = asyncHandler(async (req, res) => {
     const updateQuery = {};
 
     // Check and build update query for responsibilities
-    if (updates.details.responsibilities && Array.isArray(updates.details.responsibilities)) {
-        updateQuery['details.responsibilities'] = { $each: updates.details.responsibilities };
-    }
-
-    // Check and build update query for requirements
-    if (updates.details.requirements && Array.isArray(updates.details.requirements)) {
-        updateQuery['details.requirements'] = { $each: updates.details.requirements };
-    }
-
-    // Check and build update query for benefits
-    if (updates.benefits && Array.isArray(updates.benefits)) {
-        updateQuery['benefits'] = { $each: updates.benefits };
+    if (updates.reviews && Array.isArray(updates.reviews)) {
+        updateQuery['reviews'] = { $each: updates.reviews };
     }
 
     try {
-        const employer = await employer.findOneAndUpdate(
+        const employer = await Employer.findOneAndUpdate(
             { _id: id },
             { $addToSet: updateQuery },
             { new: true, runValidators: true }
