@@ -14,6 +14,8 @@ function EmployerProfile() {
         reviews: []
     });
 
+    const [updateStatus, setUpdateStatus] = useState('');
+
     const fetchEmployer = async () => {
         try {
             const data = await EmployerService.getEmployer("65ede412ea8bb21afaffd61a");
@@ -35,15 +37,22 @@ function EmployerProfile() {
         })
     }
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
         // submitToApi(employer)
         console.log(employer)
+        try {
+            const data = await EmployerService.updateEmployer(employer._id, employer)
+            console.log(data);
+            setUpdateStatus('Successfully updated data');
+        }
+        catch (error) {
+            console.error('Failed to update employer:', error);
+            setUpdateStatus('Failed to update data');
+        }
     }
 
-    // ... inside your component's return statement
     return (
-
         <div className="dashboard">
             <button onClick={fetchEmployer}>Get Employer</button>
             {employer && (
@@ -72,10 +81,6 @@ function EmployerProfile() {
                             name="category"
                             value={employer.category}
                         />
-                        <p>Company: {employer.company}</p>
-                        <p>Description: {employer.description}</p>
-                        <p>Category: {employer.category}</p>
-
 
                         <div className="section">
                             <h3>Contact Details</h3>
@@ -91,21 +96,24 @@ function EmployerProfile() {
                                 placeholder="Website"
                                 onChange={handleChange}
                                 name="website"
-                                value={employer.website || 'Not Provided'}
+                                value={employer.website}
                             />
                             <input
                                 type="tel"
                                 placeholder="Phone"
                                 onChange={handleChange}
                                 name="phone"
-                                value={employer.phone || 'Not Provided'}
+                                value={employer.phone}
                             />
-                            <p>Email: {employer.email}</p>
-                            <p>Website: {employer.website}</p>
-                            <p>Phone: {employer.phone || 'Not Provided'}</p>
                         </div>
                         <button>Update</button>
                     </form>
+
+                    {updateStatus && (
+                        <div style={{ color: updateStatus.startsWith('Successfully') ? 'green' : 'red' }}>
+                            {updateStatus}
+                        </div>
+                    )}
 
                     <div className="section">
                         <h3>Reviews</h3>

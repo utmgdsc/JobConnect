@@ -3,11 +3,7 @@ import axios from "axios"
 const API_URL = "http://localhost:8000/api/employer"
 
 const createEmployer = async (userInfo) => {
-    console.log(userInfo)
-    console.log(API_URL)
-
     const response = await axios.post(API_URL, userInfo)
-    console.log(response)
     return response.data
 }
 
@@ -22,6 +18,11 @@ const deleteEmployer = async (id) => {
     return response.data
 }
 
+const updateEmployer = async (id, newData) => {
+    const response = await axios.put(API_URL + `/replace/${id}`, newData)
+    return response.data
+}
+
 const addInfo = async (newData) => {
     const response = await axios.patch(API_URL + `/add/${newData}`)
     return response.data
@@ -31,6 +32,7 @@ const EmployerService = {
     createEmployer,
     deleteEmployer,
     getEmployer,
+    updateEmployer,
     addInfo
 }
 
