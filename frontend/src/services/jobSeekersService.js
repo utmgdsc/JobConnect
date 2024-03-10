@@ -20,7 +20,7 @@ const deleteJobSeeker = async (id) => {
 }
 
 const updateJobSeeker = async (id, updatedUserInfo) => {
-    const response = await axios.put(API_URL + `/${id}`, updatedUserInfo);
+    const response = await axios.put(API_URL + `/replace/${id}`, updatedUserInfo);
     return response.data;
 }
 

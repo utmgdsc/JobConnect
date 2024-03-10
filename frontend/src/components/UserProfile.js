@@ -163,6 +163,12 @@ function UserProfile() {
                         <button>Save</button>
                     </form>
 
+                    {updateStatus && (
+                        <div style={{ color: updateStatus.startsWith('Successfully') ? 'green' : 'red' }}>
+                            {updateStatus}
+                        </div>
+                    )}
+
                     <div className="section">
                         <h3>Professional Profile</h3>
                         <p>Skills: {jobSeeker.professionalProfile.skills.join(', ')}</p>
