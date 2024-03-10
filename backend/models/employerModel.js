@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Employer = new mongoose.Schema({
+const EmployerSchema = new mongoose.Schema({
     _id: {
         type: Number,
         required: true
@@ -36,16 +36,14 @@ const Employer = new mongoose.Schema({
         type: Number,
     },
     reviews: [{
-        review: {
-            type: String,
-        },
+        review: String,
         rating: Number,
         timestamp: {
             type: Date,
             default: Date.now
         }
     }],
-});
+}, { timestamps: true });
 
 const employer = mongoose.model('Employer', EmployerSchema);
 

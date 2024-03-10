@@ -7,9 +7,9 @@ function EmployerProfile() {
 
     const fetchEmployer = async () => {
         try {
-            const data = await EmployerService.getJobSeeker("65dc12c24726f1cd09a9dd2a");
+            const data = await EmployerService.getEmployer("65dc12c24726f1cd09a9dd2a");
             console.log(data);
-            setJobSeeker(data); // Assuming data is the job seeker's information
+            setEmployer(data); // Assuming data is the job seeker's information
         } catch (error) {
             console.error('Failed to fetch job seeker:', error);
             // Handle error (e.g., show an error message)
@@ -20,8 +20,8 @@ function EmployerProfile() {
     return (
 
         <div className="dashboard">
-            <button onClick={fetchEmployer}>Get Job Seeker</button>
-            {jobSeeker && (
+            <button onClick={fetchEmployer}>Get Employer</button>
+            {employer && (
                 <div>
                     <div className="section"></div>
                     <h3>Personal Details</h3>

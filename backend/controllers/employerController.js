@@ -27,10 +27,16 @@ const registerEmployer = async (req, res) => {
         }
 
         // Create a new employer record
-        const employer = await employer.create({
+        const employer = await Employer.create({
             _id: ObjectId(),
             company,
-
+            email,
+            description,
+            location,
+            category,
+            website,
+            phone,
+            reviews
         });
 
         if (employer) {
