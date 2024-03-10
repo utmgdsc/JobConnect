@@ -122,8 +122,8 @@ function EmployerProfile() {
                                 ? employer.reviews.map((exp, index) => {
                                     const timestamp = exp.timestamp ? new Date(exp.timestamp).toLocaleDateString() : 'Not Provided';
                                     return (
-                                        <div>
-                                            <div key={index}>
+                                        <div key={index}>
+                                            <div>
                                                 {exp.review}
                                                 <br />
                                                 Rating: {exp.rating}

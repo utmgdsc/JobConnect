@@ -59,9 +59,9 @@ const registerEmployer = async (req, res) => {
 const deleteEmployer = asyncHandler(async (req, res) => {
     await Employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
         if (err) {
-            res.status(500).json({ message: 'Error deleting user ' });
+            res.status(500).json({ message: 'Error deleting employer ' });
         } else {
-            res.status(200).json({ message: 'Usser deleted successfully' });
+            res.status(200).json({ message: 'Employer deleted successfully' });
         }
     })
 
