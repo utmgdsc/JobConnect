@@ -4,54 +4,41 @@ const employer = require('../models/employerModel');
 const registerEmployer = async (req, res) => {
     // Destructuring nested properties from req.body
     const { company,
-        jobTitle,
+        email,
+        description,
         location,
-        jobType,
-        details,
-        noDegreeMentioned,
-        benefits,
-        assets
+        category,
+        website,
+        phone,
+        reviews
     } = req.body;
 
-    // Further destructuring to get name, email, and other fields from personalInformation
-    const { description, responsibilities, requirements } = details || {};
-
     // Basic validation to check if essential fields are present
-    if (!company || !jobTitle || !location || !jobType || !description || !benefits || !assets) {
+    if (!company || !email || !description || !location || !category) {
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
     // Check if job employer already exists
     try {
-        const employerExists = await employer.findOne({ 'jobTitle': jobTitle, 'company': company, 'location': location, 'jobType': jobType });
+        const employerExists = await employer.findOne({ email: email });
 
         if (employerExists) {
-            return res.status(400).json({ message: 'Job employer with this email already exists' });
+            return res.status(400).json({ message: 'Employer with this email already exists' });
         }
 
         // Create a new employer record
         const employer = await employer.create({
             _id: ObjectId(),
             company,
-            jobTitle,
-            location,
-            jobType,
-            details: {
-                description,
-                responsibilities,
-                requirements
-            },
-            noDegreeMentioned,
-            benefits,
-            assets,
+
         });
 
         if (employer) {
             res.status(201).json({
                 _id: employer._id,
                 company: employer.company,
-                jobTitle: employer.jobTitle,
-                jobType: employer.jobType,
+                email: employer.email,
+                description: employer.description,
             });
         } else {
             res.status(400).json({ message: 'Invalid job employer data' });
@@ -112,18 +99,8 @@ const addEmployerInfo = asyncHandler(async (req, res) => {
     const updateQuery = {};
 
     // Check and build update query for responsibilities
-    if (updates.details.responsibilities && Array.isArray(updates.details.responsibilities)) {
-        updateQuery['details.responsibilities'] = { $each: updates.details.responsibilities };
-    }
-
-    // Check and build update query for requirements
-    if (updates.details.requirements && Array.isArray(updates.details.requirements)) {
-        updateQuery['details.requirements'] = { $each: updates.details.requirements };
-    }
-
-    // Check and build update query for benefits
-    if (updates.benefits && Array.isArray(updates.benefits)) {
-        updateQuery['benefits'] = { $each: updates.benefits };
+    if (updates.reviews && Array.isArray(updates.reviews)) {
+        updateQuery['reviews'] = { $each: updates.reviews };
     }
 
     try {
