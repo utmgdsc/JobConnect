@@ -5,6 +5,7 @@ const registerEmployer = async (req, res) => {
     // Destructuring nested properties from req.body
     const { company,
         email,
+        password,
         description,
         location,
         category,
@@ -14,7 +15,7 @@ const registerEmployer = async (req, res) => {
     } = req.body;
 
     // Basic validation to check if essential fields are present
-    if (!company || !email || !description || !location || !category) {
+    if (!company || !email || !description || !location || !category || !password) {
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -26,13 +27,11 @@ const registerEmployer = async (req, res) => {
             return res.status(400).json({ message: 'Employer with this email already exists' });
         }
 
-        const ObjectId = mongoose.Types.ObjectId;
-
         // Create a new employer record
         const employer = await Employer.create({
-            _id: ObjectId(),
             company,
             email,
+            password,
             description,
             location,
             category,
