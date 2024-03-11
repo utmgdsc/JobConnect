@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import jobPostingsService from '../services/jobPostingsService';
 import '../jobs.css';
+import { useNavigate } from 'react-router-dom';
 
 const Jobs = () => {
     const [jobPostings, setJobPostings] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [filter, setFilter] = useState('All'); // Example filter state
+    const [filter, setFilter] = useState('All');
+    const [expandedJobId, setExpandedJobId] = useState(null); // State to track which job is expanded
+
+    const navigate = useNavigate();
+
+    const navigateToApplication = () => {
+        navigate('/application');
+    }
 
     useEffect(() => {
         fetchJobPostings();
@@ -15,7 +22,6 @@ const Jobs = () => {
     const fetchJobPostings = async () => {
         try {
             const data = await jobPostingsService.getAllJobPostings();
-            console.log(data)
             setJobPostings(data);
         } catch (error) {
             console.error('Error fetching job postings:', error);
@@ -28,6 +34,11 @@ const Jobs = () => {
 
     const handleFilterChange = (e) => {
         setFilter(e.target.value);
+    };
+
+    const toggleExpandJob = (id) => {
+        // Toggle the expanded view for the job with the given id
+        setExpandedJobId(expandedJobId === id ? null : id);
     };
 
     const filteredJobPostings = jobPostings.filter(posting => {
@@ -49,10 +60,33 @@ const Jobs = () => {
             <div className="job-listings">
                 {filteredJobPostings.map(posting => (
                     <div key={posting._id} className="job-posting">
-                        <h3>{posting.jobTitle}</h3>
+                        <div className="job-title-container" onClick={() => toggleExpandJob(posting._id)}>
+                            <h3>{posting.jobTitle}</h3>
+                            <span className={`arrow-icon ${expandedJobId === posting._id ? 'expanded' : ''}`}>&#9660;</span> {/* Unicode downward arrow */}
+                        </div>
+                        <p>Posted by: {posting.company.name}</p>
                         <p>{posting.location}</p>
                         <p>Type: {posting.jobType}</p>
-                        {/* Additional job posting details as needed */}
+                        {expandedJobId === posting._id && (
+                            <div className="job-details">
+                                {/* Render expanded job details here */}
+                                <p>Description: {posting.details.description}</p>
+                                <p>Responsibilities:</p>
+                                <ul>
+                                    {posting.details.responsibilities.map((item, index) => (
+                                        <li key={index}>{item}</li>
+                                    ))}
+                                </ul>
+                                <p>Requirements:</p>
+                                <ul>
+                                    {posting.details.requirements.map((item, index) => (
+                                        <li key={index}>{item}</li>
+                                    ))}
+                                </ul>
+                                <button className="apply-button" onClick={navigateToApplication}>Apply Now</button>
+                                {/* Add more details as needed */}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
