@@ -46,6 +46,22 @@ const getEvent = asyncHandler(async (req, res) => {
     }
 });
 
+// Get all events
+const getAllEvents = asyncHandler(async (req, res) => {
+    try {
+        const events = await Event.find({});
+        if (events) {
+            res.status(200).json(events);
+        } else {
+            res.status(404).json({ message: 'No events found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
 // Update an event
 const updateEvent = asyncHandler(async (req, res) => {
     const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
@@ -72,5 +88,6 @@ module.exports = {
     createEvent,
     getEvent,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    getAllEvents
 };

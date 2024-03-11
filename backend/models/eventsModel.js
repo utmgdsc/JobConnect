@@ -53,6 +53,11 @@ const CareerEventSchema = new mongoose.Schema({
         // Consider making this required if registrationRequired is true
     },
     // Additional fields for managing the event posting
+    registrants: {
+        type:  [mongoose.Schema.Types.ObjectId],
+        ref: 'JobSeeker',
+        required: true,
+    },
     
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
