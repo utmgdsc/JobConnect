@@ -1,0 +1,72 @@
+.jobs-page {
+    padding: 20px;
+}
+
+.job-listings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.job-posting {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+input, select {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+
+.job-listings .job-posting .job-title-container {
+    display: flex;
+    justify-content: center; /* Center the job title */
+    align-items: center;
+    cursor: pointer;
+    position: relative; /* Use relative positioning for the container */
+}
+
+.job-listings .job-posting .job-title-container h3 {
+    margin: 0 auto; /* Auto margins center the title */
+    flex-grow: 1; /* Allow the title to take up available space */
+    text-align: center; /* Ensure text itself is centered */
+}
+
+.arrow-icon {
+    transition: transform 0.3s ease;
+    position: absolute; /* Position the arrow icon absolutely */
+    right: 10px; /* Place it towards the right */
+    top: 50%; /* Align it vertically */
+    transform: translateY(-50%); /* Center it vertically */
+}
+
+.expanded {
+    transform: translateY(-50%) rotate(180deg); /* Keep it vertically centered when rotated */
+}
+
+/* Ensure other styles remain as previously defined */
+
+
+/* Add styles for .job-posting, .job-details, etc., as needed */
+li {
+    list-style-type : '';
+}
+
+.apply-button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Example button color */
+    color: #ffffff; /* Text color */
+    border: none;
+    border-radius: 5px; /* Optional: rounded corners */
+    cursor: pointer;
+    margin-top: 15px; /* Spacing above the button */
+    font-size: 16px; /* Text size */
+}
+
+.apply-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}

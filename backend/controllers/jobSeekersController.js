@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const JobSeeker = require('../models/JobSeekerModel'); // Ensure this path is correct
+const JobSeeker = require('../models/jobSeekerModel'); // Ensure this path is correct
 
 const registerJobSeeker = async (req, res) => {
     // Destructuring nested properties from req.body
@@ -49,24 +49,24 @@ const registerJobSeeker = async (req, res) => {
 };
 
 const deleteJobSeeker = asyncHandler(async (req, res) => {
-    await JobSeeker.findOneAndDelete({"_id": req.params.id}, (err, JobSeeker) => {
-        if(err){
+    await JobSeeker.findOneAndDelete({ "_id": req.params.id }, (err, JobSeeker) => {
+        if (err) {
             res.status(500).json({ message: 'Error deleting user ' });
-        }else{
+        } else {
             res.status(200).json({ message: 'Usser deleted successfully' });
         }
-    }) 
-        
+    })
+
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
-    jobSeeker = await JobSeeker.findOne({"_id": req.params.id})
+    jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
     if (!jobSeeker) {
         res.status(404).json({ message: "Job seeker not found" });
     } else {
         res.status(200).json(jobSeeker);
     }
-        
+
 });
 const updateJobSeeker = asyncHandler(async (req, res) => {
     const updates = req.body;
@@ -142,10 +142,10 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { 
+module.exports = {
     registerJobSeeker,
     deleteJobSeeker,
     getJobSeeker,
     updateJobSeeker,
     addJobSeekerInfo
- };
+};
