@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import jobSeekersService from '../services/jobSeekersService';
-import '../App.css'; // Import the new CSS styles
+import '../UserEmployer.css';
 
 function UserProfile() {
     const [jobSeeker, setJobSeeker] = useState({

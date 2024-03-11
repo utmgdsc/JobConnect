@@ -1,5 +1,6 @@
 .jobs-page {
     padding: 20px;
+    text-align: center;
 }
 
 .job-listings {
@@ -12,48 +13,47 @@
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 5px;
+    text-align: center; /* Center aligns text for child elements, like 'posted by', 'location', and 'type' */
 }
 
-input, select {
+input[type="text"], select {
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
+    width: 100%; /* Make both input and select take the full width of their parent container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    display: block; /* Make inputs and selects take the full width */
+    margin-left: auto; /* Center align the input and select elements */
+    margin-right: auto;
 }
 
 
 .job-listings .job-posting .job-title-container {
-    display: flex;
     justify-content: center; /* Center the job title */
-    align-items: center;
+    display: flex; /* Ensures the title container uses flexbox */
     cursor: pointer;
-    position: relative; /* Use relative positioning for the container */
 }
 
 .job-listings .job-posting .job-title-container h3 {
-    margin: 0 auto; /* Auto margins center the title */
-    flex-grow: 1; /* Allow the title to take up available space */
+    margin: 0; /* Reset any default margin */
     text-align: center; /* Ensure text itself is centered */
 }
 
 .arrow-icon {
     transition: transform 0.3s ease;
-    position: absolute; /* Position the arrow icon absolutely */
-    right: 10px; /* Place it towards the right */
-    top: 50%; /* Align it vertically */
-    transform: translateY(-50%); /* Center it vertically */
+    /* No need for absolute positioning, let it flow within the flex container */
+    margin-left: 10px; /* Add some space between the title and the icon */
 }
 
 .expanded {
-    transform: translateY(-50%) rotate(180deg); /* Keep it vertically centered when rotated */
+    transform: rotate(180deg); /* Rotate the arrow when expanded */
 }
 
-/* Ensure other styles remain as previously defined */
-
-
-/* Add styles for .job-posting, .job-details, etc., as needed */
+/* Styling for list items */
 li {
-    list-style-type : '';
+    list-style-type: none; /* Removes the default list bullet */
+    padding-left: 0; /* Reset any default padding */
 }
 
 .apply-button {
@@ -61,10 +61,13 @@ li {
     background-color: #007bff; /* Example button color */
     color: #ffffff; /* Text color */
     border: none;
-    border-radius: 5px; /* Optional: rounded corners */
+    border-radius: 5px;
     cursor: pointer;
     margin-top: 15px; /* Spacing above the button */
     font-size: 16px; /* Text size */
+    display: block; /* Make the button block level so it can be centered */
+    margin-left: auto; /* Center the button */
+    margin-right: auto;
 }
 
 .apply-button:hover {
