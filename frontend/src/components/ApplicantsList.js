@@ -33,7 +33,7 @@ function ApplicantsList() {
           {applicants.map(applicant => (
             <li key={applicant._id}>
               {/* Link to the applicant's profile using their ID */}
-              <Link to={`/fetch-job-seeker/${applicant._id}`}>
+              <Link to={`/profile/${applicant._id}`}>
                 {console.log(applicant)}
                 {applicant.personalInformation.name}
               </Link>

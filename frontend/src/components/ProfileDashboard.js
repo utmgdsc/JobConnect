@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams
 import jobSeekersService from '../services/jobSeekersService';
-import '../App.css'; // Import the new CSS styles
+import '../App.css';
 
 function JobSeekerFetcher() {
   const [jobSeeker, setJobSeeker] = useState(null);
-
+  const { id } = useParams(); 
+  
   const fetchJobSeeker = async () => {
     try {
-      const data = await jobSeekersService.getJobSeeker("65dc12c24726f1cd09a9dd2a");
+      const data = await jobSeekersService.getJobSeeker(id);
       console.log(data);
-      setJobSeeker(data); // Assuming data is the job seeker's information
+      setJobSeeker(data);
     } catch (error) {
       console.error('Failed to fetch job seeker:', error);
-      // Handle error (e.g., show an error message)
     }
   };
 
+  useEffect(() => {
+    if (id) {
+      fetchJobSeeker();
+    }
+  }, [id, fetchJobSeeker]); 
   // ... inside your component's return statement
 return (
   
   <div className="dashboard">
-    <button onClick={fetchJobSeeker}>Get Job Seeker</button>
     {jobSeeker && (
       <div>
         <div className="section"></div>
         <h3>Personal Details</h3>
         <p>Name: {jobSeeker.personalInformation.name}</p>
-        <p>Age: {jobSeeker.personalInformation.age}</p>
-        <p>Username: {jobSeeker.personalInformation.username}</p>
 
 
         <div className="section">

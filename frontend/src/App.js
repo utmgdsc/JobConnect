@@ -22,8 +22,7 @@ function App() {
           <Route path="/application" element={<Application />} />
           <Route path="/employer" element={<EmployerProfile />} />
           <Route path="/user" element={<UserProfile />} />
-          <Route path="/profile" element={<ProfileDashboard />} />
-          <Route path="/fetch-job-seeker" element={<ProfileDashboard />} />
+          <Route path="/profile/:id" element={<ProfileDashboard />} />
           <Route path="/get-applicants/:jobId" element={<ApplicantsList />}/>
           
         </Routes>
