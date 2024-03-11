@@ -11,7 +11,7 @@ const getJob = async(id) => {
 }
 
 const JobsService = {
-    getJob,
+    getJob
 }
 
 export default JobsService

@@ -40,7 +40,8 @@ const createJobPosting = async (req, res) => {
         jobType,
         details,
         noDegreeMentioned,
-        benefits
+        benefits,
+        applicants
     })
 
     try {
@@ -78,7 +79,7 @@ const deleteJobPosting = async (req, res) => {
 // update a job posting by ID
 const updateJobPosting = async (req, res) => {
     const { id } = req.params
-    const { company, jobTitle, location, jobType, details, noDegreeMentioned, benefits } = req.body;
+    const { company, applicants, jobTitle, location, jobType, details, noDegreeMentioned, benefits } = req.body;
     
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send('Invalid job posting ID')
@@ -90,7 +91,7 @@ const updateJobPosting = async (req, res) => {
         return res.status(404).send('Job posting not found')
     }
 
-    const updatedJobPosting = { company, jobTitle, location, jobType, details, noDegreeMentioned, benefits, _id: id };
+    const updatedJobPosting = { company, applicants, jobTitle, location, jobType, details, noDegreeMentioned, benefits, _id: id };
 
     await JobPosting.findByIdAndUpdate(id, updatedJobPosting, { new: true });
 
