@@ -8,6 +8,7 @@ import EmployerProfile from './components/EmployerProfile';
 import UserProfile from './components/UserProfile';
 import ProfileDashboard from './components/ProfileDashboard';
 import ApplicantsList from './components/ApplicantsList';
+import AssetPostings from './components/AssetPostings';
 import './App.css';
 
 // Define a Header component that only shows navigation links on the home page ('/')
@@ -24,6 +25,7 @@ function App() {
           <Route path="/user" element={<UserProfile />} />
           <Route path="/profile/:id" element={<ProfileDashboard />} />
           <Route path="/get-applicants/:jobId" element={<ApplicantsList />}/>
+          <Route path="/get-assets" element={<AssetPostings />}/>
           
         </Routes>
       </div>
