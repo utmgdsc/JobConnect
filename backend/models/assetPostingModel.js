@@ -5,6 +5,11 @@ const mongoose = require('mongoose');
          type: String,
          required: true
      },
+     applicants: {
+        type:  [mongoose.Schema.Types.ObjectId],
+        ref: 'JobSeeker',
+        required: true,
+    },
      assetType: {
          type: String,
          required: true
