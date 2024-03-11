@@ -53,95 +53,97 @@ function EmployerProfile() {
     }
 
     return (
-        <div className="dashboard">
-            <button onClick={fetchEmployer}>Get Employer</button>
-            {employer && (
-                <div>
-                    <div className="section"></div>
-                    <h3>Personal Details</h3>
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            placeholder="Company"
-                            onChange={handleChange}
-                            name="company"
-                            value={employer.company}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Description"
-                            onChange={handleChange}
-                            name="description"
-                            value={employer.description}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Category"
-                            onChange={handleChange}
-                            name="category"
-                            value={employer.category}
-                        />
-
-                        <div className="section">
-                            <h3>Contact Details</h3>
+        <header className="App-header">
+            <div className="dashboard">
+                <button onClick={fetchEmployer}>Get Employer</button>
+                {employer && (
+                    <div>
+                        <div className="section"></div>
+                        <h3>Personal Details</h3>
+                        <form onSubmit={handleSubmit}>
                             <input
-                                type="email"
-                                placeholder="Email"
+                                type="text"
+                                placeholder="Company"
                                 onChange={handleChange}
-                                name="email"
-                                value={employer.email}
+                                name="company"
+                                value={employer.company}
                             />
                             <input
                                 type="text"
-                                placeholder="Website"
+                                placeholder="Description"
                                 onChange={handleChange}
-                                name="website"
-                                value={employer.website}
+                                name="description"
+                                value={employer.description}
                             />
                             <input
-                                type="tel"
-                                placeholder="Phone"
+                                type="text"
+                                placeholder="Category"
                                 onChange={handleChange}
-                                name="phone"
-                                value={employer.phone}
+                                name="category"
+                                value={employer.category}
                             />
-                        </div>
-                        <button>Update</button>
-                    </form>
 
-                    {updateStatus && (
-                        <div style={{ color: updateStatus.startsWith('Successfully') ? 'green' : 'red' }}>
-                            {updateStatus}
-                        </div>
-                    )}
+                            <div className="section">
+                                <h3>Contact Details</h3>
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    onChange={handleChange}
+                                    name="email"
+                                    value={employer.email}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Website"
+                                    onChange={handleChange}
+                                    name="website"
+                                    value={employer.website}
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Phone"
+                                    onChange={handleChange}
+                                    name="phone"
+                                    value={employer.phone}
+                                />
+                            </div>
+                            <button>Update</button>
+                        </form>
 
-                    <div className="section">
-                        <h3>Reviews</h3>
-                        <div>
-                            {employer.reviews.length > 0
-                                ? employer.reviews.map((exp, index) => {
-                                    const timestamp = exp.timestamp ? new Date(exp.timestamp).toLocaleDateString() : 'Not Provided';
-                                    return (
-                                        <div key={index}>
-                                            <div>
-                                                {exp.review}
+                        {updateStatus && (
+                            <div style={{ color: updateStatus.startsWith('Successfully') ? 'green' : 'red' }}>
+                                {updateStatus}
+                            </div>
+                        )}
+
+                        <div className="section">
+                            <h3>Reviews</h3>
+                            <div>
+                                {employer.reviews.length > 0
+                                    ? employer.reviews.map((exp, index) => {
+                                        const timestamp = exp.timestamp ? new Date(exp.timestamp).toLocaleDateString() : 'Not Provided';
+                                        return (
+                                            <div key={index}>
+                                                <div>
+                                                    {exp.review}
+                                                    <br />
+                                                    Rating: {exp.rating}
+                                                    <br />
+                                                    {timestamp}
+                                                </div>
                                                 <br />
-                                                Rating: {exp.rating}
-                                                <br />
-                                                {timestamp}
                                             </div>
-                                            <br />
-                                        </div>
-                                    );
-                                })
-                                : "None"
-                            }
+                                        );
+                                    })
+                                    : "None"
+                                }
+                            </div>
                         </div>
-                    </div>
 
-                </div>
-            )}
-        </div>
+                    </div>
+                )}
+            </div>
+        </header>
     );
 }
 
