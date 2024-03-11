@@ -1,20 +1,17 @@
 import axios from "axios"
 
-const API_URL = "http://localhost:8000/api/jobSeekers"
+const API_URL = "http://localhost:8000/api/jobPostingsRoutes"
 
 
-const getJobSeeker = async(id) => {
+const getJob = async(id) => {
     const response = await axios.get(API_URL + `/${id}`)
     console.log("hello")
 
     return response.data
 }
 
-const jobSeekersService = {
-    createJobSeeker,
-    deleteJobSeeker,
-    getJobSeeker,
-    addInfo
+const JobsService = {
+    getJob
 }
 
-export default jobSeekersService
+export default JobsService
