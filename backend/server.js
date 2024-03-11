@@ -12,8 +12,6 @@ const app = express()
 app.use(express.json());
 app.use(cors())
 
-app.listen(port, () => console.log(`Server started on PORT ${port}`))
-
 app.listen(port, () => console.log(`Server started on port ${port}`))
 
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
