@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const authMiddleware = require('../middleware/auth');
 const {                 
     getJobSeeker, 
     registerJobSeeker,
@@ -9,7 +10,7 @@ const {
 } = require('../controllers/jobSeekersController')
 
 // router.route("/:id").get(getJobSeeker)
-router.get('/:id', getJobSeeker)
+router.get('/:id', authMiddleware, getJobSeeker)
 
 router.post('/', registerJobSeeker)
 

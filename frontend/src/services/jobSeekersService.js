@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const API_URL = "http://localhost:8000/api/jobSeekersRoutes"
+const API_URL = "http://localhost:3000/api/jobSeekersRoutes"
 
 const createJobSeeker = async(userInfo) => {
     const response = await axios.post(API_URL, userInfo)
