@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import jobPostingsService from "../services/jobPostingsService";
 import "../jobs.css";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Jobs = () => {
   const [jobPostings, setJobPostings] = useState([]);
@@ -50,6 +51,7 @@ const Jobs = () => {
 
   return (
     <div className="jobs-page">
+      <Navbar />
       <input
         type="text"
         placeholder="Search jobs..."

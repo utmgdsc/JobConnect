@@ -10,48 +10,13 @@ import reactImg from "../images/react.svg";
 import { Link } from "react-router-dom";
 
 import Newsletter from "./Newsletter";
+import Navbar from "./Navbar";
 
 const Home = () => {
   return (
     <div>
       {/* Navbar */}
-      <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
-        <div className="container">
-          <a href="#" className="navbar-brand">
-            JobConnect
-          </a>
-
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navmenu"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className="collapse navbar-collapse" id="navmenu">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <Link to="/" className="nav-link">
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="#questions" className="nav-link">
-                  FAQ
-                </a>{" "}
-                {/* Using an anchor link */}
-              </li>
-              <li className="nav-item">
-                <Link to="/login" className="nav-link">
-                  Sign Up
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Showcase */}
       <section className="bg-dark text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
@@ -233,7 +198,7 @@ const Home = () => {
                   aria-expanded="false"
                   aria-controls="flush-collapseOne"
                 >
-                  Where exactly are you located?
+                  How do I get started with finding a job on your portal?
                 </button>
               </h2>
               <div
@@ -243,8 +208,10 @@ const Home = () => {
                 data-bs-parent="#questions-accordion"
               >
                 <div className="accordion-body">
-                  Our main office is located in downtown CityName at 123
-                  Business Rd.
+                  Getting started is simple. First, create a free account to
+                  join our community. Once you're logged in, you can fill out
+                  your profile, upload your resume, and start applying for jobs
+                  that match your skills and interests.
                 </div>
               </div>
             </div>
@@ -259,7 +226,7 @@ const Home = () => {
                   aria-expanded="false"
                   aria-controls="flush-collapseTwo"
                 >
-                  How much does it cost to attend?
+                  Is there a fee to access job listings?
                 </button>
               </h2>
               <div
@@ -269,8 +236,11 @@ const Home = () => {
                 data-bs-parent="#questions-accordion"
               >
                 <div className="accordion-body">
-                  The cost varies depending on the course, but financial aid
-                  options are available for those who qualify.
+                  Access to job listings and basic user services on our portal
+                  is completely free, ensuring equal opportunity for all. We
+                  believe in supporting your job search without any financial
+                  barriers. For additional services like professional resume
+                  reviews or career coaching, nominal fees may apply.
                 </div>
               </div>
             </div>
@@ -285,7 +255,7 @@ const Home = () => {
                   aria-expanded="false"
                   aria-controls="flush-collapseThree"
                 >
-                  What do I need to know before starting?
+                  What kind of assets can I rent or post on the portal?
                 </button>
               </h2>
               <div
@@ -295,9 +265,14 @@ const Home = () => {
                 data-bs-parent="#questions-accordion"
               >
                 <div className="accordion-body">
-                  No prior experience is required for our beginner courses. For
-                  advanced courses, we recommend having a basic understanding of
-                  the subject matter.
+                  Our portal features a wide range of assets available for
+                  rent, catering to both personal and business needs. You can
+                  find everything from office equipment, vehicles, and event
+                  spaces to construction tools and heavy machinery. If you have
+                  assets you’d like to post for rent, our platform makes it easy
+                  to reach potential renters. You can manage your postings, set
+                  rental terms, and connect directly with the community, all in
+                  one convenient location.
                 </div>
               </div>
             </div>
