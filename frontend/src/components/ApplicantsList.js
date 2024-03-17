@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import JobsService from '../services/ApplicantsService';
-import jobSeekersService from '../services/jobSeekersService';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import JobsService from "../services/ApplicantsService";
+import jobSeekersService from "../services/jobSeekersService";
 
 function ApplicantsList() {
   let { jobId } = useParams();
@@ -11,13 +11,13 @@ function ApplicantsList() {
     const fetchApplicants = async () => {
       try {
         const jobData = await JobsService.getJob(jobId);
-        const applicantPromises = jobData.applicants.map(applicantId =>
-          jobSeekersService.getJobSeeker(applicantId)
+        const applicantPromises = jobData.applicants.map((applicantId) =>
+          jobSeekersService.getJobSeeker(applicantId),
         );
         const applicantDetails = await Promise.all(applicantPromises);
         setApplicants(applicantDetails); // Now contains full details of each applicant
       } catch (error) {
-        console.error('Failed to fetch applicants:', error);
+        console.error("Failed to fetch applicants:", error);
         // Handle error (e.g., show an error message)
       }
     };
@@ -30,7 +30,7 @@ function ApplicantsList() {
       <h2>Applicants for Job ID: {jobId}</h2>
       {applicants.length > 0 ? (
         <ul>
-          {applicants.map(applicant => (
+          {applicants.map((applicant) => (
             <li key={applicant._id}>
               {/* Link to the applicant's profile using their ID */}
               <Link to={`/profile/${applicant._id}`}>

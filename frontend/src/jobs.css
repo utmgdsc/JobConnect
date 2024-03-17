@@ -1,75 +1,75 @@
 .jobs-page {
-    padding: 20px;
-    text-align: center;
+  padding: 20px;
+  text-align: center;
 }
 
 .job-listings {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .job-posting {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center; /* Center aligns text for child elements, like 'posted by', 'location', and 'type' */
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center; /* Center aligns text for child elements, like 'posted by', 'location', and 'type' */
 }
 
-input[type="text"], select {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%; /* Make both input and select take the full width of their parent container */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    display: block; /* Make inputs and selects take the full width */
-    margin-left: auto; /* Center align the input and select elements */
-    margin-right: auto;
+input[type="text"],
+select {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%; /* Make both input and select take the full width of their parent container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  display: block; /* Make inputs and selects take the full width */
+  margin-left: auto; /* Center align the input and select elements */
+  margin-right: auto;
 }
-
 
 .job-listings .job-posting .job-title-container {
-    justify-content: center; /* Center the job title */
-    display: flex; /* Ensures the title container uses flexbox */
-    cursor: pointer;
+  justify-content: center; /* Center the job title */
+  display: flex; /* Ensures the title container uses flexbox */
+  cursor: pointer;
 }
 
 .job-listings .job-posting .job-title-container h3 {
-    margin: 0; /* Reset any default margin */
-    text-align: center; /* Ensure text itself is centered */
+  margin: 0; /* Reset any default margin */
+  text-align: center; /* Ensure text itself is centered */
 }
 
 .arrow-icon {
-    transition: transform 0.3s ease;
-    /* No need for absolute positioning, let it flow within the flex container */
-    margin-left: 10px; /* Add some space between the title and the icon */
+  transition: transform 0.3s ease;
+  /* No need for absolute positioning, let it flow within the flex container */
+  margin-left: 10px; /* Add some space between the title and the icon */
 }
 
 .expanded {
-    transform: rotate(180deg); /* Rotate the arrow when expanded */
+  transform: rotate(180deg); /* Rotate the arrow when expanded */
 }
 
 /* Styling for list items */
 li {
-    list-style-type: none; /* Removes the default list bullet */
-    padding-left: 0; /* Reset any default padding */
+  list-style-type: none; /* Removes the default list bullet */
+  padding-left: 0; /* Reset any default padding */
 }
 
 .apply-button {
-    padding: 10px 20px;
-    background-color: #007bff; /* Example button color */
-    color: #ffffff; /* Text color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 15px; /* Spacing above the button */
-    font-size: 16px; /* Text size */
-    display: block; /* Make the button block level so it can be centered */
-    margin-left: auto; /* Center the button */
-    margin-right: auto;
+  padding: 10px 20px;
+  background-color: #007bff; /* Example button color */
+  color: #ffffff; /* Text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px; /* Spacing above the button */
+  font-size: 16px; /* Text size */
+  display: block; /* Make the button block level so it can be centered */
+  margin-left: auto; /* Center the button */
+  margin-right: auto;
 }
 
 .apply-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+  background-color: #0056b3; /* Darker shade on hover */
 }
