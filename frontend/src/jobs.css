@@ -1,59 +1,53 @@
-.jobs-page {
-  padding: 20px;
-  text-align: center;
-}
-
-.job-listings {
+.jobs-container {
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
+}
+
+
+.search-and-filter {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.filter-select {
+  width: 150px;
+}
+
+.jobs-layout {
+  display: flex;
   gap: 20px;
 }
 
+.job-listings {
+  flex-grow: 1; /* Updated to prevent job listings from shrinking too much */
+  overflow-y: auto;
+}
+
 .job-posting {
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 5px;
-  text-align: center; /* Center aligns text for child elements, like 'posted by', 'location', and 'type' */
-}
-
-input[type="text"],
-select {
   padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 100%; /* Make both input and select take the full width of their parent container */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  display: block; /* Make inputs and selects take the full width */
-  margin-left: auto; /* Center align the input and select elements */
-  margin-right: auto;
-}
-
-.job-listings .job-posting .job-title-container {
-  justify-content: center; /* Center the job title */
-  display: flex; /* Ensures the title container uses flexbox */
+  border-bottom: 1px solid #ccc;
   cursor: pointer;
 }
 
-.job-listings .job-posting .job-title-container h3 {
-  margin: 0; /* Reset any default margin */
-  text-align: center; /* Ensure text itself is centered */
+.job-posting h3 {
+  margin: 0;
+  color: #0055b7; /* Match with your theme color */
+  font-size: 1.2em;
 }
 
-.arrow-icon {
-  transition: transform 0.3s ease;
-  /* No need for absolute positioning, let it flow within the flex container */
-  margin-left: 10px; /* Add some space between the title and the icon */
-}
-
-.expanded {
-  transform: rotate(180deg); /* Rotate the arrow when expanded */
-}
-
-/* Styling for list items */
-li {
-  list-style-type: none; /* Removes the default list bullet */
-  padding-left: 0; /* Reset any default padding */
+.job-details-panel {
+  width: 50%; /* Fixed width for the job details panel */
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-y: auto; /* Allows vertical scrolling if content overflows */
+  overflow-x: hidden; /* Keeps the content from spilling out sideways */
 }
 
 .apply-button {
@@ -72,4 +66,12 @@ li {
 
 .apply-button:hover {
   background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* make bullet points ul gone */
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
