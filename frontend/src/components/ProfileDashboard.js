@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import jobSeekersService from '../services/jobSeekersService';
+import axios from 'axios';
 import '../App.css'; // Import the new CSS styles
 
 
@@ -8,7 +9,7 @@ function JobSeekerFetcher() {
 
   const fetchJobSeeker = async () => {
     try {
-      const data = await axios.get('http://your-backend-url/api/user/profile', {
+      const data = await axios.get('http://localhost:3000/api/', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}` // Include the token in the Authorization header
           }

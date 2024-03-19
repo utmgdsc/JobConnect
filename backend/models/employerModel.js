@@ -1,54 +1,39 @@
 const mongoose = require('mongoose');
 
-const AssetsProviderSchema = new mongoose.Schema({
-    _id: {
-        type: Number,
-        required: true
-    },
+const EmployerSchema = new mongoose.Schema({
     company: {
         type: String,
         required: true
     },
-    jobTitle: {
+    description: {
         type: String,
         required: true
+    },
+    phone: {
+        type: Number,
     },
     location: {
         type: String, // Could be a string or a nested schema for detailed location (even remote?) or loc object
-        required: true
+        required: false
     },
-    jobType: {
+    category: {
         type: String,
-        required: true,
-        enum: ['Full-Time', 'Part-Time', 'Contract', 'Temporary', 'Internship']
+        required: false,
     },
-    postedAt: {
-        type: Date,
-        default: Date.now
+    website: {
+        type: String,
     },
-    details: {
-        description: {
-            type: String,
-            required: true
-        },
-        responsibilities: [String],
-        requirements: [String],
-        // Add additional fields for detailed view as needed
-    }, // This is the nested schema for detailed view
-    // Additional fields for summary view
-    noDegreeMentioned: {
-        type: Boolean,
-        default: false
-    },
-    benefits: [String],
-    assets: {
-        type: Boolean,
-        required: true
-    }
-}, {
-    timestamps: true
-});
+    
+    reviews: [{
+        review: String,
+        rating: Number,
+        timestamp: {
+            type: Date,
+            default: Date.now
+        }
+    }],
+}, { timestamps: true });
 
-const AssetsProvider = mongoose.model('AssetsProvider', AssetsProviderSchema);
+const employer = mongoose.model('Employer', EmployerSchema);
 
-module.exports = AssetsProvider;
+module.exports = employer;

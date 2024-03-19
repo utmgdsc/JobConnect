@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const jobSeekerSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+    },
     personalInformation: {
         name: {
             type:String,
@@ -18,14 +22,7 @@ const jobSeekerSchema = mongoose.Schema({
             required: false
 
         },
-        username: {
-            type: String,
-            required: true
-        },
-        password: {
-            type: String,
-            required: true
-        },
+        
         address: {
             type: String,
             required: false
