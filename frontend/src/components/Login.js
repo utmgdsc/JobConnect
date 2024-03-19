@@ -5,11 +5,11 @@ import axios from 'axios';
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
 
 
-  const { email, password } = formData;
+  const { email, password} = formData;
 //   const history = useHistory();
 
   const onChange = e =>
@@ -23,6 +23,7 @@ const Login = () => {
         password
       });
       const token = res.data.token;
+      console.log("token"+token)
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         // Redirect to dashboard or other authenticated route

@@ -10,7 +10,7 @@ const {
 } = require('../controllers/jobSeekersController')
 
 // router.route("/:id").get(getJobSeeker)
-router.get('/:id', authMiddleware, getJobSeeker)
+router.get('/:id', getJobSeeker)
 
 router.post('/', registerJobSeeker)
 

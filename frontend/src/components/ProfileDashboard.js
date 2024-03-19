@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import jobSeekersService from '../services/jobSeekersService';
 import '../App.css'; // Import the new CSS styles
+import { jwtDecode } from 'jwt-decode';
 
 function JobSeekerFetcher() {
   const [jobSeeker, setJobSeeker] = useState(null);
 
   const fetchJobSeeker = async () => {
     try {
-      const data = await jobSeekersService.getJobSeeker("65dc12c24726f1cd09a9dd2a");
-      console.log(data);
-      setJobSeeker(data); // Assuming data is the job seeker's information
+      // Retrieve token from localStorage
+  
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.log("please login first")
+      } else {
+        console.log("token", token)
+        const decodedToken = jwtDecode(token);
+        console.log("decoded", decodedToken)
+        // Extract jobSeeker id from the decoded token
+        const userId= decodedToken.jobSeeker.id;
+        console.log(userId)
+        const data = await jobSeekersService.getJobSeeker(userId);
+  
+        console.log(data);
+        setJobSeeker(data); // Assuming data is the job seeker's information
+      }
+      // Decode the JWT token
+      
     } catch (error) {
       console.error('Failed to fetch job seeker:', error);
       // Handle error (e.g., show an error message)
@@ -61,9 +79,9 @@ return (
 
         <div className="section">
           <h3>Job Preferences</h3>
-          <p>Desired Industry: {jobSeeker.jobPreferences.desiredIndustry}</p>
-          <p>Location: {jobSeeker.jobPreferences.location}</p>
-          <p>Job Type: {jobSeeker.jobPreferences.jobType}</p>
+          <p>Desired Industry: {jobSeeker.jobPreferences?.desiredIndustry || "Not Set"}</p>
+          <p>Location: {jobSeeker.jobPreferences?.location || "Not Set"}</p>
+          <p>Job Type: {jobSeeker.jobPreferences?.jobType || "Not Set"}</p>
         </div>
 
         <div className="section">

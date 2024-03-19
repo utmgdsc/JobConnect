@@ -9,8 +9,9 @@ const createJobSeeker = async(userInfo) => {
 }
 
 const getJobSeeker = async(id) => {
+    console.log("before")
     const response = await axios.get(API_URL + `/${id}`)
-
+    console.log("after")
     return response.data
 }
 

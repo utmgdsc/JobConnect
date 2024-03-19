@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
 
 const jobSeekerSchema = mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      },
     personalInformation: {
         name: {
             type:String,
@@ -20,23 +15,32 @@ const jobSeekerSchema = mongoose.Schema({
         },
         age: {
             type: String,
-            required: true
+            required: false
 
         },
         username: {
             type: String,
             required: true
-        }
+        },
+        password: {
+            type: String,
+            required: true
+        },
+        address: {
+            type: String,
+            required: false
+        },
+
     },
     professionalProfile: {
         experience: [{
             title: {
                 type: String,
-                required: true
+                required: false
             },
             company: {
                 type: String,
-                required: true
+                required: false
             },
             startDate: Date,
             endDate: Date, // Can be null if it's the current position
@@ -46,7 +50,7 @@ const jobSeekerSchema = mongoose.Schema({
         education: [{
             institution: {
                 type: String,
-                required: true
+                required: false
             },
             degree: String,
             fieldOfStudy: String,
@@ -70,7 +74,7 @@ const jobSeekerSchema = mongoose.Schema({
         jobPosting: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'JobPosting',
-            required: true
+            required: false
         },
         applyDate: Date,
         status: {

@@ -5,10 +5,12 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
+    username: '',
+    password: '',
+    address: ''
   });
   const [message, setMessage] = useState('');
-  const { name, email, password } = formData;
+  const { name, email, username, password, address } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,7 +21,9 @@ const Register = () => {
       const res = await axios.post('http://localhost:3000/api/auth/register', {
         name,
         email,
-        password
+        username,
+        password,
+        address
       });
       console.log(res.data);
     } catch (err) {
@@ -30,11 +34,19 @@ const Register = () => {
   return (
     <div>
     <form onSubmit={onSubmit}>
+    <input
+        type='text'
+        placeholder='name'
+        name='name'
+        value={name}
+        onChange={onChange}
+        required
+      />
       <input
         type='text'
         placeholder='username'
-        name='name'
-        value={name}
+        name='username'
+        value={username}
         onChange={onChange}
         required
       />
@@ -51,6 +63,14 @@ const Register = () => {
         placeholder='Password'
         name='password'
         value={password}
+        onChange={onChange}
+        minLength='6'
+      />
+      <input
+        type='text'
+        placeholder='Address'
+        name='address'
+        value={address}
         onChange={onChange}
         minLength='6'
       />

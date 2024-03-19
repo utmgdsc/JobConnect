@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const JobSeeker = require('../models/JobSeekerModel'); // Ensure this path is correct
+const JobSeeker = require('../models/jobSeekerModel'); // Ensure this path is correct
 
 const registerJobSeeker = async (req, res) => {
     // Destructuring nested properties from req.body
@@ -61,6 +61,8 @@ const deleteJobSeeker = asyncHandler(async (req, res) => {
 
 const getJobSeeker = asyncHandler(async (req, res) => {
     jobSeeker = await JobSeeker.findOne({"_id": req.params.id})
+    console.log("getting")
+    console.log(jobSeeker)
     if (!jobSeeker) {
         res.status(404).json({ message: "Job seeker not found" });
     } else {
