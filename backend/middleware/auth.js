@@ -1,19 +1,19 @@
 // authMiddleware.js
-
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
   // Retrieve token from local storage
-  const token = localStorage.getItem('token');
-
+  const token = req.header('Authorization').slice(7);
+  // console.log(req)
   if (!token) {
-    return next(new UnauthorizedError('No token provided'));
+    return next(new Error('No token provided'));
   }
 
   // Verify token
   jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
     if (err) {
-      return next(new UnauthorizedError('Invalid token'));
+      console.log("y000",token, decodedToken)
+      return next(new Error('Invalid token'));
     }
 
     // Attach decoded token to request object

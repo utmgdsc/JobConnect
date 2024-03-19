@@ -1,37 +1,49 @@
 import React, { useState } from 'react';
 import jobSeekersService from '../services/jobSeekersService';
 import '../App.css'; // Import the new CSS styles
-import { jwtDecode } from 'jwt-decode';
+
 
 function JobSeekerFetcher() {
   const [jobSeeker, setJobSeeker] = useState(null);
 
   const fetchJobSeeker = async () => {
     try {
-      // Retrieve token from localStorage
-  
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        console.log("please login first")
-      } else {
-        console.log("token", token)
-        const decodedToken = jwtDecode(token);
-        console.log("decoded", decodedToken)
-        // Extract jobSeeker id from the decoded token
-        const userId= decodedToken.jobSeeker.id;
-        console.log(userId)
-        const data = await jobSeekersService.getJobSeeker(userId);
-  
-        console.log(data);
-        setJobSeeker(data); // Assuming data is the job seeker's information
-      }
-      // Decode the JWT token
-      
+      const data = await axios.get('http://your-backend-url/api/user/profile', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}` // Include the token in the Authorization header
+          }
+        });
+
+        // Set the retrieved user data to the state
+      setJobSeeker(data);  // Assuming data is the job seeker's information
     } catch (error) {
       console.error('Failed to fetch job seeker:', error);
-      // Handle error (e.g., show an error message)
     }
+// try {
+//       // Retrieve token from localStorage
+  
+//       const token = localStorage.getItem('token');
+      
+//       if (!token) {
+//         console.log("please login first")
+//       } else {
+//         console.log("token", token)
+//         const decodedToken = jwtDecode(token);
+//         console.log("decoded", decodedToken)
+//         // Extract jobSeeker id from the decoded token
+//         const userId= decodedToken.jobSeeker.id;
+//         console.log(userId)
+//         const data = await jobSeekersService.getJobSeeker(userId);
+  
+//         console.log(data);
+//         setJobSeeker(data); // Assuming data is the job seeker's information
+//       }
+//       // Decode the JWT token
+      
+//     } catch (error) {
+//       console.error('Failed to fetch job seeker:', error);
+//       // Handle error (e.g., show an error message)
+//     }
   };
 
   // ... inside your component's return statement

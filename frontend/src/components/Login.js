@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import isAuth from "../lib/isAuth";
 // import { useHistory } from 'react-router-dom';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
+  const [loggedin, setLoggedin] = useState(isAuth());
+
+  const [loginDetails, setloginDetails] = useState({
     email: '',
     password: '',
   });
 
-
-  const { email, password} = formData;
+  const { email, password} = loginDetails;
 //   const history = useHistory();
-
+  const handleInput = (key, value) => {
+    setLoginDetails({
+      ...loginDetails,
+      [key]: value,
+    });
+  };
   const onChange = e =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setloginDetails({ ...loginDetails, [e.target.name]: e.target.value });
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -23,10 +30,11 @@ const Login = () => {
         password
       });
       const token = res.data.token;
+      const type = res.data.type
       console.log("token"+token)
-      localStorage.setItem('token', token);
+      // localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // Redirect to dashboard or other authenticated route
+      setLoggedin(isAuth());
       console.log(res.data);
     } catch (err) {
       console.error(err.response.data);
