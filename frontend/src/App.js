@@ -10,7 +10,7 @@ import Logout from "./components/Logout";
 import Register from "./components/Register";
 // import Home from "./component/Home";
 // import Applications from "./component/Applications";
-// import Profile from "./component/Profile";
+import Profile from "./components/Profile";
 // import CreateJobs from "./component/recruiter/CreateJobs";
 // import MyJobs from "./component/recruiter/MyJobs";
 // import JobApplications from "./component/recruiter/JobApplications";
@@ -57,6 +57,9 @@ function App() {
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/register" element={<Register />} />
               <Route exact path="/logout" element={<Logout />} />
+              <Route exact path="/profile" element={<Profile />} />
+              {/* <Route exact path="/view" element={<View />} /> */}
+              
               {/* <Route exact path="/home" element={<Home />} /> */}
               {/* <Route exact path="/logout">
                 <Logout />
