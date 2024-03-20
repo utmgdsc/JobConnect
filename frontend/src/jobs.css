@@ -1,24 +1,32 @@
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
 .jobs-container {
   padding-top: 20px;
   display: flex;
   flex-direction: column;
+  min-height: 100vh; /* Use viewport height to ensure the footer can stick to the bottom */
+  text-align: left;
 }
 
-
-.search-and-filter {
-  display: flex;
-  margin-bottom: 20px;
+.container {
+  flex-grow: 1; /* This makes the content grow to occupy available space, pushing the footer down */
 }
 
-.search-input {
-  flex-grow: 1;
-  margin-right: 10px;
+footer {
+  background-color: #333; /* Dark background */
+  color: white; /* Light text */
+  text-align: center;
+  padding: 20px 0; /* Adjust padding as needed */
 }
-
-.filter-select {
-  width: 150px;
-}
-
 .jobs-layout {
   display: flex;
   gap: 20px;
@@ -35,10 +43,14 @@
   cursor: pointer;
 }
 
-.job-posting h3 {
-  margin: 0;
-  color: #0055b7; /* Match with your theme color */
-  font-size: 1.2em;
+@media (max-width: 1000px) {
+  .jobs-container {
+    padding-top: 40px; /* Reduce top padding on smaller screens */
+  }
+
+  .job-posting h3 {
+    font-size: 1em; /* Reduce font size for job titles */
+  }
 }
 
 .job-details-panel {
@@ -75,3 +87,14 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+.job-posting.selected {
+  background-color: #f2f2f2; /* Light grey background for selected job */
+}
+
+.btn.btn-variant-1 {
+  height: 40px;
+  margin-top: 9px;
+  margin-bottom: 10px;
+}
+

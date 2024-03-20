@@ -8,9 +8,9 @@ const Navbar = () => {
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
         <div className="container">
-          <a href="#" className="navbar-brand">
+          <Link to="/" className="navbar-brand">
             JobConnect
-          </a>
+          </Link>
 
           <button
             className="navbar-toggler"
