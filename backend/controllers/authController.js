@@ -11,13 +11,19 @@ const JobSeeker = require("../models/jobSeekerModel");
 const employer = require("../models/employerModel");
 
 exports.register = async (req, res) => {
-  try {
-    const data = req.body;
-  let user = new User({
+  const data = req.body;
+  email = data.email
+  let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists' });
+    }
+
+  user = new User({
     email: data.email,
     password: data.password,
     type: data.type,
   });
+
 
   user
     .save()
@@ -26,17 +32,17 @@ exports.register = async (req, res) => {
         user.type == "employer"
           ? new employer({
               userId: user._id,
-              name: data.name,
-              phone: data.phone,
-              bio: data.description,
+              company: data.name,
+              phone: data.contactNumber,
+              bio: data.bio,
             })
           : new JobSeeker({
               userId: user._id,
               personalInformation: {
                 name: data.name,
                 contactDetails: {
-                    email: data.contact.email,
-                    phone: data.contact.phone
+                    email: data.email,
+                    phone: data.phone
                 },
                 // Add other personal information properties as needed
                 // For example, age, username, password, address, etc.
@@ -62,7 +68,7 @@ exports.register = async (req, res) => {
           user
             .delete()
             .then(() => {
-              res.status(400).json(err);
+              res.status(410).json(err);
             })
             .catch((err) => {
               res.json({ error: err });
@@ -70,13 +76,15 @@ exports.register = async (req, res) => {
           err;
         });
     })
-    .catch((err) => {
-      res.status(400).json(err);
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
+    // .catch((err) => {
+    //   res.status(420).json(err);
+    // });
+  // try {
+    
+  // } catch (err) {
+  //   console.error(err.message);
+  //   res.status(500).send('Server Error');
+  // }
 };
 
 exports.login = async (req, res, next) => {

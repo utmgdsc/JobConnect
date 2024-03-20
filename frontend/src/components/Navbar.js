@@ -89,8 +89,8 @@ return (
             <Button color="inherit" onClick={() => handleClick("/login")}>
             Login
             </Button>
-            <Button color="inherit" onClick={() => handleClick("/signup")}>
-            Signup
+            <Button color="inherit" onClick={() => handleClick("/register")}>
+            Register
             </Button>
         </>
         )}

@@ -4,14 +4,14 @@ import {
   TextField,
   Button,
   Typography,
-  makeStyles,
   Paper,
   MenuItem,
   Input,
 } from "@mui/material";
+// import { makeStyles} from "@mui/styles"
 import axios from "axios";
 import { Navigate } from "react-router-dom";
-import ChipInput from "material-ui-chip-input";
+import { MuiChipsInput } from "mui-chips-input";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FaceIcon from "@mui/icons-material/Face";
 import PhoneInput from "react-phone-input-2";
@@ -54,10 +54,10 @@ const MultifieldInput = (props) => {
           <Grid item xs={6}>
             <TextField
               label={`Institution Name #${key + 1}`}
-              value={education[key].institutionName}
+              value={education[key].institution}
               onChange={(event) => {
                 const newEdu = [...education];
-                newEdu[key].institutionName = event.target.value;
+                newEdu[key].institution = event.target.value;
                 setEducation(newEdu);
               }}
               variant="outlined"
@@ -99,7 +99,7 @@ const MultifieldInput = (props) => {
             setEducation([
               ...education,
               {
-                institutionName: "",
+                institution: "",
                 startYear: "",
                 endYear: "",
               },
@@ -120,7 +120,7 @@ const Login = (props) => {
 
   const [loggedin, setLoggedin] = useState(isAuth());
 
-  const [signupDetails, setSignupDetails] = useState({
+  const [registerDetails, setregisterDetails] = useState({
     type: "applicant",
     email: "",
     password: "",
@@ -137,7 +137,7 @@ const Login = (props) => {
 
   const [education, setEducation] = useState([
     {
-      institutionName: "",
+      institution: "",
       startYear: "",
       endYear: "",
     },
@@ -165,8 +165,8 @@ const Login = (props) => {
   });
 
   const handleInput = (key, value) => {
-    setSignupDetails({
-      ...signupDetails,
+    setregisterDetails({
+      ...registerDetails,
       [key]: value,
     });
   };
@@ -184,6 +184,7 @@ const Login = (props) => {
   };
 
   const handleLogin = () => {
+    console.log("ACTUALLY LOGIN")
     const tmpErrorHandler = {};
     Object.keys(inputErrorHandler).forEach((obj) => {
       if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
@@ -201,9 +202,9 @@ const Login = (props) => {
     console.log(education);
 
     let updatedDetails = {
-      ...signupDetails,
+      ...registerDetails,
       education: education
-        .filter((obj) => obj.institutionName.trim() !== "")
+        .filter((obj) => obj.institution.trim() !== "")
         .map((obj) => {
           if (obj["endYear"] === "") {
             delete obj["endYear"];
@@ -212,7 +213,7 @@ const Login = (props) => {
         }),
     };
 
-    setSignupDetails(updatedDetails);
+    setregisterDetails(updatedDetails);
 
     const verified = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
@@ -220,7 +221,7 @@ const Login = (props) => {
 
     if (verified) {
       axios
-        .post(apiList.signup, updatedDetails)
+        .post(apiList.register, updatedDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
@@ -250,7 +251,7 @@ const Login = (props) => {
     }
   };
 
-  const handleLoginRecruiter = () => {
+  const handleLoginEmployer = () => {
     const tmpErrorHandler = {};
     Object.keys(inputErrorHandler).forEach((obj) => {
       if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
@@ -266,21 +267,21 @@ const Login = (props) => {
     });
 
     let updatedDetails = {
-      ...signupDetails,
+      ...registerDetails,
     };
     if (phone !== "") {
       updatedDetails = {
-        ...signupDetails,
+        ...registerDetails,
         contactNumber: `+${phone}`,
       };
     } else {
       updatedDetails = {
-        ...signupDetails,
+        ...registerDetails,
         contactNumber: "",
       };
     }
 
-    setSignupDetails(updatedDetails);
+    setregisterDetails(updatedDetails);
 
     const verified = !Object.keys(tmpErrorHandler).some((obj) => {
       return tmpErrorHandler[obj].error;
@@ -290,7 +291,7 @@ const Login = (props) => {
 
     if (verified) {
       axios
-        .post(apiList.signup, updatedDetails)
+        .post(apiList.register, updatedDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
@@ -321,13 +322,13 @@ const Login = (props) => {
   };
 
   return loggedin ? (
-    <Navigate to="/register" />
+    <Navigate to="/" />
   ) : (
     <Paper elevation={3} className={classes.body}>
       <Grid container direction="column" spacing={4} alignItems="center">
         <Grid item>
           <Typography variant="h3" component="h2">
-            Signup
+            register
           </Typography>
         </Grid>
         <Grid item>
@@ -336,19 +337,19 @@ const Login = (props) => {
             label="Category"
             variant="outlined"
             className={classes.inputBox}
-            value={signupDetails.type}
+            value={registerDetails.type}
             onChange={(event) => {
               handleInput("type", event.target.value);
             }}
           >
             <MenuItem value="applicant">Applicant</MenuItem>
-            <MenuItem value="recruiter">Recruiter</MenuItem>
+            <MenuItem value="employer">Employer</MenuItem>
           </TextField>
         </Grid>
         <Grid item>
           <TextField
             label="Name"
-            value={signupDetails.name}
+            value={registerDetails.name}
             onChange={(event) => handleInput("name", event.target.value)}
             className={classes.inputBox}
             error={inputErrorHandler.name.error}
@@ -366,7 +367,7 @@ const Login = (props) => {
         <Grid item>
           <EmailInput
             label="Email"
-            value={signupDetails.email}
+            value={registerDetails.email}
             onChange={(event) => handleInput("email", event.target.value)}
             inputErrorHandler={inputErrorHandler}
             handleInputError={handleInputError}
@@ -377,7 +378,7 @@ const Login = (props) => {
         <Grid item>
           <PasswordInput
             label="Password"
-            value={signupDetails.password}
+            value={registerDetails.password}
             onChange={(event) => handleInput("password", event.target.value)}
             className={classes.inputBox}
             error={inputErrorHandler.password.error}
@@ -391,20 +392,20 @@ const Login = (props) => {
             }}
           />
         </Grid>
-        {signupDetails.type === "applicant" ? (
+        {registerDetails.type === "applicant" ? (
           <>
             <MultifieldInput
               education={education}
               setEducation={setEducation}
             />
             <Grid item>
-              <ChipInput
+              <MuiChipsInput
                 className={classes.inputBox}
                 label="Skills"
                 variant="outlined"
                 helperText="Press enter to add skills"
                 onChange={(chips) =>
-                  setSignupDetails({ ...signupDetails, skills: chips })
+                  setregisterDetails({ ...registerDetails, skills: chips })
                 }
               />
             </Grid>
@@ -452,7 +453,7 @@ const Login = (props) => {
                 rows={8}
                 style={{ width: "100%" }}
                 variant="outlined"
-                value={signupDetails.bio}
+                value={registerDetails.bio}
                 onChange={(event) => {
                   if (
                     event.target.value.split(" ").filter(function (n) {
@@ -479,13 +480,13 @@ const Login = (props) => {
             variant="contained"
             color="primary"
             onClick={() => {
-              signupDetails.type === "applicant"
+              registerDetails.type === "applicant"
                 ? handleLogin()
-                : handleLoginRecruiter();
+                : handleLoginEmployer();
             }}
             className={classes.submitButton}
           >
-            Signup
+            register
           </Button>
         </Grid>
       </Grid>
@@ -495,87 +496,23 @@ const Login = (props) => {
 
 export default Login;
 
-
-// import axios from 'axios';
-
-// const Register = () => {
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     email: '',
-//     username: '',
-//     password: '',
-//     address: ''
-//   });
-//   const [message, setMessage] = useState('');
-//   const { name, email, username, password, address } = formData;
-
-//   const onChange = e =>
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-//   const onSubmit = async e => {
-//     e.preventDefault();
-//     try {
-//       const res = await axios.post('http://localhost:3000/api/auth/register', {
-//         name,
-//         email,
-//         username,
-//         password,
-//         address
-//       });
-//       console.log(res.data);
-//     } catch (err) {
-//       console.error(err.response.data);
-//     }
-//   };
-
-//   return (
-//     <div>
-//     <form onSubmit={onSubmit}>
-//     <input
-//         type='text'
-//         placeholder='name'
-//         name='name'
-//         value={name}
-//         onChange={onChange}
-//         required
-//       />
-//       <input
-//         type='text'
-//         placeholder='username'
-//         name='username'
-//         value={username}
-//         onChange={onChange}
-//         required
-//       />
-//       <input
-//         type='email'
-//         placeholder='Email'
-//         name='email'
-//         value={email}
-//         onChange={onChange}
-//         required
-//       />
-//       <input
-//         type='password'
-//         placeholder='Password'
-//         name='password'
-//         value={password}
-//         onChange={onChange}
-//         minLength='6'
-//       />
-//       <input
-//         type='text'
-//         placeholder='Address'
-//         name='address'
-//         value={address}
-//         onChange={onChange}
-//         minLength='6'
-//       />
-//       <button type='submit'>Register</button>
-//     </form>
-//     {message && <p>{message}</p>} 
-//     </div>
-//   );
-// };
-
-// export default Register;
+// {/* <Grid item>
+//           <PasswordInput
+//             label="Re-enter Password"
+//             value={registerDetails.tmpPassword}
+//             onChange={(event) => handleInput("tmpPassword", event.target.value)}
+//             className={classes.inputBox}
+//             labelWidth={140}
+//             helperText={inputErrorHandler.tmpPassword.message}
+//             error={inputErrorHandler.tmpPassword.error}
+//             onBlur={(event) => {
+//               if (event.target.value !== registerDetails.password) {
+//                 handleInputError(
+//                   "tmpPassword",
+//                   true,
+//                   "Passwords are not same."
+//                 );
+//               }
+//             }}
+//           />
+//         </Grid> */}

@@ -1,13 +1,14 @@
 import { useState } from "react";
 import {
-  Form,
-  FormGroup,
-  FormLabel,
   FormControl,
-  InputGroup,
-  Button,
-} from "react-bootstrap";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const PasswordInput = (props) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,30 +22,36 @@ const PasswordInput = (props) => {
   };
 
   return (
-    <FormGroup>
-      <FormLabel>{props.label}</FormLabel>
-      <InputGroup className="mb-3">
-        <FormControl
+    <>
+      <FormControl variant="outlined" error={props.error ? props.error : null}>
+        <InputLabel htmlFor="outlined-adornment-password">
+          {props.label}
+        </InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-password"
           type={showPassword ? "text" : "password"}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                onClick={handleShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
           value={props.value}
           onChange={(event) => props.onChange(event)}
+          labelWidth={props.labelWidth ? props.labelWidth : 70}
+          className={props.className}
           onBlur={props.onBlur ? props.onBlur : null}
-          isInvalid={props.error ? props.error : null}
         />
-        <InputGroup.Append>
-          <Button
-            variant="outline-secondary"
-            onClick={handleShowPassword}
-            onMouseDown={handleMouseDownPassword}
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </Button>
-        </InputGroup.Append>
-      </InputGroup>
-      {props.helperText ? (
-        <Form.Text className="text-muted">{props.helperText}</Form.Text>
-      ) : null}
-    </FormGroup>
+        {props.helperText ? (
+          <FormHelperText>{props.helperText}</FormHelperText>
+        ) : null}
+      </FormControl>
+    </>
   );
 };
 

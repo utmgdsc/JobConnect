@@ -1,8 +1,8 @@
 export const server = "http://localhost:3000/api";
 
 const apiList = {
-  login: `${server}/login`,
-  signup: `${server}/signup`,
+  login: `${server}/auth/login`,
+  register: `${server}/auth/register`,
   uploadResume: `${server}/upload/resume`,
   uploadProfileImage: `${server}/upload/profile`,
   jobs: `${server}/api/jobs`,

@@ -2,7 +2,7 @@ const dodtenv = require('dotenv').config()
 const connectDB = require('./config/db')
 const express = require('express')
 const port = process.env.port || 3000;
-
+const passportConfig = require("./lib/passportConfig");
 const cors = require('cors');
 const app = express()
 
@@ -14,7 +14,7 @@ app.use(express.json());
 app.listen(port, () => console.log(`Server started on port ${port}`))
 
 app.use(express.json({ extended: false }));
-
+app.use(passportConfig.initialize());
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))

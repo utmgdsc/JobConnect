@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid"
 import Welcome, { ErrorPage } from "./components/Welcome";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
-// import Logout from "./component/Logout";
+import Logout from "./components/Logout";
 import Register from "./components/Register";
 // import Home from "./component/Home";
 // import Applications from "./component/Applications";
@@ -56,6 +56,8 @@ function App() {
               <Route exact path="/" element={<Welcome />} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/register" element={<Register />} />
+              <Route exact path="/logout" element={<Logout />} />
+              {/* <Route exact path="/home" element={<Home />} /> */}
               {/* <Route exact path="/logout">
                 <Logout />
               </Route>
