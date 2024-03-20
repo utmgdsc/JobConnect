@@ -170,9 +170,9 @@ const Home = () => {
                 confidence. Embrace your potential and connect with employers
                 who value diversity and inclusion.
               </p>
-              <a href="#jobs" className="btn btn-light mt-3">
+              <Link to="/jobs" className="btn btn-light mt-3">
                 <i className="bi bi-chevron-right"></i> View Job Listings
-              </a>
+              </Link>
             </div>
             <div className="col-md">
               {/* Consider replacing this image with something more relevant to job searching or career growth */}
