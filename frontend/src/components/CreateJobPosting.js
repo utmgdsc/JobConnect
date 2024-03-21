@@ -41,7 +41,7 @@ function CreateJobPosting() {
                     toast.success("Job successfully created!");
                 })
                 .catch(error => {
-                    toast.error(`An error occurred while creating the job. ${error}`);
+                    toast.error("An error occurred while creating the job.");
                 });
         } catch (error) {
             console.error("Failed to create job posting:", error);
