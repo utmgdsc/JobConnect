@@ -19,5 +19,6 @@ app.use('/api/jobPostingsRoutes', require("./routes/jobPostingRoutes"))
 app.use('/api/employerRoutes', require("./routes/employerRoutes"))
 app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))
 app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))
+app.use('/api/subscribe', require("./routes/subscribeRoutes"))
 
 connectDB()

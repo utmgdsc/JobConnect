@@ -1,92 +1,45 @@
-.job-connect {
-    font-family: Arial, sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+body::before {
+  display: block;
+  content: '';
+  height: 60px;
 }
 
-.header {
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 20px;
-    text-align: center;
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 }
 
-.content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin: 20px;
+@media (min-width: 768px) {
+  .news-input {
+    width: 50%;
+  }
+}
+.form-control {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .card {
-    width: 30%;
-    margin: 10px;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card-image {
-    width: 100%; /* Ensure the image takes the full width of its container */
-    height: 400px; /* Set a fixed height for all images */
-    object-fit: cover; /* Cover the area of the box without changing the aspect ratio */
-}
-
-
-.card-button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    background-color: blue;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.card-button:hover {
-    background-color: darkblue;
-}
-
-.footer {
-    background-color: #343a40;
-    color: #ffffff;
-    text-align: center;
-    padding: 10px;
-    margin-top: auto;
-}
-
-/* jobs */
-/* .search-and-filter {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.search-bar, .filter-dropdown {
-    padding: 10px;
-    margin: 0 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.job-listings {
     display: flex;
     flex-direction: column;
-    margin: 20px;
+    min-height: 350px; /* Adjust based on your content */
+}
+  
+.card-body {
+display: flex;
+flex-direction: column;
+height: 100%; /* This ensures the card body fills the card */
 }
 
-.job-card {
-    background-color: #f8f9fa;
-    padding: 15px;
+.btn {
+margin-top: auto; /* This pushes the button to the bottom */
+align-self: center; /* Add this to keep the button width normal */
+width: auto; /* Add this to keep the button width normal */
+}
+
+.btn-lg { 
+    height: 50px;
+    margin-top: 9px;
     margin-bottom: 10px;
-    border-left: 5px solid #007bff;
-} */
+}

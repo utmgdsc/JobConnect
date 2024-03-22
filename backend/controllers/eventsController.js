@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Event = require('../models/EventsModel'); // Ensure this path is correct
+const Event = require('../models/eventsModel'); // Ensure this path is correct
 
 // Create an event
 const createEvent = asyncHandler(async (req, res) => {
