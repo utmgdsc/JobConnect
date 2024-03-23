@@ -12,7 +12,7 @@ function EmployerProfile() {
     website: "",
     phone: "",
     reviews: [],
-  });
+  }); 
 
   const [updateStatus, setUpdateStatus] = useState("");
 

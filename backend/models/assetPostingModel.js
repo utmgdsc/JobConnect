@@ -2,12 +2,24 @@ const mongoose = require('mongoose');
 
  const assetPostingSchema = new mongoose.Schema({
      owner: {
-         type: String,
+         type: [mongoose.Schema.Types.ObjectId],
+         ref: 'Employer',
          required: true
      },
-     applicants: {
-        type:  [mongoose.Schema.Types.ObjectId],
-        ref: 'JobSeeker',
+     applicants: [{
+        jobSeeker: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'JobSeeker',
+            required: true
+        },
+        status: {
+            type: String,
+            enum: ['Pending', 'Accepted', 'Rejected'],
+            default: 'Pending'
+        }
+    }],
+    questions: {
+        type: [String],
         required: true,
     },
      assetType: {
