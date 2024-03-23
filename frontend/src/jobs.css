@@ -1,0 +1,100 @@
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+.jobs-container {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Use viewport height to ensure the footer can stick to the bottom */
+  text-align: left;
+}
+
+.container {
+  flex-grow: 1; /* This makes the content grow to occupy available space, pushing the footer down */
+}
+
+footer {
+  background-color: #333; /* Dark background */
+  color: white; /* Light text */
+  text-align: center;
+  padding: 20px 0; /* Adjust padding as needed */
+}
+.jobs-layout {
+  display: flex;
+  gap: 20px;
+}
+
+.job-listings {
+  flex-grow: 1; /* Updated to prevent job listings from shrinking too much */
+  overflow-y: auto;
+}
+
+.job-posting {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+@media (max-width: 1000px) {
+  .jobs-container {
+    padding-top: 40px; /* Reduce top padding on smaller screens */
+  }
+
+  .job-posting h3 {
+    font-size: 1em; /* Reduce font size for job titles */
+  }
+}
+
+.job-details-panel {
+  width: 50%; /* Fixed width for the job details panel */
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-y: auto; /* Allows vertical scrolling if content overflows */
+  overflow-x: hidden; /* Keeps the content from spilling out sideways */
+}
+
+.apply-button {
+  padding: 10px 20px;
+  background-color: #007bff; /* Example button color */
+  color: #ffffff; /* Text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px; /* Spacing above the button */
+  font-size: 16px; /* Text size */
+  display: block; /* Make the button block level so it can be centered */
+  margin-left: auto; /* Center the button */
+  margin-right: auto;
+}
+
+.apply-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* make bullet points ul gone */
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.job-posting.selected {
+  background-color: #f2f2f2; /* Light grey background for selected job */
+}
+
+.btn.btn-variant-1 {
+  height: 40px;
+  margin-top: 9px;
+  margin-bottom: 10px;
+}
+

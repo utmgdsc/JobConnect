@@ -8,7 +8,7 @@ const jobPostingSchema = new mongoose.Schema({
     },
     applicants: {
         type:  [mongoose.Schema.Types.ObjectId],
-        ref: 'jobSeeker',
+        ref: 'JobSeeker',
         required: true,
     },
     jobTitle: {

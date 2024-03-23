@@ -49,17 +49,18 @@ const registerJobSeeker = async (req, res) => {
 };
 
 const deleteJobSeeker = asyncHandler(async (req, res) => {
-    await JobSeeker.findOneAndDelete({"_id": req.params.id}, (err, JobSeeker) => {
-        if(err){
+    await JobSeeker.findOneAndDelete({ "_id": req.params.id }, (err, JobSeeker) => {
+        if (err) {
             res.status(500).json({ message: 'Error deleting user ' });
-        }else{
+        } else {
             res.status(200).json({ message: 'Usser deleted successfully' });
         }
-    }) 
-        
+    })
+
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
+
     try {
         // Access user information from req.user
         const userId = req.user.id;
@@ -77,7 +78,6 @@ const getJobSeeker = asyncHandler(async (req, res) => {
         console.error('Error fetching job seeker:', error);
         res.status(500).json({ error: 'Server error' });
       }
-        
 });
 const updateJobSeeker = asyncHandler(async (req, res) => {
     const updates = req.body;
@@ -192,7 +192,7 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { 
+module.exports = {
     registerJobSeeker,
     deleteJobSeeker,
     getJobSeeker,
@@ -200,3 +200,7 @@ module.exports = {
     addJobSeekerInfo,
     getCurrentJobSeeker
  };
+
+    addJobSeekerInfo
+};
+

@@ -1,102 +1,50 @@
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-  } from "@mui/material";
+import React from "react";
+import { Link } from "react-router-dom";
+import "../job-connect.css";
 
-import { styled } from "@mui/system";
-import { useNavigate } from "react-router-dom";
+const Navbar = () => {
+  return (
+    <div>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
+        <div className="container">
+          <Link to="/" className="navbar-brand">
+            JobConnect
+          </Link>
 
-import isAuth, { userType } from "../lib/isAuth";
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navmenu"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-const useStyles = styled((theme) => ({
-root: {
-    flexGrow: 1,
-},
-menuButton: {
-    marginRight: theme.spacing(2),
-},
-title: {
-    flexGrow: 1,
-},
-}));
-
-const Navbar = (props) => {
-const classes = useStyles();
-let history = useNavigate();
-
-const handleClick = (location) => {
-    console.log(location);
-    history(location);
-};
-
-return (
-    <AppBar position="fixed">
-    <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-        Job Portal
-        </Typography>
-        {isAuth() ? (
-        userType() === "recruiter" ? (
-            <>
-            <Button color="inherit" onClick={() => handleClick("/home")}>
-                Home
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/addjob")}>
-                Add Jobs
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/myjobs")}>
-                My Jobs
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/employees")}>
-                Employees
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/profile")}>
-                Profile
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/logout")}>
-                Logout
-            </Button>
-            </>
-        ) : (
-            <>
-            <Button color="inherit" onClick={() => handleClick("/home")}>
-                Home
-            </Button>
-            <Button
-                color="inherit"
-                onClick={() => handleClick("/applications")}
-            >
-                Applications
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/profile")}>
-                Profile
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/logout")}>
-                Logout
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/login")}>
-            Login
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/register")}>
-            Register
-            </Button>
-            </>
-        )
-        ) : (
-        <>
-            <Button color="inherit" onClick={() => handleClick("/login")}>
-            Login
-            </Button>
-            <Button color="inherit" onClick={() => handleClick("/register")}>
-            Register
-            </Button>
-        </>
-        )}
-    </Toolbar>
-    </AppBar>
-);
+          <div className="collapse navbar-collapse" id="navmenu">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link to="/" className="nav-link">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <a href="#questions" className="nav-link">
+                  FAQ
+                </a>{" "}
+                {/* Using an anchor link */}
+              </li>
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">
+                  Sign Up
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  );
 };
 
 export default Navbar;

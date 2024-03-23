@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const EmployerSchema = new mongoose.Schema({
+
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -22,12 +23,14 @@ const EmployerSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: false,
+        required: true,
     },
     website: {
         type: String,
     },
-    
+    phone: {
+        type: Number,
+    },
     reviews: [{
         review: String,
         rating: Number,
