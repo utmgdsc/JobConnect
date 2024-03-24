@@ -11,7 +11,7 @@ function JobDetails() {
         password: "",
         category: "",
         website: "",
-        salary: "",
+        salary: 0,
         phone: "",
         location: "",
         details: {

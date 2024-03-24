@@ -133,19 +133,19 @@ function CreateJobPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Company:</label>
-                    <input type="text" name="company" value={jobPosting.company} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="company" value={jobPosting.company} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Job Title:</label>
-                    <input type="text" name="jobTitle" value={jobPosting.jobTitle} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="jobTitle" value={jobPosting.jobTitle} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Location:</label>
-                    <input type="text" name="location" value={jobPosting.location} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="location" value={jobPosting.location} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Salary:</label>
-                    <input type="number" name="salary" value={jobPosting.salary} onChange={handleChange} className="form-control" />
+                    <input required type="number" name="salary" value={jobPosting.salary} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Job Type:</label>
@@ -164,7 +164,7 @@ function CreateJobPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Description:</label>
-                    <textarea name="description" value={jobPosting.details.description} onChange={handleChange} className="form-control" />
+                    <textarea required name="description" value={jobPosting.details.description} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Responsibilities:</label>

@@ -27,6 +27,10 @@ const assetPostingSchema = new mongoose.Schema({
         enum: ['Available', 'Unavailable', 'Pending'], // You can adjust these options as needed
         default: 'Available'
     },
+    condition: {
+        type: String,
+        enum: ['Used', 'Fair', 'Good', 'Excellent'], // You can adjust these options as needed
+    },
     postedAt: {
         type: Date,
         default: Date.now

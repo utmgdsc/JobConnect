@@ -26,35 +26,36 @@ const getAssetPostingById = async (req, res) => {
 
 // create a new asset posting
 const createAssetPosting = async (req, res) => {
-    const { company, title, assetType, location, availability, details, value, benefits } = req.body;
+    const { owner, title, assetType, location, availability, condition, details, price, benefits } = req.body;
 
-
-    if (!company || !title || !assetType || !location || !availability || !details || !value) {
+    if (!owner || !title || !assetType || !location || !availability || !condition || !details || !price) {
         return res.status(400).json({ message: 'Please fill in all required fields' });
     }
 
     // check if asset already exists
-    try {
-        const existingAssetPosting = await existingAssetPosting.findOne({ assetTitle });
+    // try {
+    //     const existingAssetPosting = await existingAssetPosting.findOne({ title: title, owner: owner });
 
-        if (existingAssetPosting) {
-            return res.status(400).json({ message: 'Asset posting already exists' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Error checking for existing asset posting' });
-    }
-    const newAssetPosting = new AssetPosting({
-        company,
-        title,
-        assetType,
-        location,
-        availability,
-        details,
-        value,
-        benefits
-    });
+    //     if (existingAssetPosting) {
+    //         return res.status(400).json({ message: 'Asset posting already exists' });
+    //     }
+    // } catch (error) {
+    //     res.status(500).json({ message: 'Error checking for existing asset posting' });
+    // }
 
     try {
+        const newAssetPosting = new AssetPosting({
+            owner,
+            title,
+            assetType,
+            location,
+            availability,
+            condition,
+            details,
+            price,
+            benefits
+        });
+
         await newAssetPosting.save();
         res.status(201).json(newAssetPosting);
     } catch (error) {
@@ -82,7 +83,7 @@ const deleteAssetPosting = async (req, res) => {
 // update an asset posting by ID
 const updateAssetPosting = async (req, res) => {
     const { id } = req.params
-    const { company, title, assetType, location, availability, details, value, benefits } = req.body;
+    const { owner, title, assetType, location, availability, condition, details, benefits, price } = req.body;
 
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -95,7 +96,7 @@ const updateAssetPosting = async (req, res) => {
         return res.status(404).send('Asset posting not found')
     }
 
-    const updatedAssetPosting = { company, title, assetType, location, availability, details, value, benefits, _id: id };
+    const updatedAssetPosting = { owner, title, assetType, location, availability, condition, details, benefits, price, _id: id };
 
     await AssetPosting.findByIdAndUpdate(id, updatedAssetPosting, { new: true });
 

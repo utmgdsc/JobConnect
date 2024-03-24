@@ -17,6 +17,7 @@ import UserProfile from "./components/UserProfile";
 import ProfileDashboard from "./components/ProfileDashboard";
 import ApplicantsList from "./components/ApplicantsList";
 import AssetPostings from "./components/AssetPostings";
+import AssetDetails from "./components/AssetDetails";
 import Events from "./components/Events";
 import CreateJobPosting from "./components/CreateJobPosting";
 import CreateAssetPosting from "./components/CreateAssetPosting";
@@ -39,6 +40,7 @@ function App() {
           <Route path="/assets" element={<AssetPostings />} />
           <Route path="/events" element={<Events />} />
           <Route path="/job/:id" element={<JobDetails />} />
+          <Route path="/asset/:id" element={<AssetDetails />} />
           <Route path="/create/job/:id?" element={<CreateJobPosting />} />
           <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
           {/*<Route path="/create/event/:id?" element={<CreateEvent />} /> */}

@@ -9,9 +9,11 @@ import "../App.css"; // Import the new CSS styles
 function CreateAssetPosting() {
     const [assetPosting, setAssetPosting] = useState({
         owner: "",
+        title: "",
         assetType: "",
         location: "",
-        availibility: "",
+        availability: "Available",
+        condition: "",
         details: {
             description: "",
         },
@@ -28,6 +30,7 @@ function CreateAssetPosting() {
             try {
                 const data = await AssetPostingsService.getAssetPostingById(id);
                 setAssetPosting(data); // Assuming data is the asset seeker's information
+                setBenefits(data.benefits.join('\n'));
             } catch (error) {
                 console.error("Failed to fetch asset seeker:", error);
                 // Handle error (e.g., show an error message)
@@ -62,7 +65,7 @@ function CreateAssetPosting() {
         }
     }
 
-    const handleTextChange = (event) => {
+    const handleBenefitsChange = (event) => {
         setBenefits(event.target.value);
     }
 
@@ -73,7 +76,7 @@ function CreateAssetPosting() {
             if (name === 'benefits') {
                 return {
                     ...prevAssetPosting,
-                    benefits: benefits.split(',').map(benefit => benefit.trim()),
+                    benefits: benefits.split('\n').map(benefit => benefit.trim()),
                 };
             }
         });
@@ -101,6 +104,10 @@ function CreateAssetPosting() {
         };
     }
 
+    useEffect(() => {
+        console.log(assetPosting);
+    }, [assetPosting])
+
     return (
         <section className="container rounded bg-white p-4 mt-5 mb-5 border border-1">
             <ToastContainer
@@ -121,27 +128,43 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Owner:</label>
-                    <input type="text" name="owner" value={assetPosting.owner} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="owner" value={assetPosting.owner} onChange={handleChange} className="form-control" />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Title:</label>
+                    <input required type="text" name="title" value={assetPosting.title} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Asset Type:</label>
-                    <input type="text" name="assetType" value={assetPosting.assetType} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="assetType" value={assetPosting.assetType} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Price:</label>
-                    <input type="text" name="price" value={assetPosting.price} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="price" value={assetPosting.price} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Location:</label>
-                    <input type="text" name="location" value={assetPosting.location} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="location" value={assetPosting.location} onChange={handleChange} className="form-control" />
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Availability:</label>
-                    <select name="assetType" value={assetPosting.availibility} onChange={handleChange} className="form-select">
-                        <option value="Available" selected>Available</option>
-                        <option value="Unavailable">Unavailable</option>
-                        <option value="Pending">Pending</option>
-                    </select>
+                <div className="row">
+                    <div className="mb-3 col-md-6">
+                        <label className="form-label">Availability:</label>
+                        <select name="availability" value={assetPosting.availability} onChange={handleChange} className="form-select">
+                            <option value="Available" selected>Available</option>
+                            <option value="Unavailable">Unavailable</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div className="mb-3 col-md-6">
+                        <label className="form-label">Condition:</label>
+                        <select name="condition" value={assetPosting.condition} onChange={handleChange} className="form-select">
+                            <option value="">Select</option>
+                            <option value="Used">Used</option>
+                            <option value="Fair">Fair</option>
+                            <option value="Good">Good</option>
+                            <option value="Excellent">Excellent</option>
+                        </select>
+                    </div>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Description:</label>
@@ -150,7 +173,7 @@ function CreateAssetPosting() {
                 <div className="mb-3">
                     <label className="form-label">Benefits:</label>
                     <div className="form-text text-muted">Each item should go on a separate line.</div>
-                    <textarea name="benefits" value={benefits} onChange={handleTextChange} onBlur={handleBlur} className="form-control" />
+                    <textarea name="benefits" value={benefits} onChange={handleBenefitsChange} onBlur={handleBlur} className="form-control" />
                 </div>
                 <button type="submit" className="btn btn-primary">{id ? "Update Asset Posting" : "Create Asset Posting"}</button>
             </form>
