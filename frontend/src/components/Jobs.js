@@ -174,7 +174,7 @@ const Jobs = () => {
               </ul>
               <button
                 className="btn btn-primary btn-md"
-                onClick={() => navigate(`/jobs/${selectedJobId}`)}
+                onClick={() => navigate(`/job/${selectedJobId}`)}
               >
                 Details
               </button>

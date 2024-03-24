@@ -27,7 +27,7 @@ const getJobPostingById = async (req, res) => {
 
 // create a new job posting
 const createJobPosting = async (req, res) => {
-    const { company, jobTitle, location, jobType, details, noDegreeMentioned, benefits, applicants } = req.body;
+    const { company, jobTitle, location, jobType, salary, details, noDegreeMentioned, benefits, applicants } = req.body;
 
     if (!company || !jobTitle || !location || !jobType || !details) {
         return res.status(400).json({ message: 'Please fill in all required fields' });
@@ -38,6 +38,7 @@ const createJobPosting = async (req, res) => {
         jobTitle,
         location,
         jobType,
+        salary,
         details,
         noDegreeMentioned,
         benefits,
@@ -79,7 +80,7 @@ const deleteJobPosting = async (req, res) => {
 // update a job posting by ID
 const updateJobPosting = async (req, res) => {
     const { id } = req.params
-    const { company, applicants, jobTitle, location, jobType, details, noDegreeMentioned, benefits } = req.body;
+    const { company, applicants, jobTitle, location, salary, jobType, details, noDegreeMentioned, benefits } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send('Invalid job posting ID')
@@ -91,7 +92,7 @@ const updateJobPosting = async (req, res) => {
         return res.status(404).send('Job posting not found')
     }
 
-    const updatedJobPosting = { company, applicants, jobTitle, location, jobType, details, noDegreeMentioned, benefits, _id: id };
+    const updatedJobPosting = { company, applicants, jobTitle, salary, location, jobType, details, noDegreeMentioned, benefits, _id: id };
 
     await JobPosting.findByIdAndUpdate(id, updatedJobPosting, { new: true });
 

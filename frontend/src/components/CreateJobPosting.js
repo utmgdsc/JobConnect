@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../App.css"; // Import the new CSS styles
-import jobPostingsService from "../services/jobPostingsService";
 
 function CreateJobPosting() {
     const [jobPosting, setJobPosting] = useState({
@@ -14,6 +13,7 @@ function CreateJobPosting() {
         location: "",
         jobType: "",
         noDegreeMentioned: false,
+        salary: 0,
         details: {
             description: "",
             responsibilities: [],
@@ -34,7 +34,7 @@ function CreateJobPosting() {
     useEffect(() => {
         const fetchJobPosting = async () => {
             try {
-                const data = await jobPostingsService.getJobPostingById(id);
+                const data = await JobPostingsService.getJobPostingById(id);
                 setJobPosting(data); // Assuming data is the job seeker's information
                 const { responsibilities, requirements, benefits } = data.details;
                 setDetails({
@@ -96,7 +96,7 @@ function CreateJobPosting() {
         try {
             let res = {}
             if (id) {
-                await jobPostingsService.updateJobPosting(jobPosting._id, jobPosting);
+                await JobPostingsService.updateJobPosting(jobPosting._id, jobPosting);
             }
             else {
                 res = await JobPostingsService.createJobPosting(jobPosting);
@@ -142,6 +142,10 @@ function CreateJobPosting() {
                 <div className="mb-3">
                     <label className="form-label">Location:</label>
                     <input type="text" name="location" value={jobPosting.location} onChange={handleChange} className="form-control" />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Salary:</label>
+                    <input type="number" name="salary" value={jobPosting.salary} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Job Type:</label>

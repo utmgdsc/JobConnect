@@ -27,6 +27,9 @@ const jobPostingSchema = new mongoose.Schema({
         required: true,
         enum: ['Full-Time', 'Part-Time', 'Contract', 'Temporary', 'Internship']
     },
+    salary: {
+        type: Number,
+    },
     postedAt: {
         type: Date,
         default: Date.now

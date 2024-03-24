@@ -11,6 +11,7 @@ function JobDetails() {
         password: "",
         category: "",
         website: "",
+        salary: "",
         phone: "",
         location: "",
         details: {
@@ -28,6 +29,7 @@ function JobDetails() {
         const fetchJob = async () => {
             try {
                 const data = await JobPostingService.getJobPostingById(id);
+                console.log(data.salary);
                 setJob(data); // Assuming data is the job seeker's information
             } catch (error) {
                 console.error("Failed to fetch job details:", error);
@@ -41,17 +43,24 @@ function JobDetails() {
     }, [id]);
 
     return (
-        <div className="container rounded bg-white py-4 mt-5 mb-5 border border-1">
+        <div className="container rounded bg-white px-4 mt-5 mb-5 border border-1">
             <div className="row col-md-12">
-                <div className="mb-3 p-4">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
+                <div className="mb-3 px-4 pt-4">
+                    <div className="d-flex justify-content-between align-items-center mb-1">
                         <h1 className="text-right">{job.jobTitle}</h1>
                     </div>
                     <div className="d-flex">
-                        <h3>{job.company}</h3>
-                        <h5 className="ms-auto">{job.location}</h5>
+                        {job.company &&
+                            <h3>{job.company}</h3>
+                        }
+                        {job.location &&
+                            <h5 className="ms-auto">{job.location}</h5>
+                        }
                     </div>
                     <h5>{job.jobType}</h5>
+                    {job.salary && job.salary > 0 &&
+                        <h5>${job.salary}</h5>
+                    }
                 </div>
                 <div className="mb-1 px-4">
                     <h4>Description</h4>

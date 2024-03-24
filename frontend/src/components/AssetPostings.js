@@ -8,8 +8,8 @@ const AssetPostings = () => {
   const [expandedAssetId, setExpandedAssetId] = useState(null);
 
   const navigate = useNavigate();
-  const navigateToApplication = () => {
-    navigate("/application");
+  const navigateToApplication = (id) => {
+    navigate(`/asset/${id}`);
   };
 
   useEffect(() => {
@@ -70,8 +70,8 @@ const AssetPostings = () => {
                 {/* Add more details as needed */}
               </div>
             )}
-            <button className="apply-button" onClick={navigateToApplication}>
-              Apply Now
+            <button className="apply-button" onClick={() => navigateToApplication(posting._id)}>
+              Details
             </button>
           </div>
         ))}
