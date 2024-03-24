@@ -21,7 +21,7 @@ import PasswordInput from "../lib/PasswordInput";
 import EmailInput from "../lib/EmailInput";
 import FileUploadInput from "../lib/FileUploadInput";
 import { SetPopupContext } from "../App";
-
+import Navbar from "./Navbar"
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 
@@ -184,7 +184,6 @@ const Login = (props) => {
   };
 
   const handleLogin = () => {
-    console.log("ACTUALLY LOGIN")
     const tmpErrorHandler = {};
     Object.keys(inputErrorHandler).forEach((obj) => {
       if (inputErrorHandler[obj].required && inputErrorHandler[obj].untouched) {
@@ -229,7 +228,7 @@ const Login = (props) => {
           setPopup({
             open: true,
             severity: "success",
-            message: "Logged in successfully",
+            message: "Registered successfully",
           });
           console.log(response);
         })
@@ -325,10 +324,11 @@ const Login = (props) => {
     <Navigate to="/" />
   ) : (
     <Paper elevation={3} className={classes.body}>
+      <Navbar />
       <Grid container direction="column" spacing={4} alignItems="center">
         <Grid item>
           <Typography variant="h3" component="h2">
-            register
+            Signup
           </Typography>
         </Grid>
         <Grid item>
