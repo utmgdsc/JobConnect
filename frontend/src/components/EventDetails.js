@@ -73,7 +73,7 @@ function EventDetails() {
                 </div>
                 {event.details?.targetAudience.length > 0 && (
                     <div className="mb-1 px-4">
-                        <h4>Responsibilities:</h4>
+                        <h4>Audience:</h4>
                         <ul className="mb-3">
                             {event.details?.targetAudience.map((item, index) => (
                                 <li key={index}>{item}</li>
@@ -83,7 +83,7 @@ function EventDetails() {
                 )}
                 {event.details?.accessibilityOptions.length > 0 && (
                     <div className="mb-1 px-4">
-                        <h4>Requirements:</h4>
+                        <h4>Accessibility Options:</h4>
                         <ul className="mb-3">
                             {event.details?.accessibilityOptions.map((item, index) => (
                                 <li key={index}>{item}</li>
@@ -93,7 +93,7 @@ function EventDetails() {
                 )}
                 {event.details?.speakers.length > 0 && (
                     <div className="mb-1 px-4">
-                        <h4>Benefits:</h4>
+                        <h4>Speakers:</h4>
                         <ul className="mb-3">
                             {event.details?.speakers.map((item, index) => (
                                 <li key={index}>{item}</li>
@@ -103,7 +103,7 @@ function EventDetails() {
                 )}
                 {event.details?.sponsors.length > 0 && (
                     <div className="mb-1 px-4">
-                        <h4>Benefits:</h4>
+                        <h4>Sponsors:</h4>
                         <ul className="mb-3">
                             {event.details?.sponsors.map((item, index) => (
                                 <li key={index}>{item}</li>

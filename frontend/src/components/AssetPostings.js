@@ -14,7 +14,7 @@ const AssetPostings = () => {
 
   useEffect(() => {
     fetchAssetPostings();
-  }, []);
+  }, [assetPostings]);
 
   const fetchAssetPostings = async () => {
     try {

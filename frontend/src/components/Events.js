@@ -16,7 +16,7 @@ const Events = () => {
 
   useEffect(() => {
     fetchEventPostings();
-  }, []);
+  }, [eventPostings]);
 
   const fetchEventPostings = async () => {
     try {
@@ -83,16 +83,14 @@ const Events = () => {
             {expandedEventId === event._id && (
               <div className="event-details">
                 <p>Description: {event.details.description}</p>
-                {event.registrationRequired && (
-                  <button
-                    className="register-button"
-                    onClick={() =>
-                      navigateToDetails(event._id)
-                    }
-                  >
-                    Details
-                  </button>
-                )}
+                <button
+                  className="btn btn-primary btn-md"
+                  onClick={() =>
+                    navigateToDetails(event._id)
+                  }
+                >
+                  Details
+                </button>
               </div>
             )}
           </div>
