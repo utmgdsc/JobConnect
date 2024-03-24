@@ -38,7 +38,7 @@ const useStyles = styled((theme) => ({
 }));
 
 const MultifieldInput = (props) => {
-  const classes = useStyles();
+  // const classes = useStyles();
   const { education, setEducation } = props;
 
   return (

@@ -23,7 +23,7 @@ function JobSeekerFetcher() {
     if (id) {
       fetchJobSeeker();
     }
-  }, [id, fetchJobSeeker]);
+  }, [id]);
   // ... inside your component's return statement
   return (
     <div className="dashboard">
@@ -67,7 +67,7 @@ function JobSeekerFetcher() {
                     const startDate = edu.startDate
                       ? new Date(edu.startDate).toLocaleDateString()
                       : "Not Provided";
-                    return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startDate}, ${edu.endDate}`;
+                    return `${edu.fieldOfStudy} at ${edu.institution}, from ${startDate}, ${edu.endDate}`;
                   })
                   .join("; ")
                 : "None"}
