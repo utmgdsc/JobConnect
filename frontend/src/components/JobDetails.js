@@ -7,19 +7,17 @@ import "../App.css"; // Import the new CSS styles
 function JobDetails() {
     const [job, setJob] = useState({
         company: "",
-        email: "",
-        password: "",
-        category: "",
-        website: "",
-        salary: 0,
-        phone: "",
+        jobTitle: "",
         location: "",
+        jobType: "",
+        noDegreeMentioned: false,
+        salary: 0,
         details: {
             description: "",
             responsibilities: [],
             requirements: [],
             benefits: [],
-        }
+        },
     });
 
     const { id } = useParams();
@@ -29,7 +27,6 @@ function JobDetails() {
         const fetchJob = async () => {
             try {
                 const data = await JobPostingService.getJobPostingById(id);
-                console.log(data.salary);
                 setJob(data); // Assuming data is the job seeker's information
             } catch (error) {
                 console.error("Failed to fetch job details:", error);

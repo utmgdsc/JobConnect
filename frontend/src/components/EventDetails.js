@@ -34,7 +34,6 @@ function EventDetails() {
         const fetchEvent = async () => {
             try {
                 const data = await EventService.getEvent(id);
-                console.log(data.salary);
                 setEvent(data); // Assuming data is the event seeker's information
             } catch (error) {
                 console.error("Failed to fetch event details:", error);

@@ -25,7 +25,6 @@ function AssetDetails() {
         const fetchAsset = async () => {
             try {
                 const data = await AssetPostingService.getAssetPostingById(id);
-                console.log(data.salary);
                 setAsset(data); // Assuming data is the asset seeker's information
             } catch (error) {
                 console.error("Failed to fetch asset details:", error);
