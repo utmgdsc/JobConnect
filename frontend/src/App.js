@@ -23,6 +23,7 @@ import EventDetails from "./components/EventDetails";
 import CreateJobPosting from "./components/CreateJobPosting";
 import CreateAssetPosting from "./components/CreateAssetPosting";
 import CreateEvent from "./components/CreateEvent";
+import Postings from "./components/Postings"
 import "./App.css";
 
 // Define a Header component that only shows navigation links on the home page ('/')
@@ -46,6 +47,7 @@ function App() {
           <Route path="/create/job/:id?" element={<CreateJobPosting />} />
           <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
           <Route path="/create/event/:id?" element={<CreateEvent />} />
+          <Route path="/postings/:id" element={<Postings />} />
         </Routes>
       </div>
     </Router>
