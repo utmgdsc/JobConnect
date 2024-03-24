@@ -18,6 +18,8 @@ import ApplicantsList from "./components/ApplicantsList";
 import AssetPostings from "./components/AssetPostings";
 import Events from "./components/Events";
 import Login from "./components/Login"
+import Logout from "./components/Logout"
+import Register from "./components/Register"
 import MessagePopup from "./lib/MessagePopup";
 
 
@@ -45,6 +47,8 @@ function App() {
           <Route path="/assets" element={<AssetPostings />} />
           <Route path="/events" element={<Events />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
         <MessagePopup
           open={popup.open}
