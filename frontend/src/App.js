@@ -24,6 +24,12 @@ import "./App.css";
 
 // Define a Header component that only shows navigation links on the home page ('/')
 function App() {
+  const classes = useStyles();
+  const [popup, setPopup] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
   return (
     <Router>
       <div className="App">
