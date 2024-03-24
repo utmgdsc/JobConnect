@@ -233,7 +233,7 @@ function UserProfile() {
                 <div className="col-md-12">
                   <label className="labels">Username</label>
                   <input type="text" className="form-control" placeholder="Username" onChange={handleChange} name="username" value={jobSeeker.personalInformation.username} />
-                </div>
+                  wm                </div>
                 <div className="col-md-12">
                   <label className="labels">Email</label>
                   <input type="email" className="form-control" placeholder="Email" onChange={handleChange} name="email" value={jobSeeker.personalInformation.contactDetails.email} />
