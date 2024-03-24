@@ -35,17 +35,12 @@ function UserProfile() {
   const fetchJobSeeker = async () => {
     try {
       const data = await jobSeekersService.getJobSeeker(id);
-      console.log(data);
       setJobSeeker(data); // Assuming data is the job seeker's information
     } catch (error) {
       console.error("Failed to fetch job seeker:", error);
       // Handle error (e.g., show an error message)
     }
   };
-
-  useEffect(() => {
-    console.log(jobSeeker)
-  }, [jobSeeker]);
 
   useEffect(() => {
     if (id) {
@@ -287,7 +282,7 @@ function UserProfile() {
                 <i className="fa fa-plus">
                 </i>&nbsp;Experience</span>
             </div> */}
-              <input type="text" className="form-control" placeholder="Enter skills" value={jobSeeker.professionalProfile.skills.join(", ")} onChange={handleChange} />
+              <input type="text" className="form-control" placeholder="Enter skills" value={jobSeeker.professionalProfile.skills.join(", ")} onBlur={handleChange} />
             </div>
           </div>
         </form>
