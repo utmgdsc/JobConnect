@@ -29,7 +29,7 @@ function UserProfile() {
     applicationHistory: [],
   });
 
-
+  const [skills, setSkills] = useState("")
   const { id } = useParams();
 
   useEffect(() => {
@@ -37,6 +37,7 @@ function UserProfile() {
       try {
         const data = await jobSeekersService.getJobSeeker(id);
         setJobSeeker(data); // Assuming data is the job seeker's information
+        setSkills(data.professionalProfile.skills.join(", "));
       } catch (error) {
         console.error("Failed to fetch job seeker:", error);
         // Handle error (e.g., show an error message)
@@ -81,19 +82,29 @@ function UserProfile() {
     };
   }
 
-  function handleChange(event) {
-    const { name, value, } = event.target;
+  const handleSkillsChange = (event) => {
+    setSkills(event.target.value);
+  }
+
+  const handleBlur = (event) => {
     setJobSeeker((prevJobSeeker) => {
+      const { name, value } = event.target;
       if (name === 'skills') {
         return {
           ...prevJobSeeker,
           professionalProfile: {
             ...prevJobSeeker.professionalProfile,
-            skills: value.split(',').map(skill => skill.trim()),
+            skills: skills.split(',').map(skill => skill.trim()),
           },
         };
       }
-      else if (name in prevJobSeeker.personalInformation) {
+    });
+  }
+
+  function handleChange(event) {
+    const { name, value, } = event.target;
+    setJobSeeker((prevJobSeeker) => {
+      if (name in prevJobSeeker.personalInformation) {
         return handlePersonalInformationChange(name, value, prevJobSeeker);
       } else if (name in prevJobSeeker.personalInformation.contactDetails) {
         return handleContactDetailsChange(name, value, prevJobSeeker);
@@ -278,7 +289,8 @@ function UserProfile() {
               <i className="fa fa-plus">
               </i>&nbsp;Experience</span>
             </div> */}
-              <input type="text" className="form-control" placeholder="Skill 1, Skill 2, etc." name="skills" value={jobSeeker.professionalProfile.skills.join(", ")} onChange={handleChange} />
+              <div className="form-text text-muted">Items must be separated by commas</div>
+              <input type="text" className="form-control" placeholder="Skill 1, Skill 2, etc." name="skills" value={skills} onChange={handleSkillsChange} onBlur={handleBlur} />
             </div>
           </div>
         </form>
@@ -412,5 +424,6 @@ function UserProfile() {
     </div >
   );
 }
+
 
 export default UserProfile;

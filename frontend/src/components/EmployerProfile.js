@@ -14,6 +14,7 @@ function EmployerProfile() {
 		category: "",
 		website: "",
 		phone: "",
+		location: "",
 	});
 
 	const { id } = useParams();

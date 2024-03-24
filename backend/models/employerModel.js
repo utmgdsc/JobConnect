@@ -31,6 +31,18 @@ const EmployerSchema = new mongoose.Schema({
     phone: {
         type: Number,
     },
+    jobs: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'JobPosting'
+    }],
+    assets: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AssetPosting'
+    }],
+    events: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event'
+    }],
     reviews: [{
         review: String,
         rating: Number,

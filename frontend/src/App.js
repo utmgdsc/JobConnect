@@ -37,9 +37,9 @@ function App() {
           <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
           <Route path="/assets" element={<AssetPostings />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/create/job" element={<CreateJobPosting />} />
-          {/* <Route path="/create/asset" element={<CreateAssetPosting />} />
-          <Route path="/create/event" element={<CreateEvent />} /> */}
+          <Route path="/create/job/:id?" element={<CreateJobPosting />} />
+          {/* <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
+          <Route path="/create/event/:id?" element={<CreateEvent />} /> */}
         </Routes>
       </div>
     </Router>
