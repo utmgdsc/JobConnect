@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/employer";
+const API_URL = "http://localhost:8000/api/employerRoutes";
 
 const createEmployer = async (userInfo) => {
   const response = await axios.post(API_URL, userInfo);

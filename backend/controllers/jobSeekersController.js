@@ -60,7 +60,7 @@ const deleteJobSeeker = asyncHandler(async (req, res) => {
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
-    jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
+    const jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
     if (!jobSeeker) {
         res.status(404).json({ message: "Job seeker not found" });
     } else {
