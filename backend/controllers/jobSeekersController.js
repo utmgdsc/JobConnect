@@ -200,7 +200,3 @@ module.exports = {
     addJobSeekerInfo,
     getCurrentJobSeeker
  };
-
-    addJobSeekerInfo
-};
-
