@@ -12,7 +12,7 @@ const EmployerSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
     phone: {
         type: Number,
@@ -23,7 +23,7 @@ const EmployerSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: true,
+        required: false,
     },
     website: {
         type: String,

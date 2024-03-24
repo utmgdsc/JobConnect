@@ -65,6 +65,8 @@ exports.register = async (req, res) => {
           });
         })
         .catch((err) => {
+          console.log("ERRORRRRRRR")
+          console.log(err.message)
           userDetails.deleteOne({ _id: userDetails._id }) // Assuming UserDetails is your Mongoose model
             .then(() => {
               res.status(410).json({ error: err.message }); // Respond with error message
