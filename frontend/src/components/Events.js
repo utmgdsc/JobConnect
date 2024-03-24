@@ -10,8 +10,8 @@ const Events = () => {
 
   const navigate = useNavigate();
 
-  const navigateToRegistration = (registrationLink) => {
-    navigate("/application");
+  const navigateToDetails = (id) => {
+    navigate(`/event/${id}`);
   };
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const Events = () => {
 
   const fetchEventPostings = async () => {
     try {
-      const data = await EventPostingsService.getEvents();
+      const data = await EventPostingsService.getAllEvents();
       setEventPostings(data);
     } catch (error) {
       console.error("Error fetching event postings:", error);
@@ -87,10 +87,10 @@ const Events = () => {
                   <button
                     className="register-button"
                     onClick={() =>
-                      navigateToRegistration(event.registrationLink)
+                      navigateToDetails(event._id)
                     }
                   >
-                    Register
+                    Details
                   </button>
                 )}
               </div>

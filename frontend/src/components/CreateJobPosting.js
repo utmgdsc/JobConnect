@@ -54,7 +54,7 @@ function CreateJobPosting() {
     }, [id]);
 
     function handleChange(event) {
-        const { name, value } = event.target;
+        const { name, value, type, checked } = event.target;
         if (name === "description") {
             setJobPosting((prevJobPosting) => {
                 return {
@@ -70,7 +70,7 @@ function CreateJobPosting() {
             setJobPosting((prevJobPosting) => {
                 return {
                     ...prevJobPosting,
-                    [name]: value,
+                    [name]: type === "checkbox" ? checked : value
                 };
             });
         }
