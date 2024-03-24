@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import JobsService from "../services/ApplicantsService";
 import jobSeekersService from "../services/jobSeekersService";
 
+
 function ApplicantsList() {
   let { jobId } = useParams();
   const [applicants, setApplicants] = useState([]);

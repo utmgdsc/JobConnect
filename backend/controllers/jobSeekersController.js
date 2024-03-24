@@ -67,6 +67,23 @@ const getJobSeeker = asyncHandler(async (req, res) => {
         res.status(200).json(jobSeeker);
     }
 
+    try {
+        // Access user information from req.user
+        const userId = req.user.id;
+
+        // Use userId to fetch job seeker data from your database
+        const jobSeeker = await JobSeeker.findOne({ _id: userId });
+
+        if (!jobSeeker) {
+            return res.status(404).json({ message: 'Job seeker not found' });
+        }
+
+        // Return the job seeker data
+        res.status(200).json(jobSeeker);
+    } catch (error) {
+        console.error('Error fetching job seeker:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 const updateJobSeeker = asyncHandler(async (req, res) => {
     const updates = req.body;
@@ -140,6 +157,45 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
     }
 });
 
+const getCurrentJobSeeker = asyncHandler(async (req, res) => {
+    try {
+        // Access user information from req.user
+        const user = req.user;
+        if (user.type === "recruiter") {
+            Employer.findOne({ userId: user._id })
+                .then((recruiter) => {
+                    if (recruiter == null) {
+                        res.status(404).json({
+                            message: "User does not exist",
+                        });
+                        return;
+                    }
+                    res.json(recruiter);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                });
+        } else {
+            JobSeeker.findOne({ userId: user._id })
+                .then((jobApplicant) => {
+                    if (jobApplicant == null) {
+                        res.status(404).json({
+                            message: "User does not exist",
+                        });
+                        return;
+                    }
+                    res.json(jobApplicant);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                });
+        }
+    } catch (error) {
+        console.error('Error fetching job seeker:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+
+});
 
 
 module.exports = {
@@ -147,5 +203,7 @@ module.exports = {
     deleteJobSeeker,
     getJobSeeker,
     updateJobSeeker,
-    addJobSeekerInfo
+    addJobSeekerInfo,
+    getCurrentJobSeeker
 };
+
