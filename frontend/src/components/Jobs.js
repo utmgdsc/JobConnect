@@ -174,9 +174,9 @@ const Jobs = () => {
               </ul>
               <button
                 className="btn btn-primary btn-md"
-                onClick={() => navigate(`/application/${selectedJobId}`)}
+                onClick={() => navigate(`/jobs/${selectedJobId}`)}
               >
-                Apply Now
+                Details
               </button>
             </div>
           )}

@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import Home from "./components/Home";
 import Jobs from "./components/Jobs";
+import JobDetails from "./components/JobDetails";
 import Application from "./components/Application";
 import EmployerProfile from "./components/EmployerProfile";
 import UserProfile from "./components/UserProfile";
@@ -29,14 +30,15 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/jobs" element={<Jobs />} />
           <Route path="/application" element={<Application />} />
           <Route path="/employer/:id" element={<EmployerProfile />} />
           <Route path="/user/:id" element={<UserProfile />} />
           <Route path="/dashboard/:id" element={<ProfileDashboard />} />
           <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/assets" element={<AssetPostings />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/job/:id" element={<JobDetails />} />
           <Route path="/create/job/:id?" element={<CreateJobPosting />} />
           {/* <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
           <Route path="/create/event/:id?" element={<CreateEvent />} /> */}
