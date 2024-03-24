@@ -65,26 +65,18 @@ exports.register = async (req, res) => {
           });
         })
         .catch((err) => {
-          user
-            .delete()
+          console.log("ERRORRRRRRR")
+          console.log(err.message)
+          userDetails.deleteOne({ _id: userDetails._id }) // Assuming UserDetails is your Mongoose model
             .then(() => {
-              res.status(410).json(err);
+              res.status(410).json({ error: err.message }); // Respond with error message
             })
-            .catch((err) => {
-              res.json({ error: err });
+            .catch((deleteErr) => {
+              res.status(500).json({ error: deleteErr.message }); // Handle delete error
             });
           err;
         });
     })
-    // .catch((err) => {
-    //   res.status(420).json(err);
-    // });
-  // try {
-    
-  // } catch (err) {
-  //   console.error(err.message);
-  //   res.status(500).send('Server Error');
-  // }
 };
 
 exports.login = async (req, res, next) => {
