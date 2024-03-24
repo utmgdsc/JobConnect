@@ -8,6 +8,7 @@ import {
   useLocation,
   Switch,
 } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Application from "./components/Application";
 import EmployerProfile from "./components/EmployerProfile";
@@ -23,12 +24,11 @@ import EventDetails from "./components/EventDetails";
 import CreateJobPosting from "./components/CreateJobPosting";
 import CreateAssetPosting from "./components/CreateAssetPosting";
 import CreateEvent from "./components/CreateEvent";
-import "./App.css";
 import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Register from "./components/Register"
 import MessagePopup from "./lib/MessagePopup";
-
+import "./App.css";
 
 export const SetPopupContext = createContext();
 
@@ -43,6 +43,7 @@ function App() {
     <Router>
       <div className="App">
         <SetPopupContext.Provider value={setPopup}>
+          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/application" element={<Application />} />
