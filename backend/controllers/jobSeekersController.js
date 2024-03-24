@@ -11,8 +11,6 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
-        console.log(name);
-        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 

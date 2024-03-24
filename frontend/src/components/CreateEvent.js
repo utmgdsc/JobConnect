@@ -59,10 +59,6 @@ function CreateEvent() {
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
-        if (name === "startDate" || name === "endDate") {
-            console.log(value)
-            console.log(new Date(value).toLocaleDateString())
-        }
         if (name === "description") {
             setEvent((prevEvent) => {
                 return {
@@ -124,10 +120,6 @@ function CreateEvent() {
             console.error("Failed to create event posting:", error);
         };
     }
-
-    useEffect(() => {
-        console.log(event);
-    }, [event])
 
     return (
         <section className="container rounded bg-white p-4 mt-5 mb-5 border border-1">
