@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import JobPostingsService from "../services/jobPostingsService";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../App.css"; // Import the new CSS styles
 
 function CreateJobPosting() {
@@ -50,6 +51,18 @@ function CreateJobPosting() {
 
     return (
         <header>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <form onSubmit={handleSubmit} className="container mt-5">
                 <div className="mb-3">
                     <label className="form-label">Company:</label>
