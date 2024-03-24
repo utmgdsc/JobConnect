@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; // Import useParams
 import jobSeekersService from "../services/jobSeekersService";
 import "../App.css";
+
 
 function JobSeekerFetcher() {
   const [jobSeeker, setJobSeeker] = useState(null);

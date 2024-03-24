@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
 
 const EmployerSchema = new mongoose.Schema({
+
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+      },
     company: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    password: {
         type: String,
         required: true
     },
@@ -17,9 +14,12 @@ const EmployerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: Number,
+    },
     location: {
         type: String, // Could be a string or a nested schema for detailed location (even remote?) or loc object
-        required: true
+        required: false
     },
     category: {
         type: String,
