@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const jobPostingSchema = new mongoose.Schema({
-    employer: {
+    company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employer',
     },
@@ -18,8 +18,24 @@ const jobPostingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    applicants: [{
+        jobSeeker: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'JobSeeker',
+            required: true
+        },
+        status: {
+            type: String,
+            enum: ['Pending', 'Accepted', 'Rejected'],
+            default: 'Pending'
+        },
+        notes: {
+            type: String
+        },
+        // Additional fields for applicant assessment (e.g., test scores, interview feedback)
+    }],
     location: {
-        type: String, // Could be a string or a nested schema for detailed location (even remote?) or loc object
+        type: String,
         required: true
     },
     jobType: {

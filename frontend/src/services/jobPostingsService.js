@@ -52,10 +52,11 @@ const deleteJobPosting = async (id) => {
   }
 };
 
-export default {
+const jobPostingsService = {
   getAllJobPostings,
   getJobPostingById,
   createJobPosting,
   updateJobPosting,
   deleteJobPosting,
 };
+export default jobPostingsService;

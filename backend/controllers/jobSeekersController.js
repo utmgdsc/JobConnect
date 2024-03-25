@@ -127,14 +127,14 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
         updateQuery['professionalProfile.education'] = { $each: updates.professionalProfile.education };
     }
 
-    if (updates.jobPreferences && Array.isArray(updates.jobPreferences)) {
-        updateQuery['jobPreferences'] = { $each: updates.jobPreferences }; // Correct the field name spelling
+    // Check and build update query for jobPreferences
+    if (updates.jobPreferences) {
+        updateQuery['jobPreferences'] = updates.jobPreferences;
     }
 
-
-    // Check and build update query for applicationHistory
-    if (Array.isArray(updates.applicationHistory)) {
-        updateQuery['applicationHistory'] = { $each: updates.applicationHistory };
+    // Check and build update query for eventRegistrations
+    if (updates.eventRegistrations && Array.isArray(updates.eventRegistrations)) {
+        updateQuery['eventRegistrations'] = { $each: updates.eventRegistrations };
     }
 
     try {
