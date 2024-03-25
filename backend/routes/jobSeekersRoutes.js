@@ -12,7 +12,7 @@ const {
 
 // router.route("/:id").get(getJobSeeker)
 router.get('/', jwtAuth, getCurrentJobSeeker)
-router.get('/:id', jwtAuth, getJobSeeker)
+router.get('/:id', getJobSeeker)
 
 // router.post('/', registerJobSeeker)
 
