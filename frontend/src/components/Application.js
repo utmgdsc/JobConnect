@@ -40,13 +40,22 @@ const Application = () => {
   const handleApplyNow = async () => {
     if (termsAccepted && currentUser && jobDetails) {
       try {
-        // Update asset posting with applicant's ID
-        const updatedJob = { ...jobDetails };
-        updatedJob.applicants.push(currentUser._id);
-        await jobPostingsService.updateJobPosting(id, updatedJob);
-
+        // Create a new applicant object matching the schema structure
+        const newApplicant = {
+          jobSeeker: currentUser._id, // Assuming this is the ObjectId of the job seeker
+          status: 'Pending', // Default status, adjust according to your application logic
+          // Include any additional fields required by your schema here
+        };
+  
+        // Update job posting by adding the new applicant
+        // Note: Ensure jobPostingsService.updateJobPosting is implemented to handle array updates correctly
+        await jobPostingsService.updateJobPosting(id, {
+          $push: { applicants: newApplicant }
+        });
+  
         // Fetch current job seeker and update application history
         const user = await jobSeekersService.getJobSeeker(currentUser._id);
+        console.log(currentUser._id, 'currentUser._id')
         if (user) {
           const applicationData = {
             jobPosting: id,
@@ -54,10 +63,11 @@ const Application = () => {
             status: 'Applied'
           };
           user.applicationHistory.push(applicationData);
+          console.log(applicationData, 'applicationData')
+  
           await jobSeekersService.addInfo(currentUser._id, { applicationHistory: user.applicationHistory });
-
+  
           // Notify user of successful application
-          console.log('Application submitted successfully!');
           toast.success("Application Submitted", {
             position: "bottom-left",
             autoClose: 5000,
@@ -68,17 +78,18 @@ const Application = () => {
             progress: undefined,
             theme: "dark",
           });
-
         } else {
           console.error('Error fetching current user');
         }
       } catch (error) {
         console.error('Error submitting application:', error);
+        // Consider displaying an error message to the user here as well
       }
     } else {
       alert('Please accept the terms and make sure you are logged in to apply.');
     }
   };
+  
 
   const handleTermsAcceptance = () => {
     setTermsAccepted(!termsAccepted);
