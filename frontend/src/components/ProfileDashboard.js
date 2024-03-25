@@ -12,7 +12,6 @@ function JobSeekerFetcher() {
   const fetchJobSeeker = async () => {
     try {
       const data = await jobSeekersService.getJobSeeker(id);
-      console.log(data);
       setJobSeeker(data);
     } catch (error) {
       console.error("Failed to fetch job seeker:", error);
@@ -44,11 +43,32 @@ function JobSeekerFetcher() {
           <div className="section">
             <h3>Professional Profile</h3>
             <p>Skills: {jobSeeker.professionalProfile.skills.join(", ")}</p>
-            {jobSeeker.professionalProfile.experience.map((exp, index) => (
-              <p key={index}>
-                <strong>{exp.title}</strong> at <strong>{exp.company}</strong> <span className="tagline">from {new Date(exp.startDate).toLocaleDateString()} - Provided high-quality service in a fast-paced environment.</span>
-              </p>
-            ))}
+            <p>
+              Experience:{" "}
+              {jobSeeker.professionalProfile.experience.length > 0
+                ? jobSeeker.professionalProfile.experience
+                  .map((exp) => {
+                    const startDate = exp.startDate
+                      ? new Date(exp.startDate).toLocaleDateString()
+                      : "Not Provided";
+                    return `${exp.title} at ${exp.company}, from ${startDate}, ${exp.description}`;
+                  })
+                  .join("; ")
+                : "None"}
+            </p>
+            <p>
+              Experience:{" "}
+              {jobSeeker.professionalProfile.education.length > 0
+                ? jobSeeker.professionalProfile.education
+                  .map((edu) => {
+                    const startDate = edu.startDate
+                      ? new Date(edu.startDate).toLocaleDateString()
+                      : "Not Provided";
+                    return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startDate}, ${edu.endDate}`;
+                  })
+                  .join("; ")
+                : "None"}
+            </p>
           </div>
 
           <div className="section">
@@ -57,8 +77,26 @@ function JobSeekerFetcher() {
             <p>Location: {jobSeeker.jobPreferences.location}</p>
             <p>Job Type: {jobSeeker.jobPreferences.jobType}</p>
           </div>
-          {/* Additional buttons or functionality can be added here */}
-        </>
+
+          <div className="section">
+            <h3>Application History</h3>
+            <ul className="application-history">
+              {jobSeeker.applicationHistory.length > 0
+                ? jobSeeker.applicationHistory.map((application) => (
+                  <li key={application._id}>
+                    <p>Job Title: {application.jobTitle}</p>
+                    <p>Company: {application.company}</p>
+                    <p>
+                      Apply Date:{" "}
+                      {new Date(application.applyDate).toLocaleDateString()}
+                    </p>
+                    <p>Status: {application.status}</p>
+                  </li>
+                ))
+                : "None"}
+            </ul>
+          </div>
+        </div>
       )}
     </div>
   );

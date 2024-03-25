@@ -4,9 +4,16 @@ const jobPostingSchema = new mongoose.Schema({
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employer',
+    },
+    applicants: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'JobSeeker',
+        required: true,
+    },
+    company: {
+        type: String,
         required: true
     },
-    
     jobTitle: {
         type: String,
         required: true
@@ -36,6 +43,9 @@ const jobPostingSchema = new mongoose.Schema({
         required: true,
         enum: ['Full-Time', 'Part-Time', 'Contract', 'Temporary', 'Internship']
     },
+    salary: {
+        type: Number,
+    },
     postedAt: {
         type: Date,
         default: Date.now
@@ -46,9 +56,15 @@ const jobPostingSchema = new mongoose.Schema({
             required: true
         },
         responsibilities: [String],
-        requirements: [String]
+        requirements: [String],
+        benefits: [String]
+        // Add additional fields for detailed view as needed
+    }, // This is the nested schema for detailed view
+    // Additional fields for summary view
+    noDegreeMentioned: {
+        type: Boolean,
+        default: false
     },
-    benefits: [String]
 }, {
     timestamps: true
 });

@@ -10,13 +10,17 @@ const Events = () => {
 
   const navigate = useNavigate();
 
+  const navigateToDetails = (id) => {
+    navigate(`/event/${id}`);
+  };
+
   useEffect(() => {
     fetchEventPostings();
-  }, []);
+  }, [eventPostings]);
 
   const fetchEventPostings = async () => {
     try {
-      const data = await EventPostingsService.getEvents();
+      const data = await EventPostingsService.getAllEvents();
       setEventPostings(data);
     } catch (error) {
       console.error("Error fetching event postings:", error);
@@ -47,7 +51,7 @@ const Events = () => {
   });
 
   return (
-    <div className="events-page">
+    <div className="events-page container p-5">
       <h1>Event Postings</h1>
       <input
         type="text"

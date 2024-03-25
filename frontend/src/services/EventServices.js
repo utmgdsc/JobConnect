@@ -2,22 +2,37 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/eventsRoutes";
 
-const getEvents = async () => {
-  const response = await axios.get(API_URL);
-  console.log(response);
-  return response.data;
+const getAllEvents = async () => {
+  try {
+    const response = await axios.get(API_URL);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const getEventById = async (id) => {
+// Fetch a single asset posting by ID
+const getEvent = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
   } catch (error) {
     throw error;
   }
-
 };
-const updateEvents = async (id, eventData) => {
+
+// Create a new asset posting
+const createEvent = async (eventData) => {
+  try {
+    const response = await axios.post(API_URL, eventData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Update an existing asset posting by ID
+const updateEvent = async (id, eventData) => {
   try {
     const response = await axios.put(`${API_URL}/${id}`, eventData);
     return response.data;
@@ -26,10 +41,20 @@ const updateEvents = async (id, eventData) => {
   }
 };
 
-const EventPostingsService = {
-  getEvents,
-  updateEvents,
-  getEventById
+// Delete a asset posting by ID
+const deleteEvent = async (id) => {
+  try {
+    const response = await axios.delete(`${API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export default EventPostingsService;
+export default {
+  getAllEvents,
+  getEvent,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+};

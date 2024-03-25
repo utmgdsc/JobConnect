@@ -1,157 +1,141 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EmployerService from "../services/EmployerService";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../App.css"; // Import the new CSS styles
 
 function EmployerProfile() {
-  const [employer, setEmployer] = useState({
-    company: "",
-    email: "",
-    password: "",
-    description: "",
-    category: "",
-    website: "",
-    phone: "",
-    reviews: [],
-  });
+	const [employer, setEmployer] = useState({
+		company: "",
+		email: "",
+		password: "",
+		description: "",
+		category: "",
+		website: "",
+		phone: "",
+		location: "",
+	});
 
-  const [updateStatus, setUpdateStatus] = useState("");
+	const { id } = useParams();
 
-  const fetchEmployer = async () => {
-    try {
-      const data = await EmployerService.getEmployer(
-        "65ede412ea8bb21afaffd61a",
-      );
-      console.log(data);
-      setEmployer(data); // Assuming data is the job seeker's information
-    } catch (error) {
-      console.error("Failed to fetch employer:", error);
-      // Handle error (e.g., show an error message)
-    }
-  };
+	useEffect(() => {
+		const fetchEmployer = async () => {
+			try {
+				const data = await EmployerService.getEmployer(id);
+				setEmployer(data); // Assuming data is the job seeker's information
+			} catch (error) {
+				console.error("Failed to fetch employer:", error);
+				// Handle error (e.g., show an error message)
+			}
+		};
 
-  function handleChange(event) {
-    const { name, value, type, checked } = event.target;
-    setEmployer((prevemployer) => {
-      return {
-        ...prevemployer,
-        [name]: type === "checkbox" ? checked : value,
-      };
-    });
-  }
+		if (id) {
+			fetchEmployer();
+		}
+	}, [id]);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    // submitToApi(employer)
-    console.log(employer);
-    try {
-      const data = await EmployerService.updateEmployer(employer._id, employer);
-      console.log(data);
-      setUpdateStatus("Successfully updated data");
-    } catch (error) {
-      console.error("Failed to update employer:", error);
-      setUpdateStatus("Failed to update data");
-    }
-  }
+	function handleChange(event) {
+		const { name, value, type, checked } = event.target;
+		setEmployer((prevemployer) => {
+			return {
+				...prevemployer,
+				[name]: type === "checkbox" ? checked : value,
+			};
+		});
+	}
 
-  return (
-    <header className="App-header">
-      <div className="dashboard">
-        <button onClick={fetchEmployer}>Get Employer</button>
-        {employer && (
-          <div>
-            <div className="section"></div>
-            <h3>Personal Details</h3>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder="Company"
-                onChange={handleChange}
-                name="company"
-                value={employer.company}
-              />
-              <input
-                type="text"
-                placeholder="Description"
-                onChange={handleChange}
-                name="description"
-                value={employer.description}
-              />
-              <input
-                type="text"
-                placeholder="Category"
-                onChange={handleChange}
-                name="category"
-                value={employer.category}
-              />
+	async function handleSubmit(event) {
+		event.preventDefault();
+		try {
+			EmployerService.updateEmployer(employer._id, employer)
+				.then(() => {
+					toast.success("Successfully updated data!");
+				})
+				.catch(error => {
+					toast.error("Failed to update data.");
+				});
+		} catch (error) {
+			console.error("Failed to update job seeker:", error);
+		}
+	}
 
-              <div className="section">
-                <h3>Contact Details</h3>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  onChange={handleChange}
-                  name="email"
-                  value={employer.email}
-                />
-                <input
-                  type="text"
-                  placeholder="Website"
-                  onChange={handleChange}
-                  name="website"
-                  value={employer.website}
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone"
-                  onChange={handleChange}
-                  name="phone"
-                  value={employer.phone}
-                />
-              </div>
-              <button>Update</button>
-            </form>
+	return (
+		<div className="container rounded bg-white py-4 mt-5 mb-5 border border-1">
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+			/>
+			<div className="row">
+				<div className="col-md-2 border-right">
+					<div className="d-flex flex-column align-items-center text-center p-3 py-3">
+						<img className="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="profile pic" />
+						<span className="font-weight-bold">{employer.company}</span>
+						<span className="text-black-50">{employer.email}</span>
+						<span> </span>
+						<div className="text-center">
+							<button className="btn btn-primary profile-button mt-4" form="save" type="submit">Save Profile</button>
+						</div>
+					</div>
+				</div>
 
-            {updateStatus && (
-              <div
-                style={{
-                  color: updateStatus.startsWith("Successfully")
-                    ? "green"
-                    : "red",
-                }}
-              >
-                {updateStatus}
-              </div>
-            )}
+				<form onSubmit={handleSubmit} id="save" className="row col-md-10 border-right">
+					<div className="col-md-12">
+						<div className="p-3 py-3">
+							<div className="d-flex justify-content-between align-items-center mb-3">
+								<h4 className="text-right">Profile Settings</h4>
+							</div>
+							<div className="row mt-2">
+								<div className="col-md-6">
+									<label className="labels">Company</label>
+									<input type="text" className="form-control" placeholder="Company" onChange={handleChange} name="company" value={employer.company} />
+								</div>
+								<div className="col-md-6">
+									<label className="labels">Email</label>
+									<input type="email" className="form-control" placeholder="Email" onChange={handleChange} name="email" value={employer.email} />
+								</div>
+							</div>
+							<div className="row mt-3">
+								<div className="col-md-12">
+									<label className="labels">Password</label>
+									<input type="password" className="form-control" placeholder="Password" onChange={handleChange} name="password" value={employer.password} />
+								</div>
+								<div className="col-md-12">
+									<label className="labels">Phone Number</label>
+									<input type="tel" placeholder="Phone" onChange={handleChange} name="phone" value={employer.phone} className="form-control" />
+								</div>
+								<div className="col-md-12">
+									<label className="labels">Description</label>
+									<input type="text" placeholder="Description" onChange={handleChange} name="description" value={employer.description} className="form-control" />
+								</div>
+								<div className="col-md-12">
+									<label className="labels">Location</label>
+									<input type="text" placeholder="Location" onChange={handleChange} name="location" value={employer.location} className="form-control" />
+								</div>
+								<div className="col-md-12">
+									<label className="labels">Category</label>
+									<input type="text" placeholder="Category" onChange={handleChange} name="category" value={employer.category} className="form-control" />
+								</div>
+								<div className="col-md-12">
+									<label className="labels">Website</label>
+									<input type="text" placeholder="Website" onChange={handleChange} name="website" value={employer.website} className="form-control" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
 
-            <div className="section">
-              <h3>Reviews</h3>
-              <div>
-                {employer.reviews.length > 0
-                  ? employer.reviews.map((exp, index) => {
-                      const timestamp = exp.timestamp
-                        ? new Date(exp.timestamp).toLocaleDateString()
-                        : "Not Provided";
-                      return (
-                        <div key={index}>
-                          <div>
-                            {exp.review}
-                            <br />
-                            Rating: {exp.rating}
-                            <br />
-                            {timestamp}
-                          </div>
-                          <br />
-                        </div>
-                      );
-                    })
-                  : "None"}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </header>
-  );
+			</div>
+		</div >
+	);
 }
 
 export default EmployerProfile;

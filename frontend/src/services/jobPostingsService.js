@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/jobPostingsRoutes"; // Base URL for job postings API
+const API_URL = "http://localhost:8000/api/jobPostingRoutes"; // Base URL for job postings API
 
 // Fetch all job postings
 const getAllJobPostings = async () => {
