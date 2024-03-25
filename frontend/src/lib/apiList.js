@@ -8,7 +8,7 @@ const apiList = {
   jobs: `${server}/api/jobs`,
   applications: `${server}/api/applications`,
   rating: `${server}/api/rating`,
-  user: `${server}/jobSeekersRoute/`,
+  user: `${server}/jobSeekersRoutes/`,
   applicants: `${server}/api/applicants`,
 };
 
