@@ -2,21 +2,33 @@ const mongoose = require('mongoose');
 
 const jobPostingSchema = new mongoose.Schema({
     company: {
-        type:  mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Employer',
         required: true
     },
-    applicants: {
-        type:  [mongoose.Schema.Types.ObjectId],
-        ref: 'JobSeeker',
-        required: true,
-    },
+    
     jobTitle: {
         type: String,
         required: true
     },
+    applicants: [{
+        jobSeeker: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'JobSeeker',
+            required: true
+        },
+        status: {
+            type: String,
+            enum: ['Pending', 'Accepted', 'Rejected'],
+            default: 'Pending'
+        },
+        notes: {
+            type: String
+        },
+        // Additional fields for applicant assessment (e.g., test scores, interview feedback)
+    }],
     location: {
-        type: String, // Could be a string or a nested schema for detailed location (even remote?) or loc object
+        type: String,
         required: true
     },
     jobType: {
@@ -34,13 +46,7 @@ const jobPostingSchema = new mongoose.Schema({
             required: true
         },
         responsibilities: [String],
-        requirements: [String],
-        // Add additional fields for detailed view as needed
-    }, // This is the nested schema for detailed view
-    // Additional fields for summary view
-    noDegreeMentioned: {
-        type: Boolean,
-        default: false
+        requirements: [String]
     },
     benefits: [String]
 }, {

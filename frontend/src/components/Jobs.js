@@ -145,7 +145,7 @@ const Jobs = () => {
                 onClick={() => selectJob(posting)}
               >
                 <h3>{posting.jobTitle}</h3>
-                <p>Posted by: {posting.company.name}</p>
+                <p>Posted by: {posting.company}</p>
                 <p>{posting.location}</p>
                 <p>Type: {posting.jobType}</p>
               </div>

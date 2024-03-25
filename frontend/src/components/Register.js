@@ -114,7 +114,7 @@ const MultifieldInput = (props) => {
   );
 };
 
-const Login = (props) => {
+const Register = (props) => {
   const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
 
@@ -494,7 +494,7 @@ const Login = (props) => {
   );
 };
 
-export default Login;
+export default Register;
 
 // {/* <Grid item>
 //           <PasswordInput

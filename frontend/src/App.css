@@ -1,26 +1,61 @@
 /* JobSeekerFetcher.css */
-
+/* JobSeekerFetcher.css */
 .dashboard {
-  max-width: 800px;
-  margin: auto;
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 5px;
-  background: #f9f9f9;
+  max-width: 960px;
+  width: 90%; /* Make it responsive */
+  margin: 40px auto;
+  padding: 40px; /* Increase padding */
+  border-radius: 8px;
+  background: #212529; /* Bootstrap dark background */
+  color: #fff;
 }
 
 .section {
-  margin-bottom: 20px;
+  margin-bottom: 40px; /* Increase space between sections */
+  padding: 20px; /* Add padding inside sections */
+  background: #343a40; /* Slightly lighter shade for section background */
+  border-radius: 8px; /* Rounded corners for sections */
 }
 
 .section h3 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
+  color: #ffc107; /* Bootstrap warning color for headings */
+}
+
+.section p, .section a {
+  font-size: 1rem; /* Adjust font size */
+  line-height: 1.5; /* Increase line-height */
+}
+.dashboard {
+  max-width: 960px;
+  margin: 40px auto;
+  border: 1px solid #333;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  color: #fff;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section h3 {
+  border-bottom: 2px solid #555;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  color: #adbdff;
+  font-size: 22px;
 }
 
 .section p {
-  margin: 5px 0;
+  margin: 10px 0;
+  color: #ddd;
+  font-size: 18px;
+}
+
+.section .tagline {
+  font-style: italic;
+  color: #888;
 }
 
 ul.application-history {
@@ -31,95 +66,39 @@ ul.application-history {
 ul.application-history li {
   margin-bottom: 15px;
   padding: 10px;
-  border: 1px solid #eee;
+  border: 1px solid #2e2e2e;
   border-radius: 5px;
+  background: #2d2d2d;
 }
 
 button {
   padding: 10px 20px;
-  margin-bottom: 20px;
+  margin-top: 20px;
   cursor: pointer;
-}
-
-/* JobSeekerFetcher.css */
-
-.dashboard {
-  max-width: 800px;
-  margin: auto;
-  border: 1px solid #ddd;
-  padding: 20px;
+  background: #0056b3;
+  color: #fff;
+  border: none;
   border-radius: 5px;
-  background: #161515;
+  font-size: 16px;
+  transition: background 0.3s ease;
 }
 
-.section {
-  margin-bottom: 20px;
+button:hover {
+  background: #003d82;
 }
 
-.section h3 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-}
-
-.section p {
-  margin: 5px 0;
-}
-
-ul.application-history {
-  list-style-type: none;
-  padding: 0;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard {
+    margin: 20px;
+    width: auto;
   }
 
-  to {
-    transform: rotate(360deg);
+  .section h3 {
+    font-size: 18px;
   }
-}
 
-/* JobSeekerFetcher.css */
-
-.dashboard {
-  max-width: 800px;
-  margin: auto;
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 5px;
-  background: #161515;
-}
-
-.section {
-  margin-bottom: 20px;
-}
-
-.section h3 {
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-}
-
-.section p {
-  margin: 5px 0;
-}
-
-ul.application-history {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul.application-history li {
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 5px;
-}
-
-button {
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  cursor: pointer;
+  .section p {
+    font-size: 16px;
+  }
 }
