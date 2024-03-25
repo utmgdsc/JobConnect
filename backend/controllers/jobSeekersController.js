@@ -11,6 +11,8 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
+        console.log(name);
+        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -58,30 +60,13 @@ const deleteJobSeeker = asyncHandler(async (req, res) => {
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
-    const jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
+    jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
     if (!jobSeeker) {
         res.status(404).json({ message: "Job seeker not found" });
     } else {
         res.status(200).json(jobSeeker);
     }
 
-    try {
-        // Access user information from req.user
-        const userId = req.user.id;
-
-        // Use userId to fetch job seeker data from your database
-        const jobSeeker = await JobSeeker.findOne({ _id: userId });
-
-        if (!jobSeeker) {
-            return res.status(404).json({ message: 'Job seeker not found' });
-        }
-
-        // Return the job seeker data
-        res.status(200).json(jobSeeker);
-    } catch (error) {
-        console.error('Error fetching job seeker:', error);
-        res.status(500).json({ error: 'Server error' });
-    }
 });
 const updateJobSeeker = asyncHandler(async (req, res) => {
     const updates = req.body;
@@ -112,35 +97,46 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const updateQuery = {};
 
-    // Check and build update query for professionalProfile.skills
+    // Handle updates to professionalProfile.skills
     if (updates.professionalProfile && Array.isArray(updates.professionalProfile.skills)) {
-        updateQuery['professionalProfile.skills'] = { $each: updates.professionalProfile.skills };
+        updateQuery['$addToSet'] = {
+            'professionalProfile.skills': { $each: updates.professionalProfile.skills }
+        };
     }
 
-    // Check and build update query for professionalProfile.experience
+    // Handle updates to professionalProfile.experience
     if (updates.professionalProfile && Array.isArray(updates.professionalProfile.experience)) {
-        updateQuery['professionalProfile.experience'] = { $each: updates.professionalProfile.experience };
+        if (!updateQuery['$push']) updateQuery['$push'] = {};
+        updateQuery['$push']['professionalProfile.experience'] = { $each: updates.professionalProfile.experience };
     }
 
-    // Check and build update query for professionalProfile.education
+    // Handle updates to professionalProfile.education
     if (updates.professionalProfile && Array.isArray(updates.professionalProfile.education)) {
-        updateQuery['professionalProfile.education'] = { $each: updates.professionalProfile.education };
+        if (!updateQuery['$push']) updateQuery['$push'] = {};
+        updateQuery['$push']['professionalProfile.education'] = { $each: updates.professionalProfile.education };
     }
 
-    // Check and build update query for jobPreferences
+    // Handle updates to jobPreferences
     if (updates.jobPreferences) {
-        updateQuery['jobPreferences'] = updates.jobPreferences;
+        updateQuery['$set'] = { jobPreferences: updates.jobPreferences };
     }
 
-    // Check and build update query for eventRegistrations
+    // Handle updates to eventRegistrations
     if (updates.eventRegistrations && Array.isArray(updates.eventRegistrations)) {
-        updateQuery['eventRegistrations'] = { $each: updates.eventRegistrations };
+        if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
+        updateQuery['$addToSet']['eventRegistrations'] = { $each: updates.eventRegistrations };
+    }
+
+    // Handle updates to applicationHistory
+    if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
+        if (!updateQuery['$push']) updateQuery['$push'] = {};
+        updateQuery['$push']['applicationHistory'] = { $each: updates.applicationHistory };
     }
 
     try {
         const jobSeeker = await JobSeeker.findOneAndUpdate(
             { _id: id },
-            { $addToSet: updateQuery },
+            updateQuery,
             { new: true, runValidators: true }
         );
 
@@ -159,40 +155,40 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
-        if (user.type === "recruiter") {
-            Employer.findOne({ userId: user._id })
-                .then((recruiter) => {
-                    if (recruiter == null) {
-                        res.status(404).json({
-                            message: "User does not exist",
-                        });
-                        return;
-                    }
-                    res.json(recruiter);
-                })
-                .catch((err) => {
-                    res.status(400).json(err);
-                });
-        } else {
-            JobSeeker.findOne({ userId: user._id })
-                .then((jobApplicant) => {
-                    if (jobApplicant == null) {
-                        res.status(404).json({
-                            message: "User does not exist",
-                        });
-                        return;
-                    }
-                    res.json(jobApplicant);
-                })
-                .catch((err) => {
-                    res.status(400).json(err);
-                });
-        }
-    } catch (error) {
-        console.error('Error fetching job seeker:', error);
-        res.status(500).json({ error: 'Server error' });
+    if (user.type === "recruiter") {
+        Employer.findOne({ userId: user._id })
+        .then((recruiter) => {
+            if (recruiter == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+            }
+            res.json(recruiter);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        });
+    } else {
+        JobSeeker.findOne({ userId: user._id })
+        .then((jobApplicant) => {
+            if (jobApplicant == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+            }
+            res.json(jobApplicant);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        });
     }
-
+        } catch (error) {
+            console.error('Error fetching job seeker:', error);
+            res.status(500).json({ error: 'Server error' });
+        }
+        
 });
 
 
@@ -204,4 +200,3 @@ module.exports = {
     addJobSeekerInfo,
     getCurrentJobSeeker
 };
-

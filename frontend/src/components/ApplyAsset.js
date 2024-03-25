@@ -4,6 +4,8 @@ import AssetPostingsService from '../services/AssetPostingsService';
 import jobSeekersService from '../services/jobSeekersService';
 import '../ApplyAsset.css';
 import Navbar from './Navbar';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ApplyAsset = () => {
   const { assetId } = useParams();
@@ -56,8 +58,16 @@ const ApplyAsset = () => {
           await jobSeekersService.addInfo(currentUser._id, { applicationHistory: user.applicationHistory });
 
           // Notify user of successful application
-          console.log('Application submitted successfully!');
-        } else {
+          toast.success("Application Submitted", {
+            position: "bottom-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });        } else {
           console.error('Error fetching current user');
         }
       } catch (error) {
@@ -80,6 +90,18 @@ const ApplyAsset = () => {
   return (
     <div className="apply-asset-container">
       <Navbar />
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       <h2 className="apply-asset-title">Asset Details Overview</h2>
 
       {/* Asset Details Section */}
