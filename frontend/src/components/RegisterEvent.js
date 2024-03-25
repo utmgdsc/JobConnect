@@ -38,7 +38,7 @@ const RegisterEvent = () => {
       try {
         // Update event details
         const updatedEventApplicants = [...eventDetails.applicants, currentUser._id];
-        await EventPostingsService.updateEvents(eventId, { applicants: updatedEventApplicants });
+        await EventPostingsService.updateEvent(eventId, { applicants: updatedEventApplicants });
         console.log(currentUser, "currentUser._id");
         // Update user's event registration
         const updatedUserRegistrations = [...currentUser.eventRegistrations];

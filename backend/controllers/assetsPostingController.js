@@ -80,12 +80,10 @@ const updateAssetPosting = async (req, res) => {
 
     try {
         const updatedAssetPosting = await AssetPosting.findByIdAndUpdate(id, {
-            company,
             assetType,
             location,
             availability,
             details,
-            value,
             benefits,
             applicants // Include applicants in the update
         }, { new: true });

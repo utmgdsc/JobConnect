@@ -1,4 +1,3 @@
-// Import necessary modules and services
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import AssetPostingsService from '../services/AssetPostingsService';
@@ -77,19 +76,19 @@ const ApplyAsset = () => {
     return <div>Loading...</div>;
   }
 
-  
+
   return (
     <div className="apply-asset-container">
       <Navbar />
       <h2 className="apply-asset-title">Asset Details Overview</h2>
-      
+
       {/* Asset Details Section */}
       <div className="apply-asset-section">
         <p><span>Type:</span> {assetDetails.assetType}</p>
         <p><span>Location:</span> {assetDetails.location}</p>
         <p><span>Description:</span> {assetDetails.details.description}</p>
       </div>
-      
+
       {/* User Confirmation Section */}
       <div className="apply-asset-section">
         <h3>Confirm these details are correct</h3>
@@ -99,7 +98,7 @@ const ApplyAsset = () => {
         {/* Link to user's profile */}
         <Link to="/user" className="profile-link">View Profile</Link>
       </div>
-      
+
       {/* Action Section */}
       <div className="apply-asset-action">
         <div>

@@ -57,7 +57,7 @@ function JobSeekerFetcher() {
                 : "None"}
             </p>
             <p>
-              Experience:{" "}
+              Education:{" "}
               {jobSeeker.professionalProfile.education.length > 0
                 ? jobSeeker.professionalProfile.education
                   .map((edu) => {
@@ -96,11 +96,10 @@ function JobSeekerFetcher() {
                 : "None"}
             </ul>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
-}
-
+};
 
 export default JobSeekerFetcher;

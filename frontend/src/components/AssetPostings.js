@@ -8,13 +8,10 @@ const AssetPostings = () => {
   const [expandedAssetId, setExpandedAssetId] = useState(null);
 
   const navigate = useNavigate();
-  const navigateToApplication = (id) => {
-    navigate(`/asset/${id}`);
-  };
 
   useEffect(() => {
     fetchAssetPostings();
-  }, [assetPostings]);
+  }, []); // Removed dependency on `assetPostings` to prevent infinite loop
 
   const fetchAssetPostings = async () => {
     try {
@@ -33,7 +30,7 @@ const AssetPostings = () => {
     setExpandedAssetId(expandedAssetId === id ? null : id);
   };
 
-  const navigateToApplication = (assetId) => {
+  const navigateToApplication = (assetId, event) => {
     navigate(`/apply-asset/${assetId}`);
   };
 
@@ -70,14 +67,14 @@ const AssetPostings = () => {
             {posting.condition && <p>Condition: {posting.condition}</p>}
             {expandedAssetId === posting._id && (
               <div className="asset-details">
-                {/* Render expanded asset details here */}
                 <p>Description: {posting.details.description}</p>
                 {/* Add more details as needed */}
               </div>
             )}
-            <button className="apply-button" onClick={() => () => navigateToApplication(posting._id)(posting._id)}>
-              Details
-            </button>
+           <button className="apply-button" onClick={() => navigateToApplication(posting._id)}>
+  Details
+</button>
+
           </div>
         ))}
       </div>

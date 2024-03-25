@@ -34,7 +34,7 @@ const getJobPostingById = async (req, res) => {
 
 // create a new job posting
 const createJobPosting = async (req, res) => {
-    const { company, jobTitle, location, jobType, salary, details, noDegreeMentioned, benefits, applicants, applicants } = req.body;
+    const { company, jobTitle, location, jobType, salary, details, noDegreeMentioned, benefits, applicants} = req.body;
 
     try {
         if (!company || !jobTitle || !location || !jobType || !details) {
@@ -47,7 +47,7 @@ const createJobPosting = async (req, res) => {
             location,
             jobType,
             salary,
-        details,
+            details,
             noDegreeMentioned,
             benefits,
             applicants
@@ -96,18 +96,15 @@ const updateJobPosting = async (req, res) => {
         return res.status(404).send('Job posting not found')
     }
 
-        const updatedJobPosting = { company, applicants, jobTitle, salary, location, jobType, details, noDegreeMentioned, benefits, _id: id };
+    const updatedJobPosting = { company, applicants, jobTitle, salary, location, jobType, details, noDegreeMentioned, benefits, _id: id };
 
-        const jobPosting = await JobPosting.findByIdAndUpdate(id, updatedJobPosting, { new: true });
+    const jobPosting = await JobPosting.findByIdAndUpdate(id, updatedJobPosting, { new: true });
 
-        if (!jobPosting) {
-            return res.status(404).send('Job posting not found');
-        }
-
-        res.status(200).json(jobPosting);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!jobPosting) {
+        return res.status(404).send('Job posting not found');
     }
+
+    res.status(200).json(jobPosting);
 }
 
 module.exports = {

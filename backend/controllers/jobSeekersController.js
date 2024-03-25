@@ -202,5 +202,6 @@ module.exports = {
     getJobSeeker,
     updateJobSeeker,
     addJobSeekerInfo,
+    getCurrentJobSeeker
 };
 
