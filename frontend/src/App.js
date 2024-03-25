@@ -21,7 +21,7 @@ import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Register from "./components/Register"
 import MessagePopup from "./lib/MessagePopup";
-
+import ApplyAsset from "./components/ApplyAsset";
 
 export const SetPopupContext = createContext();
 
@@ -49,6 +49,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/apply-asset/:assetId" element={<ApplyAsset />} />
+
         </Routes>
         <MessagePopup
           open={popup.open}

@@ -8,9 +8,6 @@ const AssetPostings = () => {
   const [expandedAssetId, setExpandedAssetId] = useState(null);
 
   const navigate = useNavigate();
-  const navigateToApplication = () => {
-    navigate("/application");
-  };
 
   useEffect(() => {
     fetchAssetPostings();
@@ -31,6 +28,10 @@ const AssetPostings = () => {
 
   const toggleExpandAsset = (id) => {
     setExpandedAssetId(expandedAssetId === id ? null : id);
+  };
+
+  const navigateToApplication = (assetId) => {
+    navigate(`/apply-asset/${assetId}`);
   };
 
   const filteredAssetPostings = assetPostings.filter((posting) => {
@@ -70,7 +71,7 @@ const AssetPostings = () => {
                 {/* Add more details as needed */}
               </div>
             )}
-            <button className="apply-button" onClick={navigateToApplication}>
+            <button className="apply-button" onClick={() => navigateToApplication(posting._id)}>
               Apply Now
             </button>
           </div>
