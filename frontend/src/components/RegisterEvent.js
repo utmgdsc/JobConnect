@@ -3,6 +3,8 @@ import EventPostingsService from "../services/EventServices";
 import jobSeekersService from "../services/jobSeekersService";
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisterEvent = () => {
   const { eventId } = useParams();
@@ -45,8 +47,16 @@ const RegisterEvent = () => {
         updatedUserRegistrations.push(eventDetails._id); // Assuming eventDetails has _id field
         await jobSeekersService.addInfo(currentUser._id, { eventRegistrations: updatedUserRegistrations });
 
-        console.log("Successfully registered for the event!");
-      } catch (error) {
+        toast.success("Application Submitted", {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });         } catch (error) {
         console.error("Error registering for the event:", error);
       }
     } else {
@@ -72,6 +82,18 @@ const RegisterEvent = () => {
       {/* Event Details Section */}
       <div className="apply-asset-section">
         <Navbar />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
         <p><span>Event Name:</span> {eventDetails.eventName}</p>
         <p><span>Organizer:</span> {eventDetails.organizer}</p>
         <p><span>Location:</span> {eventDetails.location}</p>
