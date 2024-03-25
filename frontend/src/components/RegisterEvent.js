@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EventPostingsService from "../services/EventServices";
 import jobSeekersService from "../services/jobSeekersService";
 import { useParams } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const RegisterEvent = () => {
   const { eventId } = useParams();
@@ -62,35 +63,49 @@ const RegisterEvent = () => {
   }
 
   return (
-    <div>
-      <h2>Event Details Overview</h2>
-      <p>Event Name: {eventDetails.eventName}</p>
-      <p>Organizer: {eventDetails.organizer}</p>
-      <p>Location: {eventDetails.location}</p>
-      <p>Type: {eventDetails.eventType}</p>
-      {/* Display other event details as needed */}
-
-      <h3>Confirm these details are correct</h3>
-      <p>Name: {currentUser.personalInformation.name}</p>
-      <p>Email: {currentUser.personalInformation.contactDetails.email}</p>
-      <p>Phone: {currentUser.personalInformation.contactDetails.phone}</p>
-      {/* Display other user details as needed */}
-
-      <div>
-        <input
-          type="checkbox"
-          id="termsAccepted"
-          checked={termsAccepted}
-          onChange={handleTermsAcceptance}
-        />
-        <label htmlFor="termsAccepted">
-          I agree to the terms and conditions.
-        </label>
+    <div className="apply-asset-container">
+    <Navbar />
+      <h2 className="apply-asset-title">Event Details Overview</h2>
+      
+      {/* Event Details Section */}
+      <div className="apply-asset-section">
+        <p><span>Event Name:</span> {eventDetails.eventName}</p>
+        <p><span>Organizer:</span> {eventDetails.organizer}</p>
+        <p><span>Location:</span> {eventDetails.location}</p>
+        <p><span>Type:</span> {eventDetails.eventType}</p>
+        {/* Display other event details as needed */}
       </div>
-
-      <button onClick={handleRegister}>Register for Event</button>
+      
+      {/* User Confirmation Section */}
+      <div className="apply-asset-section">
+        <h3>Confirm these details are correct</h3>
+        <p><span>Name:</span> {currentUser.personalInformation.name}</p>
+        <p><span>Email:</span> {currentUser.personalInformation.contactDetails.email}</p>
+        <p><span>Phone:</span> {currentUser.personalInformation.contactDetails.phone}</p>
+        {/* Display other user details as needed */}
+      </div>
+      
+      {/* Action Section */}
+      <div className="apply-asset-action">
+        <div>
+          <input
+            type="checkbox"
+            id="termsAccepted"
+            className="apply-asset-checkbox"
+            checked={termsAccepted}
+            onChange={handleTermsAcceptance}
+          />
+          <label htmlFor="termsAccepted">
+            I agree to the terms and conditions.
+          </label>
+        </div>
+        <button className="apply-asset-button" onClick={handleRegister}>
+          Register for Event
+        </button>
+      </div>
     </div>
   );
 };
+
 
 export default RegisterEvent;
