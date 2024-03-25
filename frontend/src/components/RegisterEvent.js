@@ -34,17 +34,17 @@ const RegisterEvent = () => {
   };
 
   const handleRegister = async () => {
-    if (termsAccepted) {
+    if (termsAccepted && eventDetails && currentUser) {
       try {
         // Update event details
         const updatedEventApplicants = [...eventDetails.applicants, currentUser._id];
         await EventPostingsService.updateEvents(eventId, { applicants: updatedEventApplicants });
-  
+        console.log(currentUser, "currentUser._id");
         // Update user's event registration
         const updatedUserRegistrations = [...currentUser.eventRegistrations];
-        updatedUserRegistrations.push(eventId);
+        updatedUserRegistrations.push(eventDetails._id); // Assuming eventDetails has _id field
         await jobSeekersService.addInfo(currentUser._id, { eventRegistrations: updatedUserRegistrations });
-  
+
         console.log("Successfully registered for the event!");
       } catch (error) {
         console.error("Error registering for the event:", error);
@@ -52,7 +52,10 @@ const RegisterEvent = () => {
     } else {
       alert("Please accept the terms to register for the event.");
     }
-  };
+};
+
+
+  
   
   const handleTermsAcceptance = () => {
     setTermsAccepted(!termsAccepted);
@@ -64,11 +67,11 @@ const RegisterEvent = () => {
 
   return (
     <div className="apply-asset-container">
-    <Navbar />
       <h2 className="apply-asset-title">Event Details Overview</h2>
       
       {/* Event Details Section */}
       <div className="apply-asset-section">
+        <Navbar />
         <p><span>Event Name:</span> {eventDetails.eventName}</p>
         <p><span>Organizer:</span> {eventDetails.organizer}</p>
         <p><span>Location:</span> {eventDetails.location}</p>
