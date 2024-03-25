@@ -18,7 +18,7 @@ const ApplyAsset = () => {
 
   const fetchAssetDetails = async () => {
     try {
-      const data = await AssetPostingsService.getAssetById(assetId);
+      const data = await AssetPostingsService.getAssetPostingById(assetId);
       setAssetDetails(data);
     } catch (error) {
       console.error('Error fetching asset details:', error);
