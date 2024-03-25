@@ -33,7 +33,8 @@ function ApplicantsList() {
           notes: application.notes,
         };
       });
-
+      const user = userType();
+      console.log(user)
       setApplicants(mergedApplicants);
     };
 
@@ -103,7 +104,7 @@ function ApplicantsList() {
 };
 
 
-  if (!loggedIn) {
+  if (!loggedIn || loggedIn === "applicant") {
     return <p>Access denied. You must be logged in as an employer to view this page.</p>;
   }
 
