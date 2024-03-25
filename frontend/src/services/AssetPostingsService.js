@@ -32,7 +32,7 @@ const createAssetPosting = async (assetPostingData) => {
 };
 
 // Update an existing asset posting by ID
-const updateAsset = async (id, assetPostingData) => {
+const updateAssetPosting = async (id, assetPostingData) => {
   try {
     const response = await axios.put(`${API_URL}/${id}`, assetPostingData);
     return response.data;
@@ -55,6 +55,6 @@ export default {
   getAllAssetPostings,
   getAssetById,
   createAssetPosting,
-  updateAsset,
+  updateAsset: updateAssetPosting,
   deleteAssetPosting,
 };
