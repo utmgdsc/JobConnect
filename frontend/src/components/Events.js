@@ -47,7 +47,7 @@ const Events = () => {
   });
 
   return (
-    <div className="events-page">
+    <div className="events-page container p-5">
       <h1>Event Postings</h1>
       <input
         type="text"

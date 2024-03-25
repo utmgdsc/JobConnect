@@ -32,17 +32,6 @@ const createAssetPosting = async (req, res) => {
         return res.status(400).json({ message: 'Please fill in all required fields' });
     }
 
-    // check if asset already exists
-    // try {
-    //     const existingAssetPosting = await existingAssetPosting.findOne({ title: title, owner: owner });
-
-    //     if (existingAssetPosting) {
-    //         return res.status(400).json({ message: 'Asset posting already exists' });
-    //     }
-    // } catch (error) {
-    //     res.status(500).json({ message: 'Error checking for existing asset posting' });
-    // }
-
     try {
         const newAssetPosting = new AssetPosting({
             owner,

@@ -52,7 +52,7 @@ const Login = (props) => {
     });
     if (verified) {
       axios
-        .post('http://localhost:3000/api/auth/login', loginDetails)
+        .post('http://localhost:8000/api/auth/login', loginDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);

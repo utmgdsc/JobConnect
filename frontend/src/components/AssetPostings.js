@@ -38,7 +38,7 @@ const AssetPostings = () => {
   });
 
   return (
-    <div className="assets-page">
+    <div className="assets-page container p-5">
       <h1>Asset Postings</h1>
       <input
         type="text"
