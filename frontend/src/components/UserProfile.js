@@ -29,33 +29,25 @@ function UserProfile() {
     applicationHistory: [],
   });
 
-
+  const [skills, setSkills] = useState("")
   const { id } = useParams();
 
-  const fetchJobSeeker = async () => {
-    try {
-      const data = await jobSeekersService.getJobSeeker(id);
-      console.log(data);
-      setJobSeeker(data); // Assuming data is the job seeker's information
-    } catch (error) {
-      console.error("Failed to fetch job seeker:", error);
-      // Handle error (e.g., show an error message)
-    }
-  };
-
   useEffect(() => {
-    console.log(jobSeeker)
-  }, [jobSeeker]);
+    const fetchJobSeeker = async () => {
+      try {
+        const data = await jobSeekersService.getJobSeeker(id);
+        setJobSeeker(data); // Assuming data is the job seeker's information
+        setSkills(data.professionalProfile.skills.join(", "));
+      } catch (error) {
+        console.error("Failed to fetch job seeker:", error);
+        // Handle error (e.g., show an error message)
+      }
+    };
 
-  useEffect(() => {
     if (id) {
       fetchJobSeeker();
     }
   }, [id]);
-
-  function handleSkillsChange(value) {
-    return value.split(',').map(skill => skill.trim());
-  }
 
   function handlePersonalInformationChange(name, value, prevJobSeeker) {
     return {
@@ -90,19 +82,29 @@ function UserProfile() {
     };
   }
 
-  function handleChange(event) {
-    const { name, value, } = event.target;
+  const handleSkillsChange = (event) => {
+    setSkills(event.target.value);
+  }
+
+  const handleBlur = (event) => {
     setJobSeeker((prevJobSeeker) => {
+      const { name, value } = event.target;
       if (name === 'skills') {
         return {
           ...prevJobSeeker,
           professionalProfile: {
             ...prevJobSeeker.professionalProfile,
-            skills: handleSkillsChange(value),
+            skills: skills.split(',').map(skill => skill.trim()),
           },
         };
       }
-      else if (name in prevJobSeeker.personalInformation) {
+    });
+  }
+
+  function handleChange(event) {
+    const { name, value, } = event.target;
+    setJobSeeker((prevJobSeeker) => {
+      if (name in prevJobSeeker.personalInformation) {
         return handlePersonalInformationChange(name, value, prevJobSeeker);
       } else if (name in prevJobSeeker.personalInformation.contactDetails) {
         return handleContactDetailsChange(name, value, prevJobSeeker);
@@ -238,7 +240,7 @@ function UserProfile() {
                 <div className="col-md-12">
                   <label className="labels">Username</label>
                   <input type="text" className="form-control" placeholder="Username" onChange={handleChange} name="username" value={jobSeeker.personalInformation.username} />
-                  wm                </div>
+                </div>
                 <div className="col-md-12">
                   <label className="labels">Email</label>
                   <input type="email" className="form-control" placeholder="Email" onChange={handleChange} name="email" value={jobSeeker.personalInformation.contactDetails.email} />
@@ -258,15 +260,15 @@ function UserProfile() {
               <div className="row mt-3">
                 <div className="col-md-12">
                   <label className="labels">Industry</label>
-                  <input type="text" className="form-control" placeholder="Industry" onChange={handleChange} name="industry" value={jobSeeker.personalInformation.industry} />
+                  <input type="text" className="form-control" placeholder="Industry" onChange={handleChange} name="desiredIndustry" value={jobSeeker.jobPreferences.desiredIndustry} />
                 </div>
                 <div className="col-md-12">
                   <label className="labels">Location</label>
-                  <input type="text" className="form-control" placeholder="Location" onChange={handleChange} name="location" value={jobSeeker.personalInformation.location} />
+                  <input type="text" className="form-control" placeholder="Location" onChange={handleChange} name="location" value={jobSeeker.jobPreferences.location} />
                 </div>
                 <div className="col-md-12">
                   <label className="labels">Job Type</label>
-                  <select name="jobType" value={jobSeeker.personalInformation.jobType} onChange={handleChange} className="form-select">
+                  <select name="jobType" value={jobSeeker.jobPreferences.jobType} onChange={handleChange} className="form-select">
                     <option value="">Select</option>
                     <option value="Full-Time">Full-Time</option>
                     <option value="Part-Time">Part-Time</option>
@@ -284,10 +286,11 @@ function UserProfile() {
               {/* <div className="d-flex justify-content-between align-items-center experience">
               <span>Experience</span>
               <span className="border px-3 p-1 add-experience">
-                <i className="fa fa-plus">
-                </i>&nbsp;Experience</span>
+              <i className="fa fa-plus">
+              </i>&nbsp;Experience</span>
             </div> */}
-              <input type="text" className="form-control" placeholder="Enter skills" value={jobSeeker.professionalProfile.skills.join(", ")} onChange={handleChange} />
+              <div className="form-text text-muted">Items must be separated by commas</div>
+              <input type="text" className="form-control" placeholder="Skill 1, Skill 2, etc." name="skills" value={skills} onChange={handleSkillsChange} onBlur={handleBlur} />
             </div>
           </div>
         </form>
@@ -421,5 +424,6 @@ function UserProfile() {
     </div >
   );
 }
+
 
 export default UserProfile;

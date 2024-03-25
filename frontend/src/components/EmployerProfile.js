@@ -14,21 +14,22 @@ function EmployerProfile() {
 		category: "",
 		website: "",
 		phone: "",
+		location: "",
 	});
 
 	const { id } = useParams();
 
-	const fetchEmployer = async () => {
-		try {
-			const data = await EmployerService.getEmployer(id);
-			setEmployer(data); // Assuming data is the job seeker's information
-		} catch (error) {
-			console.error("Failed to fetch employer:", error);
-			// Handle error (e.g., show an error message)
-		}
-	};
-
 	useEffect(() => {
+		const fetchEmployer = async () => {
+			try {
+				const data = await EmployerService.getEmployer(id);
+				setEmployer(data); // Assuming data is the job seeker's information
+			} catch (error) {
+				console.error("Failed to fetch employer:", error);
+				// Handle error (e.g., show an error message)
+			}
+		};
+
 		if (id) {
 			fetchEmployer();
 		}

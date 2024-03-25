@@ -5,7 +5,6 @@ import axios from "axios";
 import { SetPopupContext } from "../App";
 import PasswordInput from "../lib/PasswordInput";
 import EmailInput from "../lib/EmailInput";
-import Navbar from "./Navbar";
 // import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 import { Container, Form, Button, Nav } from 'react-bootstrap';
@@ -53,7 +52,7 @@ const Login = (props) => {
     });
     if (verified) {
       axios
-        .post('http://localhost:3000/api/auth/login', loginDetails)
+        .post('http://localhost:8000/api/auth/login', loginDetails)
         .then((response) => {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
@@ -86,7 +85,6 @@ const Login = (props) => {
     <Navigate to="/" />
   ) : (
     <Container className="mt-5">
-      <Navbar />
       <Form>
         <h3 className="text-center">Login</h3>
         <Form.Group className="mb-3" controlId="formBasicEmail">

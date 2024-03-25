@@ -12,7 +12,6 @@ function JobSeekerFetcher() {
   const fetchJobSeeker = async () => {
     try {
       const data = await jobSeekersService.getJobSeeker(id);
-      console.log(data);
       setJobSeeker(data);
     } catch (error) {
       console.error("Failed to fetch job seeker:", error);

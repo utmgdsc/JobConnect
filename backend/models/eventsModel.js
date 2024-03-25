@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const CareerEventSchema = new mongoose.Schema({
-
-    eventName: { 
+    eventName: {
         type: String,
         required: true
     },
@@ -35,11 +34,10 @@ const CareerEventSchema = new mongoose.Schema({
         },
         targetAudience: [String],
         // Consider including fields such as 'agenda', 'speakers' (which could be an array of strings or a nested schema for more detail), 'sponsors', etc.
-    },
-    accessibilityOptions: {
-        type: [String],
-        required: true
+        accessibilityOptions: [String],
         // Examples: 'Wheelchair accessible', 'Sign language interpreter', 'Materials in Braille'
+        speakers: [String],
+        sponsors: [String],
     },
     registrationRequired: {
         type: Boolean,
@@ -51,11 +49,11 @@ const CareerEventSchema = new mongoose.Schema({
     },
     // Additional fields for managing the event posting
     registrants: {
-        type:  [mongoose.Schema.Types.ObjectId],
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'JobSeeker',
         required: true,
     },
-    
+
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
 });

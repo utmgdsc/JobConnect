@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import jobPostingsService from "../services/jobPostingsService";
 import "../jobs.css";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 import toronto from "../images/toronto.jpg";
 
 const Jobs = () => {
@@ -20,7 +19,7 @@ const Jobs = () => {
 
   useEffect(() => {
     fetchJobPostings();
-  }, []);
+  }, [jobPostings]);
 
   const fetchJobPostings = async () => {
     try {
@@ -76,7 +75,6 @@ const Jobs = () => {
 
   return (
     <div className="jobs-container">
-      <Navbar />
       <div className="container">
         <div className="search-and-filter mb-3">
           <div className="input-group">
@@ -145,7 +143,7 @@ const Jobs = () => {
                 onClick={() => selectJob(posting)}
               >
                 <h3>{posting.jobTitle}</h3>
-                <p>Posted by: {posting.company.name}</p>
+                <p>Posted by: {posting.company}</p>
                 <p>{posting.location}</p>
                 <p>Type: {posting.jobType}</p>
               </div>
@@ -174,9 +172,9 @@ const Jobs = () => {
               </ul>
               <button
                 className="btn btn-primary btn-md"
-                onClick={() => navigate(`/application/${selectedJobId}`)}
+                onClick={() => navigate(`/job/${selectedJobId}`)}
               >
-                Apply Now
+                Details
               </button>
             </div>
           )}

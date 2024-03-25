@@ -8,17 +8,17 @@ const AssetPostings = () => {
   const [expandedAssetId, setExpandedAssetId] = useState(null);
 
   const navigate = useNavigate();
-  const navigateToApplication = () => {
-    navigate("/application");
+  const navigateToApplication = (id) => {
+    navigate(`/asset/${id}`);
   };
 
   useEffect(() => {
     fetchAssetPostings();
-  }, []);
+  }, [assetPostings]);
 
   const fetchAssetPostings = async () => {
     try {
-      const data = await AssetPostingsService.getAssets();
+      const data = await AssetPostingsService.getAllAssetPostings();
       setAssetPostings(data);
     } catch (error) {
       console.error("Error fetching asset postings:", error);
@@ -38,7 +38,7 @@ const AssetPostings = () => {
   });
 
   return (
-    <div className="assets-page">
+    <div className="assets-page container p-5">
       <h1>Asset Postings</h1>
       <input
         type="text"
@@ -54,7 +54,7 @@ const AssetPostings = () => {
             onClick={() => toggleExpandAsset(posting._id)}
           >
             <div className="asset-title-container">
-              <h3>{posting.assetName}</h3>
+              <h3>{posting.title}</h3>
               <span
                 className={`arrow-icon ${expandedAssetId === posting._id ? "expanded" : ""}`}
               >
@@ -63,6 +63,7 @@ const AssetPostings = () => {
             </div>
             <p>Location: {posting.location}</p>
             <p>Type: {posting.assetType}</p>
+            {posting.condition && <p>Condition: {posting.condition}</p>}
             {expandedAssetId === posting._id && (
               <div className="asset-details">
                 {/* Render expanded asset details here */}
@@ -70,8 +71,8 @@ const AssetPostings = () => {
                 {/* Add more details as needed */}
               </div>
             )}
-            <button className="apply-button" onClick={navigateToApplication}>
-              Apply Now
+            <button className="apply-button" onClick={() => navigateToApplication(posting._id)}>
+              Details
             </button>
           </div>
         ))}

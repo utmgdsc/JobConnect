@@ -11,8 +11,6 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
-        console.log(name);
-        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -60,6 +58,12 @@ const deleteJobSeeker = asyncHandler(async (req, res) => {
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
+    const jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
+    if (!jobSeeker) {
+        res.status(404).json({ message: "Job seeker not found" });
+    } else {
+        res.status(200).json(jobSeeker);
+    }
 
     try {
         // Access user information from req.user
@@ -200,5 +204,4 @@ module.exports = {
     addJobSeekerInfo,
     getCurrentJobSeeker
 };
-
 
