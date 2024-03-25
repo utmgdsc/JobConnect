@@ -12,7 +12,7 @@ const getAllAssetPostings = async () => {
 };
 
 // Fetch a single asset posting by ID
-const getAssetById = async (id) => {
+const getAssetPostingById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
@@ -53,7 +53,7 @@ const deleteAssetPosting = async (id) => {
 
 export default {
   getAllAssetPostings,
-  getAssetById,
+  getAssetPostingById,
   createAssetPosting,
   updateAsset: updateAssetPosting,
   deleteAssetPosting,
