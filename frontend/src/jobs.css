@@ -17,6 +17,14 @@
   text-align: left;
 }
 
+.assets-container {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Use viewport height to ensure the footer can stick to the bottom */
+  text-align: left;
+}
+
 .container {
   flex-grow: 1; /* This makes the content grow to occupy available space, pushing the footer down */
 }
@@ -96,5 +104,10 @@ ul {
   height: 40px;
   margin-top: 9px;
   margin-bottom: 10px;
+}
+
+.asset-posting .card {
+  /* Ensure that each card has a minimum height to align grid items */
+  min-height: 320px; /* Adjust the height based on your content */
 }
 
