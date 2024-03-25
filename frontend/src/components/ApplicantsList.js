@@ -125,43 +125,36 @@ function ApplicantsList() {
             <>
               <h2 className="mb-3">{jobDetails.jobTitle} - {jobDetails.location}</h2>
               {applicants.length > 0 ? (
-                applicants
-                  .filter(applicant =>
-                    applicant.personalInformation.name.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((applicant) => (
-                    <div key={applicant._id} className="applicant-section mb-3">
-                      <h4 className="applicant-name">{applicant.personalInformation.name}</h4>
-                      <select
-                        className="form-control mb-2"
-                        value={applicant.status}
-                        onChange={(e) => handleStatusChange(applicant._id, e.target.value)}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Accepted">Accepted</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
-                      <textarea
-                        className="form-control"
-                        value={applicant.notes}
-                        onChange={(e) => handleNotesChange(applicant._id, e.target.value)}
-                        placeholder="Enter notes here..."
-                      />
-                      <button 
-                        className="btn btn-secondary mt-2" 
-                        onClick={() => {
-                          const email = applicant.personalInformation.email; // Replace with actual email field if different
-                          const subject = encodeURIComponent('Your Application Status');
-                          const emailBody = encodeURIComponent(`Dear ${applicant.personalInformation.name},\n\nWe would like to inform you that...`); // Customize your message
-                          window.location.href = `mailto:${email}?subject=${subject}&body=${emailBody}`;
-                        }}>
-                        Email Applicant
-                      </button>
-                    </div>
-                  ))
-              ) : (
-                <p>No applicants found for this job.</p>
-              )}
+  applicants
+    .filter(applicant =>
+      applicant.personalInformation.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .map((applicant) => (
+      <div key={applicant._id} className="applicant-section mb-3">
+        {/* Update this part to include a link to the applicant's profile */}
+        <Link to={`/applicant-profile/${applicant._id}`} className="applicant-name">
+          <h4>{applicant.personalInformation.name}</h4>
+        </Link>
+        <select
+          className="form-control mb-2"
+          value={applicant.status}
+          onChange={(e) => handleStatusChange(applicant._id, e.target.value)}
+        >
+          <option value="Pending">Pending</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <textarea
+          className="form-control"
+          value={applicant.notes}
+          onChange={(e) => handleNotesChange(applicant._id, e.target.value)}
+          placeholder="Enter notes here..."
+        />
+      </div>
+    ))
+) : (
+  <p>No applicants found for this job.</p>
+)}
               <button className="btn btn-primary mt-3" onClick={handleSubmitChanges}>Save Changes</button>
             </>
           )}
@@ -169,7 +162,6 @@ function ApplicantsList() {
         {/* Footer component or element here */}
       </div>
     );
-    
     
 }
 
