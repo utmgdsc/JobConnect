@@ -1,11 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/jobPostingsRoutes";
+const API_URL = "http://localhost:8000/api/jobPostingRoutes";
 
 const getJob = async (id) => {
   const response = await axios.get(API_URL + `/${id}`);
-  console.log("hello");
-
   return response.data;
 };
 

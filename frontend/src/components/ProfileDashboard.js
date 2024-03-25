@@ -12,7 +12,6 @@ function JobSeekerFetcher() {
   const fetchJobSeeker = async () => {
     try {
       const data = await jobSeekersService.getJobSeeker(id);
-      console.log(data);
       setJobSeeker(data);
     } catch (error) {
       console.error("Failed to fetch job seeker:", error);
@@ -50,26 +49,26 @@ function JobSeekerFetcher() {
               Experience:{" "}
               {jobSeeker.professionalProfile.experience.length > 0
                 ? jobSeeker.professionalProfile.experience
-                    .map((exp) => {
-                      const startDate = exp.startDate
-                        ? new Date(exp.startDate).toLocaleDateString()
-                        : "Not Provided";
-                      return `${exp.title} at ${exp.company}, from ${startDate}, ${exp.description}`;
-                    })
-                    .join("; ")
+                  .map((exp) => {
+                    const startDate = exp.startDate
+                      ? new Date(exp.startDate).toLocaleDateString()
+                      : "Not Provided";
+                    return `${exp.title} at ${exp.company}, from ${startDate}, ${exp.description}`;
+                  })
+                  .join("; ")
                 : "None"}
             </p>
             <p>
               Experience:{" "}
               {jobSeeker.professionalProfile.education.length > 0
                 ? jobSeeker.professionalProfile.education
-                    .map((edu) => {
-                      const startDate = edu.startDate
-                        ? new Date(edu.startDate).toLocaleDateString()
-                        : "Not Provided";
-                      return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startDate}, ${edu.endDate}`;
-                    })
-                    .join("; ")
+                  .map((edu) => {
+                    const startDate = edu.startDate
+                      ? new Date(edu.startDate).toLocaleDateString()
+                      : "Not Provided";
+                    return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startDate}, ${edu.endDate}`;
+                  })
+                  .join("; ")
                 : "None"}
             </p>
           </div>
@@ -86,16 +85,16 @@ function JobSeekerFetcher() {
             <ul className="application-history">
               {jobSeeker.applicationHistory.length > 0
                 ? jobSeeker.applicationHistory.map((application) => (
-                    <li key={application._id}>
-                      <p>Job Title: {application.jobTitle}</p>
-                      <p>Company: {application.company}</p>
-                      <p>
-                        Apply Date:{" "}
-                        {new Date(application.applyDate).toLocaleDateString()}
-                      </p>
-                      <p>Status: {application.status}</p>
-                    </li>
-                  ))
+                  <li key={application._id}>
+                    <p>Job Title: {application.jobTitle}</p>
+                    <p>Company: {application.company}</p>
+                    <p>
+                      Apply Date:{" "}
+                      {new Date(application.applyDate).toLocaleDateString()}
+                    </p>
+                    <p>Status: {application.status}</p>
+                  </li>
+                ))
                 : "None"}
             </ul>
           </div>

@@ -11,8 +11,6 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
-        console.log(name);
-        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -60,24 +58,30 @@ const deleteJobSeeker = asyncHandler(async (req, res) => {
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
+    const jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
+    if (!jobSeeker) {
+        res.status(404).json({ message: "Job seeker not found" });
+    } else {
+        res.status(200).json(jobSeeker);
+    }
 
     try {
         // Access user information from req.user
         const userId = req.user.id;
-        
+
         // Use userId to fetch job seeker data from your database
         const jobSeeker = await JobSeeker.findOne({ _id: userId });
-    
+
         if (!jobSeeker) {
-          return res.status(404).json({ message: 'Job seeker not found' });
+            return res.status(404).json({ message: 'Job seeker not found' });
         }
-    
+
         // Return the job seeker data
         res.status(200).json(jobSeeker);
-      } catch (error) {
+    } catch (error) {
         console.error('Error fetching job seeker:', error);
         res.status(500).json({ error: 'Server error' });
-      }
+    }
 });
 const updateJobSeeker = asyncHandler(async (req, res) => {
     const updates = req.body;
@@ -155,40 +159,40 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
-    if (user.type === "recruiter") {
-        Employer.findOne({ userId: user._id })
-        .then((recruiter) => {
-            if (recruiter == null) {
-            res.status(404).json({
-                message: "User does not exist",
-            });
-            return;
-            }
-            res.json(recruiter);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        });
-    } else {
-        JobSeeker.findOne({ userId: user._id })
-        .then((jobApplicant) => {
-            if (jobApplicant == null) {
-            res.status(404).json({
-                message: "User does not exist",
-            });
-            return;
-            }
-            res.json(jobApplicant);
-        })
-        .catch((err) => {
-            res.status(400).json(err);
-        });
-    }
-        } catch (error) {
-            console.error('Error fetching job seeker:', error);
-            res.status(500).json({ error: 'Server error' });
+        if (user.type === "recruiter") {
+            Employer.findOne({ userId: user._id })
+                .then((recruiter) => {
+                    if (recruiter == null) {
+                        res.status(404).json({
+                            message: "User does not exist",
+                        });
+                        return;
+                    }
+                    res.json(recruiter);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                });
+        } else {
+            JobSeeker.findOne({ userId: user._id })
+                .then((jobApplicant) => {
+                    if (jobApplicant == null) {
+                        res.status(404).json({
+                            message: "User does not exist",
+                        });
+                        return;
+                    }
+                    res.json(jobApplicant);
+                })
+                .catch((err) => {
+                    res.status(400).json(err);
+                });
         }
-        
+    } catch (error) {
+        console.error('Error fetching job seeker:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+
 });
 
 
@@ -199,4 +203,5 @@ module.exports = {
     updateJobSeeker,
     addJobSeekerInfo,
     getCurrentJobSeeker
- };
+};
+

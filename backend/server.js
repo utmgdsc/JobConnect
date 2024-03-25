@@ -18,7 +18,7 @@ app.use(passportConfig.initialize());
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
-app.use('/api/jobPostingsRoutes', require("./routes/jobPostingRoutes"))
+app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"))
 app.use('/api/employerRoutes', require("./routes/employerRoutes"))
 app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))
 app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))

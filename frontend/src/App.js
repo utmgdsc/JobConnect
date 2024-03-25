@@ -8,20 +8,27 @@ import {
   useLocation,
   Switch,
 } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import Jobs from "./components/Jobs";
 import Application from "./components/Application";
 import EmployerProfile from "./components/EmployerProfile";
 import UserProfile from "./components/UserProfile";
 import ProfileDashboard from "./components/ProfileDashboard";
 import ApplicantsList from "./components/ApplicantsList";
+import Jobs from "./components/Jobs";
 import AssetPostings from "./components/AssetPostings";
 import Events from "./components/Events";
+import JobDetails from "./components/JobDetails";
+import AssetDetails from "./components/AssetDetails";
+import EventDetails from "./components/EventDetails";
+import CreateJobPosting from "./components/CreateJobPosting";
+import CreateAssetPosting from "./components/CreateAssetPosting";
+import CreateEvent from "./components/CreateEvent";
 import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Register from "./components/Register"
 import MessagePopup from "./lib/MessagePopup";
-
+import "./App.css";
 
 export const SetPopupContext = createContext();
 
@@ -35,32 +42,39 @@ function App() {
   return (
     <Router>
       <div className="App">
-      <SetPopupContext.Provider value={setPopup}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/application" element={<Application />} />
-          <Route path="/employer" element={<EmployerProfile />} />
-          <Route path="/user" element={<UserProfile />} />
-          <Route path="/profile/:id" element={<ProfileDashboard />} />
-          <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
-          <Route path="/assets" element={<AssetPostings />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-        </Routes>
-        <MessagePopup
-          open={popup.open}
-          setOpen={(status) =>
-            setPopup({
-              ...popup,
-              open: status,
-            })
-          }
-          severity={popup.severity}
-          message={popup.message}
-        />
+        <SetPopupContext.Provider value={setPopup}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/application" element={<Application />} />
+            <Route path="/employer/:id" element={<EmployerProfile />} />
+            <Route path="/user/:id" element={<UserProfile />} />
+            <Route path="/dashboard/:id" element={<ProfileDashboard />} />
+            <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/assets" element={<AssetPostings />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/job/:id" element={<JobDetails />} />
+            <Route path="/asset/:id" element={<AssetDetails />} />
+            <Route path="/event/:id" element={<EventDetails />} />
+            <Route path="/create/job/:id?" element={<CreateJobPosting />} />
+            <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
+            <Route path="/create/event/:id?" element={<CreateEvent />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+          </Routes>
+          <MessagePopup
+            open={popup.open}
+            setOpen={(status) =>
+              setPopup({
+                ...popup,
+                open: status,
+              })
+            }
+            severity={popup.severity}
+            message={popup.message}
+          />
         </SetPopupContext.Provider>
       </div>
     </Router>
