@@ -27,6 +27,8 @@ const addJob = async (newData) => {
 
 const JobsService = {
   getJob,
+  updateJob,
+  deleteJob,
 };
 
 export default JobsService;

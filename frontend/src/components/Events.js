@@ -10,10 +10,6 @@ const Events = () => {
 
   const navigate = useNavigate();
 
-  const navigateToRegistration = (registrationLink) => {
-    navigate("/application");
-  };
-
   useEffect(() => {
     fetchEventPostings();
   }, []);
@@ -37,6 +33,10 @@ const Events = () => {
 
   const toggleExpandEvent = (id) => {
     setExpandedEventId(expandedEventId === id ? null : id);
+  };
+
+  const navigateToRegistration = (eventId) => {
+    navigate(`/register-event/${eventId}`);
   };
 
   const filteredEventPostings = eventPostings.filter((event) => {
@@ -87,7 +87,7 @@ const Events = () => {
                   <button
                     className="register-button"
                     onClick={() =>
-                      navigateToRegistration(event.registrationLink)
+                      navigateToRegistration(event._id)
                     }
                   >
                     Register

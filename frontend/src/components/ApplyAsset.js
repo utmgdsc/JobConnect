@@ -41,6 +41,8 @@ const ApplyAsset = () => {
         // Update asset posting with applicant's ID
         const updatedAsset = { ...assetDetails };
         updatedAsset.applicants.push(currentUser._id);
+        console.log(currentUser._id, 'currentUser._id');
+        console.log(assetId, 'assetId');
         await AssetPostingsService.updateAsset(assetId, updatedAsset);
 
         // Fetch current job seeker and update application history

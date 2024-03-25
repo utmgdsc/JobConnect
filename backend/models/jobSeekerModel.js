@@ -67,6 +67,12 @@ const jobSeekerSchema = mongoose.Schema({
             enum: ['Full-time', 'Part-time', 'Contract', 'Temporary'] // Example job types
         }
     },
+    eventRegistrations: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'CareerEvent',
+            required: false
+}],
+
     applicationHistory: [{
         jobPosting: {
             type: mongoose.Schema.Types.ObjectId,

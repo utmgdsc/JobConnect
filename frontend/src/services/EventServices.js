@@ -8,8 +8,28 @@ const getEvents = async () => {
   return response.data;
 };
 
+const getEventById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+
+};
+const updateEvents = async (id, eventData) => {
+  try {
+    const response = await axios.put(`${API_URL}/${id}`, eventData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const EventPostingsService = {
   getEvents,
+  updateEvents,
+  getEventById
 };
 
 export default EventPostingsService;
