@@ -81,7 +81,7 @@ const ResumeFeedback = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer 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'
+            'Authorization': 'Bearer '
           },
           body: JSON.stringify(payload)
         });
