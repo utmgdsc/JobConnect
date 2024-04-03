@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; // Import useParams
 import jobSeekersService from "../services/jobSeekersService";
-import "../App.css";
-
+import "../dashboard.css";
+import Navbar from "./Navbar";
 
 function JobSeekerFetcher() {
   const [jobSeeker, setJobSeeker] = useState(null);
@@ -26,20 +26,18 @@ function JobSeekerFetcher() {
   // ... inside your component's return statement
   return (
     <div className="dashboard">
+      <Navbar />
       {jobSeeker && (
-        <div>
-          <div className="section"></div>
-          <h3>Personal Details</h3>
-          <p>Name: {jobSeeker.personalInformation.name}</p>
+        <>
+          <div className="section">
+            <h3>Personal Details</h3>
+            <p>Name: <strong>{jobSeeker.personalInformation.name}</strong></p>
+          </div>
 
           <div className="section">
             <h3>Contact Details</h3>
-            <p>Email: {jobSeeker.personalInformation.contactDetails.email}</p>
-            <p>
-              Phone:{" "}
-              {jobSeeker.personalInformation.contactDetails.phone ||
-                "Not Provided"}
-            </p>
+            <p>Email: <a href={`mailto:${jobSeeker.personalInformation.contactDetails.email}`} style={{ color: '#59a6ff' }}>{jobSeeker.personalInformation.contactDetails.email}</a></p>
+            <p>Phone: {jobSeeker.personalInformation.contactDetails.phone || "Not Provided"}</p>
           </div>
 
           <div className="section">
@@ -59,7 +57,7 @@ function JobSeekerFetcher() {
                 : "None"}
             </p>
             <p>
-              Experience:{" "}
+              Education:{" "}
               {jobSeeker.professionalProfile.education.length > 0
                 ? jobSeeker.professionalProfile.education
                   .map((edu) => {
@@ -98,10 +96,10 @@ function JobSeekerFetcher() {
                 : "None"}
             </ul>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
-}
+};
 
 export default JobSeekerFetcher;
