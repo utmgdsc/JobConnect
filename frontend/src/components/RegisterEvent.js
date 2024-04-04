@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import React, { useState, useEffect } from "react";
 import EventPostingsService from "../services/EventServices";
 import jobSeekersService from "../services/jobSeekersService";
@@ -41,7 +42,7 @@ const RegisterEvent = () => {
         // Update event details
         const updatedEventApplicants = [...eventDetails.applicants, currentUser._id];
         await EventPostingsService.updateEvent(eventId, { applicants: updatedEventApplicants });
-        console.log(currentUser, "currentUser._id");
+        
         // Update user's event registration
         const updatedUserRegistrations = [...currentUser.eventRegistrations];
         updatedUserRegistrations.push(eventDetails._id); // Assuming eventDetails has _id field
@@ -56,17 +57,15 @@ const RegisterEvent = () => {
           draggable: true,
           progress: undefined,
           theme: "dark",
-        });         } catch (error) {
+        });
+      } catch (error) {
         console.error("Error registering for the event:", error);
       }
     } else {
       alert("Please accept the terms to register for the event.");
     }
-};
+  };
 
-
-  
-  
   const handleTermsAcceptance = () => {
     setTermsAccepted(!termsAccepted);
   };
@@ -98,6 +97,9 @@ const RegisterEvent = () => {
         <p><span>Organizer:</span> {eventDetails.organizer}</p>
         <p><span>Location:</span> {eventDetails.location}</p>
         <p><span>Type:</span> {eventDetails.eventType}</p>
+        <p><span>Date:</span> {eventDetails.eventDate}</p>
+        <p><span>Start Time:</span> {eventDetails.startTime}</p>
+        <p><span>End Time:</span> {eventDetails.endTime}</p>
         {/* Display other event details as needed */}
       </div>
       
@@ -131,6 +133,5 @@ const RegisterEvent = () => {
     </div>
   );
 };
-
 
 export default RegisterEvent;
