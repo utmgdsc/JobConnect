@@ -39,6 +39,10 @@ const Events = () => {
     setExpandedEventId(expandedEventId === id ? null : id);
   };
 
+  const navigateToRegistration = (eventId) => {
+    navigate(`/register-event/${eventId}`);
+  };
+
   const filteredEventPostings = eventPostings.filter((event) => {
     return (
       event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -47,7 +51,7 @@ const Events = () => {
   });
 
   return (
-    <div className="events-page">
+    <div className="events-page container p-5">
       <h1>Event Postings</h1>
       <input
         type="text"
@@ -83,14 +87,16 @@ const Events = () => {
             {expandedEventId === event._id && (
               <div className="event-details">
                 <p>Description: {event.details.description}</p>
-                <button
-                  className="btn btn-primary btn-md"
-                  onClick={() =>
-                    navigateToDetails(event._id)
-                  }
-                >
-                  Details
-                </button>
+                {event.registrationRequired && (
+                  <button
+                    className="register-button"
+                    onClick={() =>
+                      navigateToRegistration(event._id)
+                    }
+                  >
+                    Register
+                  </button>
+                )}
               </div>
             )}
           </div>

@@ -10,14 +10,10 @@ import reactImg from "../images/react.svg";
 import { Link } from "react-router-dom";
 
 import Newsletter from "./Newsletter";
-import Navbar from "./Navbar";
 
 const Home = () => {
   return (
     <div>
-      {/* Navbar */}
-      <Navbar />
-
       {/* Showcase */}
       <section className="bg-dark text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
         <div className="container">

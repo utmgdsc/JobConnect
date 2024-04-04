@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userType } from "../lib/isAuth";
+import axios from "axios";
+import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
 
 function CreateEvent() {
@@ -55,14 +58,27 @@ function CreateEvent() {
         if (id) {
             fetchEvent();
         }
+
+        const getData = () => {
+            axios
+                .get(apiList.user, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                })
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
+        };
+
+        getData()
     }, [id]);
 
     function handleChange(e) {
         const { name, value, type, checked } = e.target;
-        if (name === "startDate" || name === "endDate") {
-            console.log(value)
-            console.log(new Date(value).toLocaleDateString())
-        }
         if (name === "description") {
             setEvent((prevEvent) => {
                 return {
@@ -124,10 +140,6 @@ function CreateEvent() {
             console.error("Failed to create event posting:", error);
         };
     }
-
-    useEffect(() => {
-        console.log(event);
-    }, [event])
 
     return (
         <section className="container rounded bg-white p-4 mt-5 mb-5 border border-1">

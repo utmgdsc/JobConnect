@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const jobSeekerSchema = mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+    },
     personalInformation: {
         name: {
             type:String,
@@ -15,23 +19,25 @@ const jobSeekerSchema = mongoose.Schema({
         },
         age: {
             type: String,
-            required: true
+            required: false
 
         },
-        username: {
+        
+        address: {
             type: String,
-            required: true
-        }
+            required: false
+        },
+
     },
     professionalProfile: {
         experience: [{
             title: {
                 type: String,
-                required: true
+                required: false
             },
             company: {
                 type: String,
-                required: true
+                required: false
             },
             startDate: Date,
             endDate: Date, // Can be null if it's the current position
@@ -41,7 +47,7 @@ const jobSeekerSchema = mongoose.Schema({
         education: [{
             institution: {
                 type: String,
-                required: true
+                required: false
             },
             degree: String,
             fieldOfStudy: String,
@@ -61,11 +67,17 @@ const jobSeekerSchema = mongoose.Schema({
             enum: ['Full-time', 'Part-time', 'Contract', 'Temporary'] // Example job types
         }
     },
+    eventRegistrations: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'CareerEvent',
+            required: false
+}],
+
     applicationHistory: [{
         jobPosting: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'JobPosting',
-            required: true
+            required: false
         },
         applyDate: Date,
         status: {

@@ -60,7 +60,7 @@ const deleteJobSeeker = asyncHandler(async (req, res) => {
 });
 
 const getJobSeeker = asyncHandler(async (req, res) => {
-    const jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
+    jobSeeker = await JobSeeker.findOne({ "_id": req.params.id })
     if (!jobSeeker) {
         res.status(404).json({ message: "Job seeker not found" });
     } else {
@@ -97,35 +97,46 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const updateQuery = {};
 
-    // Check and build update query for professionalProfile.skills
+    // Handle updates to professionalProfile.skills
     if (updates.professionalProfile && Array.isArray(updates.professionalProfile.skills)) {
-        updateQuery['professionalProfile.skills'] = { $each: updates.professionalProfile.skills };
+        updateQuery['$addToSet'] = {
+            'professionalProfile.skills': { $each: updates.professionalProfile.skills }
+        };
     }
 
-    // Check and build update query for professionalProfile.experience
+    // Handle updates to professionalProfile.experience
     if (updates.professionalProfile && Array.isArray(updates.professionalProfile.experience)) {
-        updateQuery['professionalProfile.experience'] = { $each: updates.professionalProfile.experience };
+        if (!updateQuery['$push']) updateQuery['$push'] = {};
+        updateQuery['$push']['professionalProfile.experience'] = { $each: updates.professionalProfile.experience };
     }
 
-    // Check and build update query for professionalProfile.education
+    // Handle updates to professionalProfile.education
     if (updates.professionalProfile && Array.isArray(updates.professionalProfile.education)) {
-        updateQuery['professionalProfile.education'] = { $each: updates.professionalProfile.education };
+        if (!updateQuery['$push']) updateQuery['$push'] = {};
+        updateQuery['$push']['professionalProfile.education'] = { $each: updates.professionalProfile.education };
     }
 
-    if (updates.jobPreferences && Array.isArray(updates.jobPreferences)) {
-        updateQuery['jobPreferences'] = { $each: updates.jobPreferences }; // Correct the field name spelling
+    // Handle updates to jobPreferences
+    if (updates.jobPreferences) {
+        updateQuery['$set'] = { jobPreferences: updates.jobPreferences };
     }
 
+    // Handle updates to eventRegistrations
+    if (updates.eventRegistrations && Array.isArray(updates.eventRegistrations)) {
+        if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
+        updateQuery['$addToSet']['eventRegistrations'] = { $each: updates.eventRegistrations };
+    }
 
-    // Check and build update query for applicationHistory
-    if (Array.isArray(updates.applicationHistory)) {
-        updateQuery['applicationHistory'] = { $each: updates.applicationHistory };
+    // Handle updates to applicationHistory
+    if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
+        if (!updateQuery['$push']) updateQuery['$push'] = {};
+        updateQuery['$push']['applicationHistory'] = { $each: updates.applicationHistory };
     }
 
     try {
         const jobSeeker = await JobSeeker.findOneAndUpdate(
             { _id: id },
-            { $addToSet: updateQuery },
+            updateQuery,
             { new: true, runValidators: true }
         );
 
@@ -140,6 +151,45 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
     }
 });
 
+const getCurrentJobSeeker = asyncHandler(async (req, res) => {
+    try {
+        // Access user information from req.user
+        const user = req.user;
+    if (user.type === "recruiter") {
+        Employer.findOne({ userId: user._id })
+        .then((recruiter) => {
+            if (recruiter == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+            }
+            res.json(recruiter);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        });
+    } else {
+        JobSeeker.findOne({ userId: user._id })
+        .then((jobApplicant) => {
+            if (jobApplicant == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+            }
+            res.json(jobApplicant);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        });
+    }
+        } catch (error) {
+            console.error('Error fetching job seeker:', error);
+            res.status(500).json({ error: 'Server error' });
+        }
+        
+});
 
 
 module.exports = {
@@ -147,5 +197,6 @@ module.exports = {
     deleteJobSeeker,
     getJobSeeker,
     updateJobSeeker,
-    addJobSeekerInfo
+    addJobSeekerInfo,
+    getCurrentJobSeeker
 };

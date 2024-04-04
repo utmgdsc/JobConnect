@@ -32,17 +32,6 @@ const createAssetPosting = async (req, res) => {
         return res.status(400).json({ message: 'Please fill in all required fields' });
     }
 
-    // check if asset already exists
-    // try {
-    //     const existingAssetPosting = await existingAssetPosting.findOne({ title: title, owner: owner });
-
-    //     if (existingAssetPosting) {
-    //         return res.status(400).json({ message: 'Asset posting already exists' });
-    //     }
-    // } catch (error) {
-    //     res.status(500).json({ message: 'Error checking for existing asset posting' });
-    // }
-
     try {
         const newAssetPosting = new AssetPosting({
             owner,
@@ -82,26 +71,33 @@ const deleteAssetPosting = async (req, res) => {
 
 // update an asset posting by ID
 const updateAssetPosting = async (req, res) => {
-    const { id } = req.params
-    const { owner, title, assetType, location, availability, condition, details, benefits, price } = req.body;
-
+    const { id } = req.params;
+    const { owner, title, assetType, location, availability, condition, details, benefits, applicants, price } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send('Please input a valid id!')
+        return res.status(404).send('Please input a valid id!');
     }
 
-    const assetPosting = await AssetPosting.findById(id);
+    try {
+        const updatedAssetPosting = await AssetPosting.findByIdAndUpdate(id, {
+            assetType,
+            location,
+            availability,
+            details,
+            benefits,
+            applicants // Include applicants in the update
+        }, { new: true });
 
-    if (!assetPosting) {
-        return res.status(404).send('Asset posting not found')
+        if (!updatedAssetPosting) {
+            return res.status(404).send('Asset posting not found');
+        }
+
+        res.status(200).json(updatedAssetPosting);
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating asset posting', error: error.message });
     }
-
-    const updatedAssetPosting = { owner, title, assetType, location, availability, condition, details, benefits, price, _id: id };
-
-    await AssetPosting.findByIdAndUpdate(id, updatedAssetPosting, { new: true });
-
-    res.status(200).json(updatedAssetPosting);
 }
+
 
 module.exports = {
     getAssetPostings,

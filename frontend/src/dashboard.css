@@ -1,0 +1,79 @@
+/* JobSeekerFetcher.css */
+.dashboard {
+    max-width: 960px;
+    width: 90%; /* Make it responsive */
+    margin: 40px auto;
+    padding: 40px; /* Increase padding */
+    border-radius: 8px;
+    background: #92c8ff; /* Lighter background color */
+    color: #212529; /* Dark color for text */
+  }
+  
+  .section {
+    margin-bottom: 40px; /* Increase space between sections */
+    padding: 20px; /* Add padding inside sections */
+    background: #d3d1d1; /* White background for sections */
+    border-radius: 8px; /* Rounded corners for sections */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  .section h3 {
+    color: #212529; /* Dark color for headings */
+  }
+  
+  .section p, .section a {
+    font-size: 1rem; /* Adjust font size */
+    line-height: 1.5; /* Increase line-height */
+    color: #212529; /* Dark color for text */
+  }
+  
+  .section .tagline {
+    font-style: italic;
+    color: #6c757d; /* Muted color for taglines */
+  }
+  
+  ul.application-history {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  ul.application-history li {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #dee2e6; /* Lighter border color */
+    border-radius: 5px;
+    background: #e9ecef; /* Light gray background for list items */
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    background: #007bff; /* Bootstrap primary color for buttons */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background: #0056b3; /* Darker shade on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard {
+      margin: 20px;
+      width: auto;
+    }
+  
+    .section h3 {
+      font-size: 18px;
+    }
+  
+    .section p {
+      font-size: 16px;
+    }
+  }
+  

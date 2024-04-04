@@ -104,10 +104,6 @@ function CreateAssetPosting() {
         };
     }
 
-    useEffect(() => {
-        console.log(assetPosting);
-    }, [assetPosting])
-
     return (
         <section className="container rounded bg-white p-4 mt-5 mb-5 border border-1">
             <ToastContainer

@@ -12,7 +12,7 @@ const getAllEvents = async () => {
 };
 
 // Fetch a single asset posting by ID
-const getEvent = async (id) => {
+const getEventById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
@@ -53,7 +53,7 @@ const deleteEvent = async (id) => {
 
 export default {
   getAllEvents,
-  getEvent,
+  getEventById,
   createEvent,
   updateEvent,
   deleteEvent,

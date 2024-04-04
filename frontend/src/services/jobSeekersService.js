@@ -1,5 +1,6 @@
 import axios from "axios";
-
+import isAuth from "../lib/isAuth";
+import apiList from "../lib/apiList";
 const API_URL = "http://localhost:8000/api/jobSeekersRoutes";
 
 const createJobSeeker = async (userInfo) => {
@@ -9,9 +10,13 @@ const createJobSeeker = async (userInfo) => {
 };
 
 const getJobSeeker = async (id) => {
-  const response = await axios.get(API_URL + `/${id}`);
-
-  return response.data;
+  
+  try {
+    const response = await axios.get(API_URL + `/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const deleteJobSeeker = async (id) => {
@@ -29,12 +34,35 @@ const addInfo = async (id, newData) => {
   return response.data;
 };
 
+const fetchCurrentUser = async () => {
+  try {
+    const token = isAuth();
+    if (!token) {
+      throw new Error('User is not authenticated');
+    }
+    console.log(token, 'token')
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(apiList.user, config);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching current user:', error);
+    throw error;
+  }
+};
+
 const jobSeekersService = {
   createJobSeeker,
   deleteJobSeeker,
   getJobSeeker,
   addInfo,
   updateJobSeeker,
+  fetchCurrentUser
 };
 
 export default jobSeekersService;

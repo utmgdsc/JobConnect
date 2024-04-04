@@ -29,14 +29,39 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link to="/jobs" className="nav-link">
+                  Jobs
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/assets" className="nav-link">
+                  Assets
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/events" className="nav-link">
+                  Events
+                </Link>
+              </li>
+              <li className="nav-item">
                 <a href="#questions" className="nav-link">
                   FAQ
                 </a>{" "}
                 {/* Using an anchor link */}
               </li>
               <li className="nav-item">
-                <Link to="/login" className="nav-link">
+                <Link to="/register" className="nav-link">
                   Sign Up
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/logout" className="nav-link">
+                  Logout
                 </Link>
               </li>
             </ul>
