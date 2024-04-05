@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler');
 const JobSeeker = require('../models/jobSeekerModel'); // Ensure this path is correct
-
 const registerJobSeeker = async (req, res) => {
     // Destructuring nested properties from req.body
     const { personalInformation, professionalProfile, resume, jobPreferences } = req.body;

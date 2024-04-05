@@ -5,41 +5,62 @@ import jobSeekersService from "../services/jobSeekersService";
 import jobPostingsService from "../services/jobPostingsService";
 import { userType } from "../lib/isAuth";
 import Navbar from "./Navbar";
+import isAuth from "../lib/isAuth"; // Ensure this is correctly imported
+
 
 function ApplicantsList() {
   let { jobId } = useParams();
   const [applicants, setApplicants] = useState([]);
   const [jobDetails, setJobDetails] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const loggedIn = userType();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [hasAccess, setHasAccess] = useState(false);
 
   useEffect(() => {
-    const fetchJobDetailsAndApplicants = async () => {
-      const jobData = await JobsService.getJob(jobId);
-      setJobDetails(jobData); // Set job details
+    const fetchCurrentUserAndJobDetails = async () => {
+      try {
+        const token = isAuth();
+        if (!token) {
+          setHasAccess(false);
+          return;
+        }
 
-      const applicantPromises = jobData.applicants.map((applicant) =>
-        jobSeekersService.getJobSeeker(applicant.jobSeeker) // Fetch full details for each applicant
-      );
-
-      const applicantDetails = await Promise.all(applicantPromises);
-
-      // Merge applicant details with their status and notes from the job data
-      const mergedApplicants = applicantDetails.map((applicantDetail) => {
-        const application = jobData.applicants.find(app => app.jobSeeker === applicantDetail._id);
-        return {
-          ...applicantDetail,
-          status: application.status,
-          notes: application.notes,
+        // Set up the authorization header with the token
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
-      });
-      const user = userType();
-      console.log(user)
-      setApplicants(mergedApplicants);
+
+        // Fetch the current user's details with the token
+        const currentUserData = await jobSeekersService.fetchCurrentUser(config);
+        setCurrentUser(currentUserData);
+
+        // Fetch the details of the job
+        const jobData = await JobsService.getJob(jobId);
+        setJobDetails(jobData);
+
+        // Check if the current user is authorized to view this job's applicants
+        if (currentUserData.companyId === jobData.companyId) { // Assuming 'companyId' is the relevant field
+          setHasAccess(true);
+          
+          // Fetch full details for each applicant
+          const applicantPromises = jobData.applicants.map((applicant) =>
+            jobSeekersService.getJobSeeker(applicant.jobSeeker, config) // Passing config to ensure auth for each request
+          );
+          const applicantDetails = await Promise.all(applicantPromises);
+          setApplicants(applicantDetails); // Update the state with the fetched applicant details
+        } else {
+          setHasAccess(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    fetchJobDetailsAndApplicants();
+    fetchCurrentUserAndJobDetails();
   }, [jobId]);
+
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -104,9 +125,7 @@ function ApplicantsList() {
 };
 
 
-  if (!loggedIn || loggedIn === "applicant") {
-    return <p>Access denied. You must be logged in as an employer to view this page.</p>;
-  }
+
 
     // Adjusted part of the return statement to include filtering
     return (
