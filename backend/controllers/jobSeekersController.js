@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const JobSeeker = require('../models/jobSeekerModel'); // Ensure this path is correct
+const Employer = require('../models/employerModel');
 
 const registerJobSeeker = async (req, res) => {
     // Destructuring nested properties from req.body
@@ -155,7 +156,8 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
-    if (user.type === "recruiter") {
+    if (user.type === "employer") {
+        console.log(user);
         Employer.findOne({ userId: user._id })
         .then((recruiter) => {
             if (recruiter == null) {
