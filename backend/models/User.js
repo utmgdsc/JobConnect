@@ -20,6 +20,13 @@ let schema = new mongoose.Schema(
       enum: ["employer", "applicant"],
       required: true,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    emailToken: {
+      type: String
+    },
   },
   { collation: { locale: "en" } }
 );
