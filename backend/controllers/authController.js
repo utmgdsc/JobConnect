@@ -14,8 +14,8 @@ const employer = require("../models/employerModel");
 const randString = () => {
   const len = 8;
   let randStr = ''
-  for (let i = 0;i<len;i++) {
-    const ch = Math.floor((Math.random()*10)+1)
+  for (let i = 0; i < len; i++) {
+    const ch = Math.floor((Math.random() * 10) + 1)
     randStr += ch
   }
   return randStr
@@ -48,14 +48,14 @@ exports.register = async (req, res) => {
   const data = req.body;
   email = data.email
   let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: 'User already exists' });
-    }
+  if (user) {
+    return res.status(400).json({ msg: 'User already exists' });
+  }
   user = new User({
     email: data.email,
     password: data.password,
     type: data.type,
-    emailToken: randString(), 
+    emailToken: randString(),
   });
 
 
@@ -65,33 +65,34 @@ exports.register = async (req, res) => {
       const userDetails =
         user.type == "employer"
           ? new employer({
-              userId: user._id,
-              company: data.name,
-              phone: data.contactNumber,
-              bio: data.bio,
-            })
+            userId: user._id,
+            company: data.name,
+            phone: data.contactNumber,
+            bio: data.bio,
+            email: data.email,
+          })
           : new JobSeeker({
-              userId: user._id,
-              personalInformation: {
-                name: data.name,
-                contactDetails: {
-                    email: data.email,
-                    phone: data.phone
-                },
-                jobPreferences: {
-                  desiredIndustry: "",
-                  location: "",
-                  jobType: "",
-                }
-                // Add other personal information properties as needed
-                // For example, age, username, password, address, etc.
+            userId: user._id,
+            personalInformation: {
+              name: data.name,
+              contactDetails: {
+                email: data.email,
+                phone: data.phone
               },
-              professionalProfile: {
-                  skills: data.skills,
-                  // Add other professional profile properties as needed
-                  // For example, experience, education, etc.
-              },
-            });
+              jobPreferences: {
+                desiredIndustry: "",
+                location: "",
+                jobType: "",
+              }
+              // Add other personal information properties as needed
+              // For example, age, username, password, address, etc.
+            },
+            professionalProfile: {
+              skills: data.skills,
+              // Add other professional profile properties as needed
+              // For example, experience, education, etc.
+            },
+          });
 
       userDetails
         .save()
