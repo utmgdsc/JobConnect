@@ -9,8 +9,6 @@ const Navbar = () => {
   const [id, setId] = useState("");
 
   useEffect(() => {
-    setType(localStorage.getItem("type"));
-
     const getData = () => {
       axios
         .get(apiList.user, {
@@ -19,16 +17,17 @@ const Navbar = () => {
           },
         })
         .then((response) => {
-          console.log(response.data);
+          setId(response.data._id);
 
         })
         .catch((err) => {
-          console.log(err.response.data);
+          console.log(err.response?.data);
         });
     };
 
     getData();
-  }, [type]);
+    setType(localStorage.getItem("type"));
+  }, [type, id]);
 
   return (
     <div>
@@ -79,13 +78,13 @@ const Navbar = () => {
               {type && type === "employer" ? (
                 <li className="nav-item">
                   <Link to={`/employer/${id}`} className="nav-link">
-                    Profile
+                    Settings
                   </Link>
                 </li>
               ) : type && (
                 <li className="nav-item">
                   <Link to={`/user/${id}`} className="nav-link">
-                    Profile
+                    Settings
                   </Link>
                 </li>
               )}

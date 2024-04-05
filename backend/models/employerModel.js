@@ -5,7 +5,7 @@ const EmployerSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-      },
+    },
     company: {
         type: String,
         required: true
@@ -13,6 +13,9 @@ const EmployerSchema = new mongoose.Schema({
     description: {
         type: String,
         required: false
+    },
+    email: {
+        type: String,
     },
     phone: {
         type: Number,

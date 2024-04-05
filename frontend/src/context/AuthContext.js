@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { createContext, useCallback, useState} from "react";
+import { createContext, useCallback, useState } from "react";
 import apiList from "../lib/apiList";
-import { json } from "express";
+// import { json } from "express";
 import axios from "axios";
 
 
@@ -19,19 +19,19 @@ export const AuthContextProvider = ({ children }) => {
     const [loginError, setLoginError] = useState(null);
     const [isLoginLoading, setIsLoginLoading] = useState(false);
     const [loginInfo, setLoginInfo] = useState({
-        email:"",
-        password:"",
+        email: "",
+        password: "",
     });
-    
+
     useEffect(() => {
         const user = localStorage.getItem("User");
         setUser(JSON.parse(user));
     }, []);
-    
+
     const updateRegisterInfo = useCallback((info) => {
         setRegisterInfo(info);
     }, [])
-    
+
     const updateLoginInfo = useCallback((info) => {
         setLoginInfo(info);
     }, [])
@@ -46,7 +46,7 @@ export const AuthContextProvider = ({ children }) => {
             e.preventDefault();
             setIsRegisterLoading(true);
             setRegisterError(null);
-            const response = await(axios.post(apiList.register, JSON.stringify({ registerInfo })))
+            const response = await (axios.post(apiList.register, JSON.stringify({ registerInfo })))
             setIsRegisterLoading(false);
 
             if (response.error) {
@@ -58,13 +58,13 @@ export const AuthContextProvider = ({ children }) => {
         },
         [registerInfo]
     );
-    
+
     const loginUser = useCallback(
         async (e) => {
             e.preventDefault();
             setIsLoginLoading(true);
             setLoginError(null);
-            const response = await(axios.post(apiList.login, JSON.stringify({ loginInfo})))
+            const response = await (axios.post(apiList.login, JSON.stringify({ loginInfo })))
             setIsLoginLoading(false);
 
             if (response.error) {

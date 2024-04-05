@@ -57,7 +57,7 @@ function EmployerProfile() {
 					navigate(`/employer/${response.data._id}`);
 				})
 				.catch((err) => {
-					console.log(err.response.data);
+					console.log(err.response?.data);
 				});
 		};
 
