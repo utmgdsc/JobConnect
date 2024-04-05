@@ -1,77 +1,111 @@
 .application-container {
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.application-title {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #0056b3;
+  color: #333;
+}
+
+.application-section {
+  margin-bottom: 30px;
+}
+
+.application-section input,
+.application-section textarea,
+.application-section select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box; /* Added box-sizing */
+}
+
+.application-section label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.application-action {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.application-checkbox {
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.application-button {
+  background: #0056b3;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.application-button:hover {
+  background-color: #003d82;
+}
+
+.application-button[disabled],
+.application-button[disabled]:hover {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.application-file-upload {
+  border: 1px dashed #0056b3;
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.application-file-upload:hover {
+  background-color: #f8f9fa;
+}
+
+.application-file-upload input[type='file'] {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.application-file-name {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .application-container {
+    width: auto;
+    margin: 20px;
   }
-  
-  .application-title {
-    margin-bottom: 20px;
-    border-bottom: 2px solid #007bff; /* Adjusted the color slightly */
-    color: #333;
+
+  .application-section input,
+  .application-section textarea,
+  .application-section select {
+    font-size: 16px; /* Larger font size for readability */
   }
-  
-  .application-section {
-    margin-bottom: 30px;
-  }
-  
-  .application-section h3 {
-    margin-bottom: 10px;
-    color: #007bff; /* Adjusted the color slightly */
-    font-size: 24px;
-  }
-  
-  .application-section p {
-    margin: 5px 0;
-    font-size: 18px;
-    color: #555;
-  }
-  
-  .application-section p span {
-    font-weight: bold;
-  }
-  
-  .application-action {
-    margin-top: 30px;
-    text-align: center;
-  }
-  
-  .application-checkbox {
-    margin-right: 10px;
-    vertical-align: middle;
-  }
-  
-  .application-button {
-    background: #007bff; /* Adjusted the color slightly */
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.2s;
-  }
-  
-  .application-button:hover {
-    background-color: #0056cc; /* Adjusted the color slightly */
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .application-container {
-      width: auto;
-      margin: 20px;
-    }
-  
-    .application-section h3 {
-      font-size: 20px;
-    }
-  
-    .application-section p {
-      font-size: 16px;
-    }
-  }
-  
+}
