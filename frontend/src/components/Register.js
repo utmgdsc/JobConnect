@@ -24,20 +24,7 @@ import { SetPopupContext } from "../App";
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 
-const useStyles = styled((theme) => ({
-  body: {
-    padding: "60px 60px",
-  },
-  inputBox: {
-    width: "400px",
-  },
-  submitButton: {
-    width: "400px",
-  },
-}));
-
 const MultifieldInput = (props) => {
-  // const classes = useStyles();
   const { education, setEducation } = props;
 
   return (
@@ -46,7 +33,6 @@ const MultifieldInput = (props) => {
         <Grid
           item
           container
-          className={classes.inputBox}
           key={key}
           style={{ paddingLeft: 0, paddingRight: 0 }}
         >
@@ -104,7 +90,6 @@ const MultifieldInput = (props) => {
               },
             ])
           }
-          className={classes.inputBox}
         >
           Add another institution details
         </Button>
@@ -114,7 +99,6 @@ const MultifieldInput = (props) => {
 };
 
 const Register = (props) => {
-  const classes = useStyles();
   const setPopup = useContext(SetPopupContext);
 
   const [loggedin, setLoggedin] = useState(isAuth());
@@ -322,7 +306,7 @@ const Register = (props) => {
   return loggedin ? (
     <Navigate to="/" />
   ) : (
-    <Paper elevation={3} className={classes.body}>
+    <Paper elevation={3} >
       <Grid container direction="column" spacing={4} alignItems="center" className="p-5">
         <Grid item>
           <Typography variant="h3" component="h2">
@@ -334,7 +318,6 @@ const Register = (props) => {
             select
             label="Category"
             variant="outlined"
-            className={classes.inputBox}
             value={registerDetails.type}
             onChange={(event) => {
               handleInput("type", event.target.value);
@@ -349,7 +332,6 @@ const Register = (props) => {
             label="Name"
             value={registerDetails.name}
             onChange={(event) => handleInput("name", event.target.value)}
-            className={classes.inputBox}
             error={inputErrorHandler.name.error}
             helperText={inputErrorHandler.name.message}
             onBlur={(event) => {
@@ -369,7 +351,6 @@ const Register = (props) => {
             onChange={(event) => handleInput("email", event.target.value)}
             inputErrorHandler={inputErrorHandler}
             handleInputError={handleInputError}
-            className={classes.inputBox}
             required={true}
           />
         </Grid>
@@ -378,7 +359,6 @@ const Register = (props) => {
             label="Password"
             value={registerDetails.password}
             onChange={(event) => handleInput("password", event.target.value)}
-            className={classes.inputBox}
             error={inputErrorHandler.password.error}
             helperText={inputErrorHandler.password.message}
             onBlur={(event) => {
@@ -398,7 +378,6 @@ const Register = (props) => {
             />
             <Grid item>
               <MuiChipsInput
-                className={classes.inputBox}
                 label="Skills"
                 variant="outlined"
                 helperText="Press enter to add skills"
@@ -482,7 +461,6 @@ const Register = (props) => {
                 ? handleLogin()
                 : handleLoginEmployer();
             }}
-            className={classes.submitButton}
           >
             register
           </Button>

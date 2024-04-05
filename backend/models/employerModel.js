@@ -19,7 +19,8 @@ const EmployerSchema = new mongoose.Schema({
     },
     location: {
         type: String, // Could be a string or a nested schema for detailed location (even remote?) or loc object
-        required: false
+        required: false,
+        default: ""
     },
     category: {
         type: String,
@@ -27,9 +28,7 @@ const EmployerSchema = new mongoose.Schema({
     },
     website: {
         type: String,
-    },
-    phone: {
-        type: Number,
+        default: ""
     },
     jobs: [{
         type: mongoose.Schema.Types.ObjectId,
