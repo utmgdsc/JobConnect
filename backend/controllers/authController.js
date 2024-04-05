@@ -10,6 +10,40 @@ const User = require("../models/User");
 const JobSeeker = require("../models/jobSeekerModel");
 const employer = require("../models/employerModel");
 
+
+const randString = () => {
+  const len = 8;
+  let randStr = ''
+  for (let i = 0;i<len;i++) {
+    const ch = Math.floor((Math.random()*10)+1)
+    randStr += ch
+  }
+  return randStr
+}
+
+exports.verifyEmail = async (req, res) => {
+  try {
+    const emailToken = req.body.emailToken;
+    if (!emailToken) return res.status(404).json("EmailToken not found...");
+    const user = await userModel.findOne({ emailToken });
+    if (user) {
+      user.emailToken = null;
+      user.isVerified = true;
+      await user.save();
+      const token = createToken(user._id);
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        token,
+        isVerified: user?.isVerified,
+      })
+    } else res.status(404).json("Email verification failed, invalid token!")
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message)
+  }
+}
 exports.register = async (req, res) => {
   const data = req.body;
   email = data.email
@@ -22,6 +56,7 @@ exports.register = async (req, res) => {
     email: data.email,
     password: data.password,
     type: data.type,
+    emailToken: randString(), 
   });
 
 

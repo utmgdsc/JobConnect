@@ -20,7 +20,7 @@ let schema = new mongoose.Schema(
       enum: ["employer", "applicant"],
       required: true,
     },
-    verified: {
+    isVerified: {
       type: Boolean,
       default: false,
     },
