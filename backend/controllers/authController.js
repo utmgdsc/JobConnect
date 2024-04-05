@@ -44,6 +44,11 @@ exports.register = async (req, res) => {
                     email: data.email,
                     phone: data.phone
                 },
+                jobPreferences: {
+                  desiredIndustry: "",
+                  location: "",
+                  jobType: "",
+                }
                 // Add other personal information properties as needed
                 // For example, age, username, password, address, etc.
               },
