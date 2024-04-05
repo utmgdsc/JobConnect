@@ -51,7 +51,6 @@ exports.register = async (req, res) => {
     if (user) {
       return res.status(400).json({ msg: 'User already exists' });
     }
-
   user = new User({
     email: data.email,
     password: data.password,
@@ -134,6 +133,7 @@ exports.login = async (req, res, next) => {
         }
         // Token
         const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
+        console.log(token);
         res.json({
           token: token,
           type: user.type,
