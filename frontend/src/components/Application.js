@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import jobPostingsService from "../services/jobPostingsService";
 import jobSeekersService from "../services/jobSeekersService";
+import uploadService from "../services/uploadService"; // Import the upload service
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Application.css"; // Ensure your CSS styles are set up for this page
@@ -11,13 +12,14 @@ const Application = () => {
   const [jobDetails, setJobDetails] = useState(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [resume, setResume] = useState(null);
+  const [file, setFile] = useState("");
   const [location, setLocation] = useState({
     streetAddress: '',
     city: '',
     state: '',
     postalCode: ''
   });
+  const [title, setTitle] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -26,7 +28,6 @@ const Application = () => {
   }, [id]);
 
   useEffect(() => {
-    // Prefill the location state with the current user's address when the user data is fetched
     if (currentUser?.personalInformation?.address) {
       setLocation((prevLocation) => ({
         ...prevLocation,
@@ -61,26 +62,21 @@ const Application = () => {
         status: "Pending",
         notes: "",
       });
-      
-      // Handle file upload logic here, e.g. uploading to a server or cloud storage.
-      // After uploading, you should have a URL or some identifier for the resume file.
-      // Let's assume the function 'uploadResume' returns a URL or path of the uploaded resume.
-      const resumePath = resume ? await uploadResume(resume) : '';
 
       await jobPostingsService.updateJobPosting(id, { applicants: updatedApplicants });
-      
+
       const updatedApplicationHistory = [...currentUser.applicationHistory];
       updatedApplicationHistory.push({
         jobPosting: jobDetails._id,
         applyDate: new Date(),
         status: "Applied",
-        resume: resumePath, // Use the resume URL or path
-        location: location, // Include the location details
+        location: location,
       });
 
       await jobSeekersService.addInfo(currentUser._id, { applicationHistory: updatedApplicationHistory });
 
-      // After successful application
+      submitImage();
+
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",
         autoClose: 5000,
@@ -91,12 +87,22 @@ const Application = () => {
         progress: undefined,
         theme: "dark",
       });
-      navigate('/application-success'); // Navigate to a success page if you have one
     }
   };
 
   const handleResumeUpload = (event) => {
-    setResume(event.target.files[0]);
+    setTitle(event.target.value);
+    setFile(event.target.files[0]);
+  };
+
+  const submitImage = async (e) => {
+    try {
+      const response = await uploadService.uploadResume(file);
+      console.log(response);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+
   };
 
   const handleLocationChange = (e) => {
@@ -119,54 +125,24 @@ const Application = () => {
     <div className="application-container">
       <ToastContainer />
       <h2 className="application-title">{jobDetails.jobTitle}</h2>
-      {/* ... existing elements */}
-      <p><strong>Your Name:</strong> {currentUser.personalInformation.name}</p>
+      <div className="application-section">
+        <p><strong>Your Name:</strong> {currentUser.personalInformation.name}</p>
         <p><strong>Your Email:</strong> {currentUser.personalInformation.contactDetails.email}</p>
         <p><strong>Your Phone:</strong> {currentUser.personalInformation.contactDetails.phone}</p>
-      {/* Location Details Section */}
-      <div className="application-section">
-        {/* Include inputs for street address, city, state, and postal code */}
-        <input
-          name="streetAddress"
-          value={location.streetAddress}
-          onChange={handleLocationChange}
-          placeholder="Street address"
-        />
-        <input
-          name="city"
-          value={location.city}
-          onChange={handleLocationChange}
-          placeholder="City"
-        />
-        <input
-          name="state"
-          value={location.state}
-          onChange={handleLocationChange}
-          placeholder="State"
-        />
-        <input
-          name="postalCode"
-          value={location.postalCode}
-          onChange={handleLocationChange}
-          placeholder="Postal code"
-        />
       </div>
-
-      {/* Resume Upload Section */}
       <div className="application-section">
-        <input type="file" onChange={handleResumeUpload} />
-        {resume && <span>{resume.name}</span>}
+        <input name="streetAddress" value={location.streetAddress} onChange={handleLocationChange} placeholder="Street address" />
+        <input name="city" value={location.city} onChange={handleLocationChange} placeholder="City" />
+        <input name="state" value={location.state} onChange={handleLocationChange} placeholder="State" />
+        <input name="postalCode" value={location.postalCode} onChange={handleLocationChange} placeholder="Postal code" />
       </div>
-
+      <div className="application-section">
+        <input type="file" onChange={handleResumeUpload} accept="application/pdf" />
+        {file && <span>{file.name}</span>}
+      </div>
       <div className="application-action">
         <div>
-          <input
-            type="checkbox"
-            id="termsAccepted"
-            className="application-checkbox"
-            checked={termsAccepted}
-            onChange={handleTermsAcceptance}
-          />
+          <input type="checkbox" id="termsAccepted" className="application-checkbox" checked={termsAccepted} onChange={handleTermsAcceptance} />
           <label htmlFor="termsAccepted"> I agree to the terms and conditions.</label>
         </div>
         <button className="application-button" onClick={handleApplyNow}>Apply Now</button>
@@ -174,20 +150,5 @@ const Application = () => {
     </div>
   );
 };
-
-// Placeholder function for uploading resume
-// Replace with actual logic for uploading to your server or cloud storage
-async function uploadResume(file) {
-  const formData = new FormData();
-  formData.append("resume", file);
-
-  // store in mongodb
-  const response = await fetch("/api/upload", {
-    method: "POST",
-    body: formData,
-  });
-  const data = await response.json();
-  return data.url;
-}
 
 export default Application;

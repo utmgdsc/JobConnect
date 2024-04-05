@@ -8,15 +8,16 @@ const app = express()
 
 // Enable CORS for all origins
 
-
 app.use(express.json());
 app.use(cors())
 
 app.listen(port, () => console.log(`Server started on port ${port}`))
 
 app.use(passportConfig.initialize());
+
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/upload-files', require("./routes/uploadRoutes"))
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
 app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"))
 app.use('/api/employerRoutes', require("./routes/employerRoutes"))
