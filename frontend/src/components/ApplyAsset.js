@@ -12,6 +12,7 @@ const ApplyAsset = () => {
   const [assetDetails, setAssetDetails] = useState(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetchAssetDetails();
@@ -37,16 +38,38 @@ const ApplyAsset = () => {
   };
 
   const handleApplyNow = async () => {
-    if (termsAccepted && currentUser && assetDetails) {
-      try {
-        // Update asset posting with applicant's ID
+    if (!termsAccepted || !currentUser || !assetDetails) {
+      alert('Please accept the terms and make sure you are logged in to apply.');
+      return;
+    }
+  
+    if (isSubmitting) {
+      // Prevent further execution if a submission is already in progress
+      return;
+    }
+  
+    setIsSubmitting(true); // Disable further submissions
+  
+    try {
+      // Check if the user has already applied for this job posting
+      const alreadyApplied = currentUser.applicationHistory.some(application => application.jobPosting === assetId);
+  
+      if (alreadyApplied) {
+        toast.error("You have already applied for this job posting", {
+          position: "bottom-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
         const updatedAsset = { ...assetDetails };
         updatedAsset.applicants.push(currentUser._id);
-        console.log(currentUser._id, 'currentUser._id');
-        console.log(assetId, 'assetId');
         await AssetPostingsService.updateAsset(assetId, updatedAsset);
-
-        // Fetch current job seeker and update application history
+  
         const user = await jobSeekersService.getJobSeeker(currentUser._id);
         if (user) {
           const applicationData = {
@@ -56,8 +79,7 @@ const ApplyAsset = () => {
           };
           user.applicationHistory.push(applicationData);
           await jobSeekersService.addInfo(currentUser._id, { applicationHistory: user.applicationHistory });
-
-          // Notify user of successful application
+  
           toast.success("Application Submitted", {
             position: "bottom-left",
             autoClose: 5000,
@@ -67,17 +89,20 @@ const ApplyAsset = () => {
             draggable: true,
             progress: undefined,
             theme: "dark",
-          });        } else {
+          });
+        } else {
           console.error('Error fetching current user');
         }
-      } catch (error) {
-        console.error('Error submitting application:', error);
       }
-    } else {
-      alert('Please accept the terms and make sure you are logged in to apply.');
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      // Optionally, show an error toast here
     }
+  
+    setIsSubmitting(false); // Re-enable submissions
   };
-
+  
+  
   const handleTermsAcceptance = () => {
     setTermsAccepted(!termsAccepted);
   };
