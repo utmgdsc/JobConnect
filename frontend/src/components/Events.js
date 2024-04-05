@@ -16,7 +16,7 @@ const Events = () => {
 
   useEffect(() => {
     fetchEventPostings();
-  }, [eventPostings]);
+  }, []);
 
   const fetchEventPostings = async () => {
     try {

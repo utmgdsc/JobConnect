@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import apiList from "../lib/apiList";
 import "../job-connect.css";
 
 const Navbar = () => {
+  const [type, setType] = useState("");
+  const [id, setId] = useState("");
+
+  useEffect(() => {
+    setType(localStorage.getItem("type"));
+
+    const getData = () => {
+      axios
+        .get(apiList.user, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+        });
+    };
+
+    getData();
+  }, [type]);
+
   return (
     <div>
       {/* Navbar */}
@@ -28,42 +55,67 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
+              {type && (
+                <li className="nav-item">
+                  <Link to="/jobs" className="nav-link">
+                    Jobs
+                  </Link>
+                </li>
+              )}
+              {type && (
+                <li className="nav-item">
+                  <Link to="/assets" className="nav-link">
+                    Assets
+                  </Link>
+                </li>
+              )}
+              {type && (
+                <li className="nav-item">
+                  <Link to="/events" className="nav-link">
+                    Events
+                  </Link>
+                </li>
+              )}
+              {type && type === "employer" ? (
+                <li className="nav-item">
+                  <Link to={`/employer/${id}`} className="nav-link">
+                    Profile
+                  </Link>
+                </li>
+              ) : type && (
+                <li className="nav-item">
+                  <Link to={`/user/${id}`} className="nav-link">
+                    Profile
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
-                <Link to="/jobs" className="nav-link">
-                  Jobs
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/assets" className="nav-link">
-                  Assets
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/events" className="nav-link">
-                  Events
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a href="#questions" className="nav-link">
+                <a href="/#questions" className="nav-link">
                   FAQ
                 </a>{" "}
                 {/* Using an anchor link */}
               </li>
-              <li className="nav-item">
-                <Link to="/register" className="nav-link">
-                  Sign Up
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/login" className="nav-link">
-                  Login
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/logout" className="nav-link">
-                  Logout
-                </Link>
-              </li>
+              {!type && (
+                <li className="nav-item">
+                  <Link to="/register" className="nav-link">
+                    Sign Up
+                  </Link>
+                </li>
+              )}
+              {!type && (
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+              )}
+              {type && (
+                <li className="nav-item">
+                  <Link to="/logout" className="nav-link">
+                    Logout
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

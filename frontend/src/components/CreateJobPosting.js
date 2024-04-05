@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import JobPostingsService from "../services/jobPostingsService";
+import EmployerService from "../services/EmployerService";
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
 
 function CreateJobPosting() {
@@ -27,11 +30,47 @@ function CreateJobPosting() {
         requirements: "",
         benefits: "",
     });
+    const [employer, setEmployer] = useState({
+        company: "",
+        email: "",
+        password: "",
+        description: "",
+        category: "",
+        website: "",
+        phone: "",
+        location: "",
+        reviews: [
+            {
+                rating: 0,
+                review: "",
+            },
+        ],
+        jobs: [],
+        assets: [],
+        events: [],
+    });
 
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
+        const getData = () => {
+            axios
+                .get(apiList.user, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                })
+                .then((response) => {
+                    setEmployer(response.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
+        };
+
+        getData()
+
         const fetchJobPosting = async () => {
             try {
                 const data = await JobPostingsService.getJobPostingById(id);
@@ -101,6 +140,11 @@ function CreateJobPosting() {
             else {
                 res = await JobPostingsService.createJobPosting(jobPosting);
             }
+
+            const jobs = employer.jobs;
+            jobs.push(id ? id : res._id);
+            await EmployerService.addEmployerInfo(employer._id, { jobs });
+
             navigate(`/job/${id ? id : res._id}`)
                 .then(() => {
                     toast.success(`Job successfully ${id ? "updated" : "created"}!`);
@@ -133,7 +177,7 @@ function CreateJobPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Company:</label>
-                    <input required type="text" name="company" value={jobPosting.company} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="company" value={employer.company} onChange={handleChange} className="form-control" disabled />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Job Title:</label>

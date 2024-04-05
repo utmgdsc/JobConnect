@@ -19,7 +19,7 @@ const Jobs = () => {
 
   useEffect(() => {
     fetchJobPostings();
-  }, [jobPostings]);
+  }, []);
 
   const fetchJobPostings = async () => {
     try {

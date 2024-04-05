@@ -260,15 +260,15 @@ function UserProfile() {
               <div className="row mt-3">
                 <div className="col-md-12">
                   <label className="labels">Industry</label>
-                  <input type="text" className="form-control" placeholder="Industry" onChange={handleChange} name="desiredIndustry" value={jobSeeker.jobPreferences.desiredIndustry} />
+                  <input type="text" className="form-control" placeholder="Industry" onChange={handleChange} name="desiredIndustry" value={jobSeeker.jobPreferences?.desiredIndustry} />
                 </div>
                 <div className="col-md-12">
                   <label className="labels">Location</label>
-                  <input type="text" className="form-control" placeholder="Location" onChange={handleChange} name="location" value={jobSeeker.jobPreferences.location} />
+                  <input type="text" className="form-control" placeholder="Location" onChange={handleChange} name="location" value={jobSeeker.jobPreferences?.location} />
                 </div>
                 <div className="col-md-12">
                   <label className="labels">Job Type</label>
-                  <select name="jobType" value={jobSeeker.jobPreferences.jobType} onChange={handleChange} className="form-select">
+                  <select name="jobType" value={jobSeeker.jobPreferences?.jobType} onChange={handleChange} className="form-select">
                     <option value="">Select</option>
                     <option value="Full-Time">Full-Time</option>
                     <option value="Part-Time">Part-Time</option>

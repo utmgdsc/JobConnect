@@ -24,6 +24,7 @@ import EventDetails from "./components/EventDetails";
 import CreateJobPosting from "./components/CreateJobPosting";
 import CreateAssetPosting from "./components/CreateAssetPosting";
 import CreateEvent from "./components/CreateEvent";
+import ManagePostings from "./components/ManagePostings";
 import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Register from "./components/Register"
@@ -61,6 +62,7 @@ function App() {
             <Route path="/create/job/:id?" element={<CreateJobPosting />} />
             <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
             <Route path="/create/event/:id?" element={<CreateEvent />} />
+            <Route path="/manage-postings/:id?" element={<ManagePostings />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
