@@ -32,6 +32,7 @@ import MessagePopup from "./lib/MessagePopup";
 import "./App.css"; import ApplyAsset from "./components/ApplyAsset";
 import ResumeFeedback from "./components/ResumeFeedback";
 import RegisterEvent from "./components/RegisterEvent";
+import VerifyEmail from "./components/VerifyEmail";
 export const SetPopupContext = createContext();
 
 // Define a Header component that only shows navigation links on the home page ('/')
@@ -67,6 +68,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/apply-asset/:assetId" element={<ApplyAsset />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+
             <Route path="resume" element={<ResumeFeedback />} />
             <Route path="register-event/:eventId" element={<RegisterEvent />} />
 
