@@ -138,7 +138,7 @@ const Jobs = () => {
           <div className="row">
             <div className="col">
               <Link to="/create/job" className="btn btn-primary mb-3 w-100">
-                Add job
+                Create job
               </Link>
             </div>
           </div>

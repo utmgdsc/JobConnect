@@ -57,7 +57,7 @@ const AssetPostings = () => {
         <div className="row">
           <div className="col">
             <Link to="/create/asset" className="btn btn-primary mb-3 w-100">
-              Add asset
+              Create asset
             </Link>
           </div>
         </div>

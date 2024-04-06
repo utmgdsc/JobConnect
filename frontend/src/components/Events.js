@@ -71,7 +71,7 @@ const Events = () => {
         <div className="row">
           <div className="col">
             <Link to="/create/event" className="btn btn-primary mb-3 w-100">
-              Add event
+              Create event
             </Link>
           </div>
         </div>

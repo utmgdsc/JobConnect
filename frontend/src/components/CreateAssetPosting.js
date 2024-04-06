@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AssetPostingsService from "../services/AssetPostingsService";
+import EmployerService from "../services/EmployerService";
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
@@ -71,6 +72,13 @@ function CreateAssetPosting() {
                     },
                 })
                 .then((response) => {
+                    setAssetPosting((prevAssetPosting) => {
+                        return {
+                            ...prevAssetPosting,
+                            employer: response.data._id,
+                            owner: response.data.owner,
+                        };
+                    });
                     setEmployer(response.data);
                 })
                 .catch((err) => {
@@ -131,6 +139,9 @@ function CreateAssetPosting() {
             }
             else {
                 res = await AssetPostingsService.createAssetPosting(assetPosting);
+                const assets = employer.assets;
+                assets.push(res._id);
+                await EmployerService.addEmployerInfo(employer._id, { assets });
             }
             navigate(`/asset/${id ? id : res._id}`)
                 .then(() => {

@@ -122,9 +122,6 @@ const addEmployerInfo = asyncHandler(async (req, res) => {
         updateQuery['events'] = { $each: updates.events };
     }
 
-    console.log(updateQuery);
-    console.log(updates);
-
     try {
         const employer = await Employer.findOneAndUpdate(
             { _id: id },

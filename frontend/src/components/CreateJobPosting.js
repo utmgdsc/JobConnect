@@ -148,12 +148,10 @@ function CreateJobPosting() {
             }
             else {
                 res = await JobPostingsService.createJobPosting(jobPosting);
+                const jobs = employer.jobs;
+                jobs.push(res._id);
+                await EmployerService.addEmployerInfo(employer._id, { jobs });
             }
-
-            const jobs = employer.jobs;
-            jobs.push(id ? id : res._id);
-            console.log(jobs)
-            await EmployerService.addEmployerInfo(employer._id, { jobs });
 
             navigate(`/job/${id ? id : res._id}`)
                 .then(() => {
