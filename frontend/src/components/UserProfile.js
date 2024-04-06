@@ -6,28 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../UserProfile.css";
 
 function UserProfile() {
-  const [jobSeeker, setJobSeeker] = useState({
-    personalInformation: {
-      name: "",
-      age: "",
-      username: "",
-      contactDetails: {
-        email: "",
-        phone: "",
-      },
-    },
-    professionalProfile: {
-      skills: [],
-      experience: [],
-      education: [],
-    },
-    jobPreferences: {
-      desiredIndustry: "",
-      location: "",
-      jobType: "",
-    },
-    applicationHistory: [],
-  });
+  const [jobSeeker, setJobSeeker] = useState(null);
 
   const [skills, setSkills] = useState("")
   const { id } = useParams();
@@ -82,6 +61,16 @@ function UserProfile() {
     };
   }
 
+  function handleLocationChange(name, value, prevJobSeeker) {
+    return {
+      ...prevJobSeeker,
+      location: {
+        ...prevJobSeeker.location,
+        [name]: value,
+      },
+    };
+  }
+
   const handleSkillsChange = (event) => {
     setSkills(event.target.value);
   }
@@ -110,6 +99,8 @@ function UserProfile() {
         return handleContactDetailsChange(name, value, prevJobSeeker);
       } else if (name in prevJobSeeker.jobPreferences) {
         return handleJobPreferencesChange(name, value, prevJobSeeker);
+      } else if (name in prevJobSeeker.location) {
+        return handleLocationChange(name, value, prevJobSeeker);
       } else {
         return prevJobSeeker;
       }

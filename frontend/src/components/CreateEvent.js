@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { userType } from "../lib/isAuth";
 import axios from "axios";
 import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
@@ -32,6 +31,26 @@ function CreateEvent() {
         accessibilityOptions: "",
         speakers: "",
         sponsors: "",
+    });
+
+    const [employer, setEmployer] = useState({
+        company: "",
+        email: "",
+        password: "",
+        description: "",
+        category: "",
+        website: "",
+        phone: "",
+        location: "",
+        reviews: [
+            {
+                rating: 0,
+                review: "",
+            },
+        ],
+        jobs: [],
+        assets: [],
+        events: [],
     });
 
     const { id } = useParams();

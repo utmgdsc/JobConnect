@@ -11,6 +11,7 @@ import "../App.css"; // Import the new CSS styles
 
 function CreateJobPosting() {
     const [jobPosting, setJobPosting] = useState({
+        employer: "",
         company: "",
         jobTitle: "",
         location: "",
@@ -53,24 +54,8 @@ function CreateJobPosting() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+
     useEffect(() => {
-        const getData = () => {
-            axios
-                .get(apiList.user, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                })
-                .then((response) => {
-                    setEmployer(response.data);
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                });
-        };
-
-        getData()
-
         const fetchJobPosting = async () => {
             try {
                 const data = await JobPostingsService.getJobPostingById(id);
@@ -90,6 +75,30 @@ function CreateJobPosting() {
         if (id) {
             fetchJobPosting();
         }
+
+        const getData = () => {
+            axios
+                .get(apiList.user, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                })
+                .then((response) => {
+                    setJobPosting((prevJobPosting) => {
+                        return {
+                            ...prevJobPosting,
+                            employer: response.data._id,
+                            company: response.data.company,
+                        };
+                    });
+                    setEmployer(response.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
+        };
+
+        getData()
     }, [id]);
 
     function handleChange(event) {
@@ -143,6 +152,7 @@ function CreateJobPosting() {
 
             const jobs = employer.jobs;
             jobs.push(id ? id : res._id);
+            console.log(jobs)
             await EmployerService.addEmployerInfo(employer._id, { jobs });
 
             navigate(`/job/${id ? id : res._id}`)
@@ -177,7 +187,7 @@ function CreateJobPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Company:</label>
-                    <input required type="text" name="company" value={employer.company} onChange={handleChange} className="form-control" disabled />
+                    <input required type="text" name="company" value={jobPosting.company} onChange={handleChange} className="form-control" disabled />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Job Title:</label>

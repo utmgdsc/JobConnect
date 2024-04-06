@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
 
 function CreateAssetPosting() {
@@ -21,6 +23,26 @@ function CreateAssetPosting() {
         benefits: [],
     });
     const [benefits, setBenefits] = useState("");
+
+    const [employer, setEmployer] = useState({
+        company: "",
+        email: "",
+        password: "",
+        description: "",
+        category: "",
+        website: "",
+        phone: "",
+        location: "",
+        reviews: [
+            {
+                rating: 0,
+                review: "",
+            },
+        ],
+        jobs: [],
+        assets: [],
+        events: [],
+    });
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -40,6 +62,24 @@ function CreateAssetPosting() {
         if (id) {
             fetchAssetPosting();
         }
+
+        const getData = () => {
+            axios
+                .get(apiList.user, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                })
+                .then((response) => {
+                    setEmployer(response.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
+        };
+
+        getData()
+
     }, [id]);
 
     function handleChange(event) {
