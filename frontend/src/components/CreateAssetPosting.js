@@ -75,8 +75,8 @@ function CreateAssetPosting() {
                     setAssetPosting((prevAssetPosting) => {
                         return {
                             ...prevAssetPosting,
-                            employer: response.data._id,
-                            owner: response.data.owner,
+                            assetProvider: response.data._id,
+                            owner: response.data.company,
                         };
                     });
                     setEmployer(response.data);
@@ -175,7 +175,7 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Owner:</label>
-                    <input required type="text" name="owner" value={assetPosting.owner} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="owner" value={assetPosting.owner} onChange={handleChange} className="form-control" disabled />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Title:</label>
