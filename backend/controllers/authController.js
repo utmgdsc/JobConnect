@@ -101,6 +101,8 @@ exports.register = async (req, res) => {
           const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
           res.json({
             token: token,
+            name: user.name,
+            email: user.email,
             type: user.type,
           });
         })
