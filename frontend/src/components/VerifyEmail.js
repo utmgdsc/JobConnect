@@ -38,6 +38,7 @@ const VerifyEmail = () => {
 
     return (
         <div>
+            <Navbar/>
             {isLoading ? (
                 <div>
                     <CircularProgress />
