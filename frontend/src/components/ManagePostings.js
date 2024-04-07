@@ -3,7 +3,7 @@ import EmployerService from "../services/EmployerService";
 import JobPostingService from "../services/jobPostingsService";
 import AssetPostingService from "../services/AssetPostingsService";
 import EventService from "../services/EventServices";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -34,7 +34,6 @@ function ManagePostings() {
     const [assets, setAssets] = useState([]);
     const [events, setEvents] = useState([]);
 
-    const { id } = useParams();
     const navigate = useNavigate();
 
     const getData = () => {
