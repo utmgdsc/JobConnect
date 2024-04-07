@@ -25,8 +25,11 @@ const Navbar = () => {
     };
 
     getData();
+  }, []);
+
+  useEffect(() => {
     setType(localStorage.getItem("type"));
-  }, [type, id]);
+  }, [id]);
 
   return (
     <div>
