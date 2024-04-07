@@ -204,11 +204,14 @@ function ManagePostings() {
             { }
 
             <section className="container px-4 mt-5">
-                {jobs.length === 0 && assets.length === 0 && events.length === 0 &&
-                    <h1>No postings found</h1>
-                }
-                {jobs.length > 0 &&
+                <div className="d-flex">
                     <h1>Jobs</h1>
+                    <button className="btn btn-primary mb-3 ms-auto" onClick={() => navigate(`/create/job`)}>
+                        Add new job
+                    </button>
+                </div>
+                {jobs.length == 0 &&
+                    <h4 className="d-flex justify-content-center">No jobs found</h4>
                 }
                 {
                     jobs.map((job, index) => {
@@ -242,15 +245,15 @@ function ManagePostings() {
                         );
                     })
                 }
-                <div className="row">
-                    <div className="col">
-                        <Link to="/create/job" className="btn btn-primary mb-3 w-100">
-                            Create new job
-                        </Link>
-                    </div>
-                </div>
-                {assets.length > 0 &&
+
+                <div className="d-flex">
                     <h1>Assets</h1>
+                    <button className="btn btn-primary mb-3 ms-auto" onClick={() => navigate(`/create/asset`)}>
+                        Add new asset
+                    </button>
+                </div>
+                {assets.length == 0 &&
+                    <h4 className="d-flex justify-content-center">No assets found</h4>
                 }
                 {
                     assets.map((asset, index) => {
@@ -283,15 +286,15 @@ function ManagePostings() {
                         );
                     })
                 }
-                <div className="row">
-                    <div className="col">
-                        <Link to="/create/asset" className="btn btn-primary mb-3 w-100">
-                            Create new asset
-                        </Link>
-                    </div>
-                </div>
-                {events.length > 0 &&
+
+                <div className="d-flex">
                     <h1>Events</h1>
+                    <button className="btn btn-primary mb-3 ms-auto" onClick={() => navigate(`/create/event`)}>
+                        Add new event
+                    </button>
+                </div>
+                {events.length == 0 &&
+                    <h4 className="d-flex justify-content-center">No events found</h4>
                 }
                 {
                     events.map((event, index) => {
@@ -321,13 +324,6 @@ function ManagePostings() {
                         );
                     })
                 }
-                <div className="row">
-                    <div className="col">
-                        <Link to="/create/event" className="btn btn-primary mb-3 w-100">
-                            Create new event
-                        </Link>
-                    </div>
-                </div>
             </section>
         </div>
     )
