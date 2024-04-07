@@ -63,7 +63,7 @@ function App() {
             <Route path="/create/job/:id?" element={<CreateJobPosting />} />
             <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
             <Route path="/create/event/:id?" element={<CreateEvent />} />
-            <Route path="/manage-postings/:id?" element={<ManagePostings />} />
+            <Route path="/manage-postings/:id" element={<ManagePostings />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />

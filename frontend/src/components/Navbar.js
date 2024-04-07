@@ -18,7 +18,6 @@ const Navbar = () => {
         })
         .then((response) => {
           setId(response.data._id);
-
         })
         .catch((err) => {
           console.log(err.response?.data);
@@ -72,6 +71,13 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link to="/events" className="nav-link">
                     Events
+                  </Link>
+                </li>
+              )}
+              {type && type === "employer" && (
+                <li className="nav-item">
+                  <Link to={`/manage-postings/${id}`} className="nav-link">
+                    Manage Postings
                   </Link>
                 </li>
               )}

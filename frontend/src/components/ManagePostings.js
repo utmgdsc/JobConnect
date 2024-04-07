@@ -3,8 +3,7 @@ import EmployerService from "../services/EmployerService";
 import JobPostingService from "../services/jobPostingsService";
 import AssetPostingService from "../services/AssetPostingsService";
 import EventService from "../services/EventServices";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -23,7 +22,6 @@ function JobDetails() {
         location: "",
         reviews: [
             {
-                rating: 0,
                 review: "",
             },
         ],
@@ -32,91 +30,69 @@ function JobDetails() {
         events: [],
     });
 
-    const [jobs, setJobs] = useState([{
-        company: "",
-        jobTitle: "",
-        location: "",
-        jobType: "",
-        noDegreeMentioned: false,
-        salary: 0,
-        details: {
-            description: "",
-            responsibilities: [],
-            requirements: [],
-            benefits: [],
-        },
-    }]);
-
-    const [assets, setAssets] = useState([{
-        owner: "",
-        title: "",
-        assetType: "",
-        location: "",
-        availability: "Available",
-        details: {
-            description: "",
-        },
-        price: 0,
-        benefits: [],
-    }]);
-
-    const [events, setEvents] = useState([{
-        eventName: "",
-        organizer: "",
-        location: "",
-        eventType: "",
-        startDate: "",
-        endDate: "",
-        details: {
-            description: "",
-            targetAudience: [],
-            accessibilityOptions: [],
-            speakers: [],
-            sponsors: [],
-        },
-        registrationRequired: false,
-        registrationLink: "",
-    }]);
+    const [jobs, setJobs] = useState([]);
+    const [assets, setAssets] = useState([]);
+    const [events, setEvents] = useState([]);
 
     const { id } = useParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const getData = () => {
-            axios
-                .get(apiList.user, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                })
-                .then((response) => {
-                    navigate(`/manage-postings/${response.data._id}`);
-                })
-                .catch((err) => {
-                    console.log(err.response.data);
-                });
-        };
+    const getData = () => {
+        axios
+            .get(apiList.user, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((response) => {
+                setEmployer(response.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            });
+    };
 
-        getData()
-
-        const fetchJob = async () => {
-            try {
-                const jobData = await JobPostingService.getJobPostingById(id);
-                setJobs(jobData);
-                const assetData = await AssetPostingService.getAssetPostingById(id);
-                setAssets(assetData);
-                const eventData = await EventService.getEvent(id);
-                setEvents(eventData);
-            } catch (error) {
-                console.error("Failed to fetch posting details:", error);
-                // Handle error (e.g., show an error message)
-            }
-        };
-
-        if (id) {
-            fetchJob();
+    const fetchJob = async () => {
+        try {
+            employer.jobs.forEach(async (jobId) => {
+                const jobData = await JobPostingService.getJobPostingById(jobId);
+                setJobs(prevJobs => [...prevJobs, jobData]);
+            });
+            employer.assets.forEach(async (assetId) => {
+                const assetData = await AssetPostingService.getAssetPostingById(assetId);
+                setAssets(prevAssets => [...prevAssets, assetData]);
+            });
+            employer.events.forEach(async (eventId) => {
+                const eventData = await EventService.getEventById(eventId);
+                setEvents(prevEvents => [...prevEvents, eventData]);
+            });
+        } catch (error) {
+            console.error("Failed to fetch posting details:", error);
+            // Handle error (e.g., show an error message)
         }
-    }, [id]);
+    };
+
+    useEffect(() => {
+        getData()
+    }, []);
+
+    if (employer.company !== "") {
+        fetchJob();
+
+    }
+
+    const deleteJob = async (jobId) => {
+        try {
+            await JobPostingService.deleteJobPosting(jobId);
+            const newJobs = employer.jobs.filter((job) => job !== jobId);
+            await EmployerService.addEmployerInfo(employer._id, { newJobs });
+            toast.success("Job deleted successfully");
+        } catch (error) {
+            console.error("Failed to delete job:", error);
+            toast.error("Failed to delete job");
+        }
+    }
+
 
     return (
         <div>
@@ -133,29 +109,49 @@ function JobDetails() {
                 theme="dark"
             />
             { }
-            <section className="container rounded bg-white px-4 mt-5 mb-5 border border-1">
-                <div className="row col-md-12">
-                    <div className="mb-3 px-4 pt-4">
-                        <div className="d-flex justify-content-between align-items-center mb-1">
-                            <h1 className="text-right">{jobs.jobTitle}</h1>
-                        </div>
-                        <div className="d-flex">
-                            {jobs.company &&
-                                <h3>{jobs.company}</h3>
-                            }
-                            {jobs.location &&
-                                <h5 className="ms-auto">{jobs.location}</h5>
-                            }
-                        </div>
-                        <h5>{jobs.jobType}</h5>
-                        {jobs.salary && jobs.salary > 0 &&
-                            <h5>${jobs.salary}</h5>
-                        }
-                    </div>
-                </div>
+
+            <section className="container px-4 mt-5">
+                <h1>Jobs</h1>
+                {
+                    jobs.map((job, index) => {
+                        return (
+                            <section className="container rounded bg-white px-4 mt-3 mb-5 border border-1">
+                                <div className="row col-md-12 d-flex">
+                                    <div className="mb-3 px-4 pt-4">
+                                        <div className="d-flex justify-content-between align-items-center mb-1">
+                                            <h3 className="text-right">{job.jobTitle}</h3>
+                                        </div>
+                                        <div className="d-flex">
+                                            {job.company &&
+                                                <h5>{job.company}</h5>
+                                            }
+                                            {job.location &&
+                                                <h5 className="ms-auto">{job.location}</h5>
+                                            }
+                                        </div>
+                                        <h6>{job.jobType}</h6>
+                                        <h6>${job.salary}</h6>
+                                    </div>
+                                    <a
+                                        className="btn btn-primary rounded-circle p-2 mx-3 w-25 ms-auto"
+                                        onClick={() => navigate(`/create/job/${job._id}`)}
+                                    >
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a
+                                        className="btn btn-danger rounded-circle p-2 mx-3 w-25"
+                                        onClick={() => deleteJob(job._id)}
+                                    >
+                                        <i class="bi bi-x-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </section>
+                        );
+                    })
+                }
             </section>
         </div>
-    );
-}
+    )
+};
 
 export default JobDetails;
