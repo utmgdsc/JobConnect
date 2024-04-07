@@ -109,6 +109,18 @@ const addEmployerInfo = asyncHandler(async (req, res) => {
     if (updates.reviews && Array.isArray(updates.reviews)) {
         updateQuery['reviews'] = { $each: updates.reviews };
     }
+    // Check and build update query for responsibilities
+    if (updates.jobs && Array.isArray(updates.jobs)) {
+        updateQuery['jobs'] = { $each: updates.jobs };
+    }
+    // Check and build update query for responsibilities
+    if (updates.assets && Array.isArray(updates.assets)) {
+        updateQuery['assets'] = { $each: updates.assets };
+    }
+    // Check and build update query for responsibilities
+    if (updates.events && Array.isArray(updates.events)) {
+        updateQuery['events'] = { $each: updates.events };
+    }
 
     try {
         const employer = await Employer.findOneAndUpdate(

@@ -67,9 +67,9 @@ exports.register = async (req, res) => {
           ? new employer({
             userId: user._id,
             company: data.name,
+            email: data.email,
             phone: data.contactNumber,
             bio: data.bio,
-            email: data.email,
           })
           : new JobSeeker({
             userId: user._id,

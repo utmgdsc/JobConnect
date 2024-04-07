@@ -8,25 +8,17 @@ import "../UserProfile.css";
 function UserProfile() {
   const [jobSeeker, setJobSeeker] = useState({
     personalInformation: {
-      name: "",
-      age: "",
-      username: "",
-      contactDetails: {
-        email: "",
-        phone: "",
-      },
+      contactDetails: {},
     },
+    location: {},
+    jobPreferences: {},
     professionalProfile: {
-      skills: [],
       experience: [],
       education: [],
-    },
-    jobPreferences: {
-      desiredIndustry: "",
-      location: "",
-      jobType: "",
+      skills: [],
     },
     applicationHistory: [],
+    eventRegistrations: [],
   });
 
   const [skills, setSkills] = useState("")
@@ -82,6 +74,16 @@ function UserProfile() {
     };
   }
 
+  function handleLocationChange(name, value, prevJobSeeker) {
+    return {
+      ...prevJobSeeker,
+      location: {
+        ...prevJobSeeker.location,
+        [name]: value,
+      },
+    };
+  }
+
   const handleSkillsChange = (event) => {
     setSkills(event.target.value);
   }
@@ -110,6 +112,8 @@ function UserProfile() {
         return handleContactDetailsChange(name, value, prevJobSeeker);
       } else if (name in prevJobSeeker.jobPreferences) {
         return handleJobPreferencesChange(name, value, prevJobSeeker);
+      } else if (name in prevJobSeeker.location) {
+        return handleLocationChange(name, value, prevJobSeeker);
       } else {
         return prevJobSeeker;
       }
@@ -249,6 +253,26 @@ function UserProfile() {
                   <label className="labels">Phone Number</label>
                   <input type="tel" placeholder="Phone" onChange={handleChange} name="phone" value={jobSeeker.personalInformation.contactDetails.phone} className="form-control" />
                 </div>
+                <div className="row mt-2">
+                  <div className="col-md-6">
+                    <label className="labels">Address</label>
+                    <input type="text" className="form-control" placeholder="Street Address" onChange={handleChange} name="streetAddress" value={jobSeeker.location?.streetAddress} />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="labels">City</label>
+                    <input type="text" className="form-control" placeholder="City" onChange={handleChange} name="city" value={jobSeeker.location?.city} />
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="col-md-6">
+                    <label className="labels">Province</label>
+                    <input type="text" className="form-control" placeholder="Province" onChange={handleChange} name="province" value={jobSeeker.location?.province} />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="labels">Postal Code</label>
+                    <input type="text" className="form-control" placeholder="Postal Code" onChange={handleChange} name="postalCode" value={jobSeeker.location?.postalCode} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -260,15 +284,11 @@ function UserProfile() {
               <div className="row mt-3">
                 <div className="col-md-12">
                   <label className="labels">Industry</label>
-                  <input type="text" className="form-control" placeholder="Industry" onChange={handleChange} name="desiredIndustry" value={jobSeeker.jobPreferences.desiredIndustry} />
-                </div>
-                <div className="col-md-12">
-                  <label className="labels">Location</label>
-                  <input type="text" className="form-control" placeholder="Location" onChange={handleChange} name="location" value={jobSeeker.jobPreferences.location} />
+                  <input type="text" className="form-control" placeholder="Industry" onChange={handleChange} name="desiredIndustry" value={jobSeeker.jobPreferences?.desiredIndustry} />
                 </div>
                 <div className="col-md-12">
                   <label className="labels">Job Type</label>
-                  <select name="jobType" value={jobSeeker.jobPreferences.jobType} onChange={handleChange} className="form-select">
+                  <select name="jobType" value={jobSeeker.jobPreferences?.jobType} onChange={handleChange} className="form-select">
                     <option value="">Select</option>
                     <option value="Full-Time">Full-Time</option>
                     <option value="Part-Time">Part-Time</option>
@@ -420,7 +440,7 @@ function UserProfile() {
           </div>
         </div>
 
-      </div>
+      </div >
     </div >
   );
 }

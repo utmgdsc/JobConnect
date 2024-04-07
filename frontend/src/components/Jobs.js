@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import jobPostingsService from "../services/jobPostingsService";
 import "../jobs.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import toronto from "../images/toronto.jpg";
 
 const Jobs = () => {
@@ -19,7 +19,7 @@ const Jobs = () => {
 
   useEffect(() => {
     fetchJobPostings();
-  }, [jobPostings]);
+  }, []);
 
   const fetchJobPostings = async () => {
     try {
@@ -134,6 +134,15 @@ const Jobs = () => {
             </div>
           </div>
         </div>
+        {localStorage.getItem("type") === "employer" &&
+          <div className="row">
+            <div className="col">
+              <Link to="/create/job" className="btn btn-primary mb-3 w-100">
+                Create job
+              </Link>
+            </div>
+          </div>
+        }
         <div className="row">
           <div className="col">
             {filteredJobPostings.map((posting) => (

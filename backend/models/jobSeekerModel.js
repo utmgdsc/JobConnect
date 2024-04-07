@@ -7,7 +7,7 @@ const jobSeekerSchema = mongoose.Schema({
     },
     personalInformation: {
         name: {
-            type:String,
+            type: String,
             required: true
         },
         contactDetails: {
@@ -22,7 +22,7 @@ const jobSeekerSchema = mongoose.Schema({
             required: false
 
         },
-        
+
         address: {
             type: String,
             required: false
@@ -61,17 +61,22 @@ const jobSeekerSchema = mongoose.Schema({
     },
     jobPreferences: {
         desiredIndustry: String,
-        location: String,
         jobType: {
             type: String,
             enum: ['Full-time', 'Part-time', 'Contract', 'Temporary'] // Example job types
         }
     },
+    location: {
+        streetAddress: String,
+        city: String,
+        state: String,
+        postalCode: String
+    },
     eventRegistrations: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'CareerEvent',
-            required: false
-}],
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CareerEvent',
+        required: false
+    }],
 
     applicationHistory: [{
         jobPosting: {
@@ -85,6 +90,8 @@ const jobSeekerSchema = mongoose.Schema({
             enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted']
         }
     }]
+}, {
+    timestamps: true // Adds createdAt and updatedAt timestamps
 });
 
 
