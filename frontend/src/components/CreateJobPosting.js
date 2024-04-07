@@ -141,6 +141,10 @@ function CreateJobPosting() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        if (jobPosting.salary < 0) {
+            toast.error("Salary cannot be negative.");
+            return;
+        }
         try {
             let res = {}
             if (id) {

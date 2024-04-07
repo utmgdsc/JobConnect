@@ -132,6 +132,10 @@ function CreateAssetPosting() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        if (assetPosting.price < 0) {
+            toast.error("Price cannot be negative.");
+            return;
+        }
         try {
             let res = {}
             if (id) {
@@ -187,7 +191,7 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Price:</label>
-                    <input required type="text" name="price" value={assetPosting.price} onChange={handleChange} className="form-control" />
+                    <input required type="number" name="price" value={assetPosting.price} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Location:</label>
@@ -204,8 +208,8 @@ function CreateAssetPosting() {
                     </div>
                     <div className="mb-3 col-md-6">
                         <label className="form-label">Condition:</label>
-                        <select name="condition" value={assetPosting.condition} onChange={handleChange} className="form-select">
-                            <option value="">Select</option>
+                        <select required name="condition" value={assetPosting.condition} onChange={handleChange} className="form-select">
+                            <option value=""></option>
                             <option value="Used">Used</option>
                             <option value="Fair">Fair</option>
                             <option value="Good">Good</option>
@@ -215,7 +219,7 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Description:</label>
-                    <textarea name="description" value={assetPosting.details.description} onChange={handleChange} className="form-control" />
+                    <textarea name="description" value={assetPosting.details.description} onChange={handleChange} className="form-control" required />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Benefits:</label>

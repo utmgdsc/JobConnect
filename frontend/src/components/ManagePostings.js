@@ -3,7 +3,7 @@ import EmployerService from "../services/EmployerService";
 import JobPostingService from "../services/jobPostingsService";
 import AssetPostingService from "../services/AssetPostingsService";
 import EventService from "../services/EventServices";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -55,7 +55,9 @@ function ManagePostings() {
         try {
             employer.jobs.forEach(async (jobId) => {
                 const jobData = await JobPostingService.getJobPostingById(jobId);
-                setJobs(prevJobs => [...prevJobs, jobData])
+                if (jobData) {
+                    setJobs(prevJobs => [...prevJobs, jobData])
+                }
             });
         } catch (error) {
             console.error("Failed to fetch posting details:", error);
@@ -67,7 +69,9 @@ function ManagePostings() {
         try {
             employer.assets.forEach(async (assetId) => {
                 const assetData = await AssetPostingService.getAssetPostingById(assetId);
-                setAssets(prevAssets => [...prevAssets, assetData])
+                if (assetData) {
+                    setAssets(prevAssets => [...prevAssets, assetData])
+                }
             });
         } catch (error) {
             console.error("Failed to fetch posting details:", error);
@@ -79,7 +83,9 @@ function ManagePostings() {
         try {
             employer.events.forEach(async (eventId) => {
                 const eventData = await EventService.getEventById(eventId);
-                setEvents(prevEvents => [...prevEvents, eventData])
+                if (eventData) {
+                    setEvents(prevEvents => [...prevEvents, eventData])
+                }
             });
         } catch (error) {
             console.error("Failed to fetch posting details:", error);
@@ -122,7 +128,8 @@ function ManagePostings() {
         try {
             await JobPostingService.deleteJobPosting(jobId);
             const newJobs = employer.jobs.filter((job) => job !== jobId);
-            await EmployerService.addEmployerInfo(employer._id, { newJobs });
+            await EmployerService.updateEmployer(employer._id, { jobs: newJobs });
+            window.location.reload();
             toast.success("Job deleted successfully");
         } catch (error) {
             console.error("Failed to delete job:", error);
@@ -133,7 +140,8 @@ function ManagePostings() {
         try {
             await AssetPostingService.deleteAssetPosting(assetId);
             const newAssets = employer.assets.filter((asset) => asset !== assetId);
-            await EmployerService.addEmployerInfo(employer._id, { newAssets });
+            await EmployerService.updateEmployer(employer._id, { assets: newAssets });
+            window.location.reload();
             toast.success("Asset deleted successfully");
         } catch (error) {
             console.error("Failed to delete asset:", error);
@@ -144,7 +152,8 @@ function ManagePostings() {
         try {
             await EventService.deleteEvent(eventId);
             const newEvents = employer.events.filter((event) => event !== eventId);
-            await EmployerService.addEmployerInfo(employer._id, { newEvents });
+            await EmployerService.updateEmployer(employer._id, { events: newEvents });
+            window.location.reload();
             toast.success("Event deleted successfully");
         } catch (error) {
             console.error("Failed to delete event:", error);
@@ -154,36 +163,65 @@ function ManagePostings() {
 
     function Postings(type, id) {
         return (
-            <div className="d-flex justify-content-evenly align-items-center">
-                {type === "job" &&
+            <section>
+                <div className="d-flex justify-content-evenly align-items-center">
+                    {type === "job" &&
+                        <a
+                            className="btn btn-secondary p-2 mx-3 w-25"
+                            onClick={() => navigate(`get-applicants/${id}`)}
+                        >
+                            Applicants <i className="bi bi-person-fill"></i>
+                        </a>
+                    }
                     <a
-                        className="btn btn-secondary p-2 mx-3 w-25"
-                        onClick={() => navigate(`get-applicants/${id}`)}
+                        className="btn btn-primary p-2 mx-3 w-25"
+                        onClick={() => navigate(`/create/${type}/${id}`)}
                     >
-                        Applicants <i className="bi bi-person-fill"></i>
+                        Edit <i className="bi bi-pencil"></i>
                     </a>
-                }
-                <a
-                    className="btn btn-primary p-2 mx-3 w-25"
-                    onClick={() => navigate(`/create/${type}/${id}`)}
-                >
-                    Edit <i className="bi bi-pencil"></i>
-                </a>
-                <a
-                    className="btn btn-danger p-2 mx-3 w-25"
-                    onClick={() => {
-                        if (type === "job") {
-                            deleteJob(id);
-                        } else if (type === "asset") {
-                            deleteAsset(id);
-                        } else if (type === "event") {
-                            deleteEvent(id);
-                        }
-                    }}
-                >
-                    Delete <i className="bi bi-x-circle-fill"></i>
-                </a>
-            </div>
+                    <a
+                        className="btn btn-danger p-2 mx-3 w-25"
+                        data-bs-toggle="modal"
+                        data-bs-target={`#deleteModal${id}`}
+                    >
+                        Delete <i className="bi bi-x-circle-fill"></i>
+                    </a>
+                </div>
+
+                {/* Modal for deleting job */}
+                <div className="modal fade" id={`deleteModal${id}`} tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="deleteModalLabel">Delete {type}</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                Are you sure you want to delete this {type}?
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={() => {
+                                        if (type === "job") {
+                                            deleteJob(id);
+                                        } else if (type === "asset") {
+                                            deleteAsset(id);
+                                        } else if (type === "event") {
+                                            deleteEvent(id);
+                                        }
+                                    }}
+                                    data-bs-dismiss="modal"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         )
     }
 
@@ -204,7 +242,7 @@ function ManagePostings() {
             />
             { }
 
-            <section className="container px-4 mt-5">
+            <section className="container px-4 my-5">
                 <div className="d-flex">
                     <h1>Jobs</h1>
                     <button className="btn btn-primary mb-3 ms-auto" onClick={() => navigate(`/create/job`)}>
@@ -221,22 +259,17 @@ function ManagePostings() {
                                 <div className="row col-md-12 pb-3">
                                     <div className="mb-3 px-4 pt-4" onClick={() => navigate(`/job/${job._id}`)}>
                                         <div className="d-flex justify-content-between align-items-center mb-1">
-                                            <h4 className="text-right">{job.jobTitle}</h4>
-                                        </div>
-                                        <div className="d-flex">
-                                            {job.company &&
-                                                <h5>{job.company}</h5>
-                                            }
+                                            <h4>{job.jobTitle}</h4>
                                             {job.location &&
                                                 <h5 className="ms-auto">{job.location}</h5>
                                             }
                                         </div>
                                         <div className="d-flex">
                                             {job.jobType &&
-                                                <h6>{job.jobType}</h6>
+                                                <h5>{job.jobType}</h5>
                                             }
                                             {job.salary &&
-                                                <h6 className="ms-auto">${job.salary}</h6>
+                                                <h5 className="ms-auto">${job.salary}</h5>
                                             }
                                         </div>
                                     </div>
@@ -263,11 +296,11 @@ function ManagePostings() {
                                 <div className="row col-md-12 d-flex pb-3">
                                     <div className="mb-3 px-4 pt-4" onClick={() => navigate(`/asset/${asset._id}`)}>
                                         <div className="d-flex justify-content-between align-items-center mb-1">
-                                            <h4 className="text-right">{asset.title}</h4>
+                                            <h4>{asset.title}</h4>
                                         </div>
                                         <div className="d-flex">
-                                            {asset.owner &&
-                                                <h5>{asset.owner}</h5>
+                                            {asset.price &&
+                                                <h5>${asset.price}</h5>
                                             }
                                             {asset.location &&
                                                 <h5 className="ms-auto">{asset.location}</h5>
@@ -277,9 +310,6 @@ function ManagePostings() {
                                             <h5>{asset.assetType}</h5>
                                             {asset.condition && <h5 className="ms-auto">{asset.condition}</h5>}
                                         </div>
-                                        {asset.price && asset.price > 0 &&
-                                            <h5>${asset.price}</h5>
-                                        }
                                     </div>
                                     {Postings("asset", asset._id)}
                                 </div>
@@ -304,12 +334,7 @@ function ManagePostings() {
                                 <div className="row col-md-12 d-flex pb-3">
                                     <div className="mb-3 px-4 pt-4" onClick={() => navigate(`/event/${event._id}`)}>
                                         <div className="d-flex justify-content-between align-items-center mb-1">
-                                            <h4 className="text-right">{event.eventName}</h4>
-                                        </div>
-                                        <div className="d-flex">
-                                            {event.organizer &&
-                                                <h5>{event.organizer}</h5>
-                                            }
+                                            <h4>{event.eventName}</h4>
                                             {event.location &&
                                                 <h5 className="ms-auto">{event.location}</h5>
                                             }

@@ -90,6 +90,8 @@ const jobSeekerSchema = mongoose.Schema({
             enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted']
         }
     }]
+}, {
+    timestamps: true // Adds createdAt and updatedAt timestamps
 });
 
 

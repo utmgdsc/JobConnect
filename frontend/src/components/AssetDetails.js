@@ -56,7 +56,7 @@ function AssetDetails() {
                         <h5>{asset.assetType}</h5>
                         {asset.condition && <h5 className="ms-auto">{asset.condition}</h5>}
                     </div>
-                    {asset.price && asset.price > 0 &&
+                    {asset.price &&
                         <h5>${asset.price}</h5>
                     }
                 </div>
