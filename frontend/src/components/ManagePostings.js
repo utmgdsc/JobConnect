@@ -155,13 +155,15 @@ function ManagePostings() {
 
     function Postings(type, id) {
         return (
-            <div className="d-flex justify-content-around align-items-center">
-                <a
-                    className="btn btn-secondary p-2 mx-3 w-25"
-                    onClick={() => navigate(`/`)}
-                >
-                    Applicants <i className="bi bi-person-fill"></i>
-                </a>
+            <div className="d-flex justify-content-evenly align-items-center">
+                {type === "job" &&
+                    <a
+                        className="btn btn-secondary p-2 mx-3 w-25"
+                        onClick={() => navigate(`get-applicants/${id}`)}
+                    >
+                        Applicants <i className="bi bi-person-fill"></i>
+                    </a>
+                }
                 <a
                     className="btn btn-primary p-2 mx-3 w-25"
                     onClick={() => navigate(`/create/${type}/${id}`)}
