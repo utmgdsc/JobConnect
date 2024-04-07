@@ -210,7 +210,7 @@ function ManagePostings() {
                         Add new job
                     </button>
                 </div>
-                {jobs.length == 0 &&
+                {jobs.length === 0 &&
                     <h4 className="d-flex justify-content-center">No jobs found</h4>
                 }
                 {
@@ -252,7 +252,7 @@ function ManagePostings() {
                         Add new asset
                     </button>
                 </div>
-                {assets.length == 0 &&
+                {assets.length === 0 &&
                     <h4 className="d-flex justify-content-center">No assets found</h4>
                 }
                 {
@@ -293,7 +293,7 @@ function ManagePostings() {
                         Add new event
                     </button>
                 </div>
-                {events.length == 0 &&
+                {events.length === 0 &&
                     <h4 className="d-flex justify-content-center">No events found</h4>
                 }
                 {
