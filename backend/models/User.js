@@ -11,6 +11,10 @@ let schema = new mongoose.Schema(
       required: true,
       match: /^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/ // Add a regex pattern to validate email format
     },
+    name: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
