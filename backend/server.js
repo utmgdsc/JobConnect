@@ -17,9 +17,23 @@ app.listen(port, () => console.log(`Server started on port ${port}`))
 
 app.use(passportConfig.initialize());
 
+app.use("/files", express.static("files"));
 
-const upload = multer({ dest: 'files/'})
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./files");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + ".pdf");
+  },
+});
+
+require("./models/pdfDetails");
+const upload = multer({ storage: storage });
+
 app.post('/api/upload-files', upload.single('file'), uploadController.uploadResume);
+app.get('/api/get-files', uploadController.getFiles);
 
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
@@ -29,5 +43,6 @@ app.use('/api/employerRoutes', require("./routes/employerRoutes"))
 app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))
 app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))
 app.use('/api/subscribe', require("./routes/subscribeRoutes"))
+app.use('/api/applicationRoutes', require('./routes/applicationRoutes'))
 
 connectDB()

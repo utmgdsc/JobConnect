@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const jobSeekerSchema = mongoose.Schema({
     userId: {
@@ -7,7 +7,7 @@ const jobSeekerSchema = mongoose.Schema({
     },
     personalInformation: {
         name: {
-            type:String,
+            type: String,
             required: true
         },
         contactDetails: {
@@ -20,14 +20,11 @@ const jobSeekerSchema = mongoose.Schema({
         age: {
             type: String,
             required: false
-
         },
-        
         address: {
             type: String,
             required: false
         },
-
     },
     professionalProfile: {
         experience: [{
@@ -61,32 +58,30 @@ const jobSeekerSchema = mongoose.Schema({
     },
     jobPreferences: {
         desiredIndustry: String,
-        location: String,
         jobType: {
             type: String,
             enum: ['Full-time', 'Part-time', 'Contract', 'Temporary'] // Example job types
         }
     },
+    location: {
+        streetAddress: String,
+        city: String,
+        state: String,
+        postalCode: String
+    },
     eventRegistrations: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'CareerEvent',
-            required: false
-}],
-
-    applicationHistory: [{
-        jobPosting: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'JobPosting',
-            required: false
-        },
-        applyDate: Date,
-        status: {
-            type: String,
-            enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted']
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CareerEvent',
+        required: false
+    }],
+    applicationHistory: [{ // Modified part
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Application',
+        required: false
     }]
+}, {
+    timestamps: true // Adds createdAt and updatedAt timestamps
 });
-
 
 const JobSeeker = mongoose.model('JobSeeker', jobSeekerSchema);
 

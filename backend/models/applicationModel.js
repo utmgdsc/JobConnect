@@ -12,7 +12,7 @@ const applicationSchema = new mongoose.Schema({
         required: true
     },
     resume: {
-        type: String, // Assuming the resume is stored as a URL or file path
+        type: mongoose.Schema.Types.ObjectId,
         required: false
     },
     location: {

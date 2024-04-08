@@ -3,9 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import jobPostingsService from "../services/jobPostingsService";
 import jobSeekersService from "../services/jobSeekersService";
 import uploadService from "../services/uploadService"; // Import the upload service
+import applicationService from "../services/applicationService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Application.css"; // Ensure your CSS styles are set up for this page
+import { all } from "axios";
 
 const Application = () => {
   const navigate = useNavigate();
@@ -21,6 +23,10 @@ const Application = () => {
   });
   const [title, setTitle] = useState("");
   const { id } = useParams();
+  const [isAuthorized, setIsAuthorized] = useState(false); // For authorization to work
+  const [experience, setExperience] = useState(""); // For experience
+  const [relocation, setRelocation] = useState(false); // For relocation
+  const [allImages, setAllImages] = useState(null);
 
   useEffect(() => {
     fetchJobDetails();
@@ -35,6 +41,14 @@ const Application = () => {
       }));
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    getPdf();
+  }, []);
+    const getPdf = async () => {
+      const pdf = await uploadService.getFiles();
+      setAllImages(pdf.data);
+    };
 
   const fetchJobDetails = async () => {
     try {
@@ -56,6 +70,37 @@ const Application = () => {
 
   const handleApplyNow = async () => {
     if (termsAccepted && jobDetails && currentUser) {
+      console.log(currentUser._id, "current user id")
+      // create application object
+
+      // get resume object
+      // grab the latest resume from allImages
+      const resume = allImages[allImages.length - 1];
+      
+      const application = {
+        jobPosting: jobDetails._id,
+        jobSeeker: currentUser._id,
+        resume: resume._id,
+        location,
+        relocation,
+        authorized: isAuthorized,
+        experience,
+        status: "Pending",
+      };
+
+      await applicationService.addApplication(application);
+
+      submitImage();
+      const app = await applicationService.getApplication(application._id);
+      //grab the latest application
+      const latestApplication = app[app.length - 1];
+
+      const updatedApplications = [...currentUser.applicationHistory];
+      updatedApplications.push(latestApplication._id);
+      await jobSeekersService.addInfo(currentUser._id, { applicationHistory: updatedApplications });
+
+
+      // update job posting with the new application
       const updatedApplicants = [...jobDetails.applicants];
       updatedApplicants.push({
         jobSeeker: currentUser._id,
@@ -65,17 +110,12 @@ const Application = () => {
 
       await jobPostingsService.updateJobPosting(id, { applicants: updatedApplicants });
 
-      const updatedApplicationHistory = [...currentUser.applicationHistory];
-      updatedApplicationHistory.push({
-        jobPosting: jobDetails._id,
-        applyDate: new Date(),
-        status: "Applied",
-        location: location,
-      });
-
-      await jobSeekersService.addInfo(currentUser._id, { applicationHistory: updatedApplicationHistory });
-
-      submitImage();
+      // as a test lets get the application's resume
+      // print the job posting object
+      console.log(jobDetails, "job details")
+      // grab the applicant's object from the applicants array by _id
+      const applicant = updatedApplicants.find(applicant => applicant.jobSeeker === currentUser._id);
+      console.log(applicant, "applicant") 
 
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",
@@ -90,6 +130,7 @@ const Application = () => {
     }
   };
 
+
   const handleResumeUpload = (event) => {
     setTitle(event.target.value);
     setFile(event.target.files[0]);
@@ -98,7 +139,6 @@ const Application = () => {
   const submitImage = async (e) => {
     try {
       const response = await uploadService.uploadResume(file);
-      console.log(response);
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -115,6 +155,18 @@ const Application = () => {
 
   const handleTermsAcceptance = () => {
     setTermsAccepted(!termsAccepted);
+  };
+
+  const handleRelocationChange = (e) => {
+    setRelocation(e.target.value === "yes");
+  };
+
+  const handleAuthorizationChange = (e) => {
+    setIsAuthorized(e.target.value === "yes");
+  };
+
+  const handleExperienceChange = (e) => {
+    setExperience(e.target.value);
   };
 
   if (!jobDetails || !currentUser) {
@@ -152,11 +204,11 @@ const Application = () => {
         <strong>Are you willing to relocate?</strong><br></br>
         <div className="radio-group">
           <div className="form-check form-check-inline yes-option">
-            <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio1" value="yes" />
+            <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio1" value="yes" onChange={handleRelocationChange} />
             <label className="form-check-label" htmlFor="inlineRadio1">Yes</label>
           </div>
           <div className="form-check form-check-inline no-option">
-            <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio2" value="no" />
+            <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio2" value="no" onChange={handleRelocationChange} />
             <label className="form-check-label" htmlFor="inlineRadio2">No</label>
           </div>
         </div>
@@ -164,11 +216,11 @@ const Application = () => {
         <strong>Are you legally authorized to work in Canada?</strong><br></br>
         <div className="radio-group">
           <div className="form-check form-check-inline yes-option">
-            <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio3" value="yes" />
+            <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio3" value="yes" onChange={handleAuthorizationChange} />
             <label className="form-check-label" htmlFor="inlineRadio3">Yes</label>
           </div>
           <div className="form-check form-check-inline no-option">
-            <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio4" value="no" />
+            <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio4" value="no" onChange={handleAuthorizationChange} />
             <label className="form-check-label" htmlFor="inlineRadio4">No</label>
           </div>
         </div>
@@ -176,21 +228,21 @@ const Application = () => {
       <strong> How many years of experience do you have in this field?</strong><br></br>
       <div className="radio-group">
         <div className="form-check form-check-inline yes-option">
-          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio5" value="0-1" />
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio5" value="0-1" onChange={handleExperienceChange} />
           <label className="form-check-label" htmlFor="inlineRadio5">0-1</label>
         </div>
         <div className="form-check form-check-inline no-option">
-          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio6" value="1-3" />
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio6" value="1-3" onChange={handleExperienceChange} />
           <label className="form-check-label" htmlFor="inlineRadio6">1-3</label>
         </div>
       </div>
       <div className="radio-group">
         <div className="form-check form-check-inline yes-option">
-          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio7" value="3-5" />
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio7" value="3-5" onChange={handleExperienceChange} />
           <label className="form-check-label" htmlFor="inlineRadio7">3-5</label>
         </div>
         <div className="form-check form-check-inline no-option">
-          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio8" value="5+" />
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio8" value="5+" onChange={handleExperienceChange} />
           <label className="form-check-label" htmlFor="inlineRadio8">5+</label>
         </div>
       </div>

@@ -1,36 +1,16 @@
 const multer = require("multer");
 const mongoose = require("mongoose");
+const PdfDetails = require("../models/pdfDetails");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./files");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + file.originalname);
-  },
-});
 
-require("../models/pdfDetails");
+
 const PdfSchema = mongoose.model("PdfDetails");
-const upload = multer({ storage: storage });
-
-// app.post("/upload-files", upload.single("file"), async (req, res) => {
-//   console.log(req.file);
-//   const title = req.body.title;
-//   const fileName = req.file.filename;
-//   try {
-//     await PdfSchema.create({ title: title, pdf: fileName });
-//     res.send({ status: "ok" });
-//   } catch (error) {
-//     res.json({ status: error });
-//   }
-// });
 
 const uploadResume = async (req, res) => {
-  console.log(req.file);
+  console.log(req.file, "check file here");
   const title = req.body.title;
-  const fileName = req.file.filename;
+  const fileName = req.file.filename
+  console.log(fileName, "check file name here")
   try {
     await PdfSchema.create({ title: title, pdf: fileName });
     res.send({ status: "ok" });
@@ -39,6 +19,25 @@ const uploadResume = async (req, res) => {
   }
 };
 
+const getFiles = async (req, res) => {
+  try {
+    PdfSchema.find({}).then((data) => {
+      res.send({ status: "ok", data: data });
+    });
+  } catch (error) {}
+};
+
+const getFileById = async (req, res) => {
+  const file = await PdfDetails.findOne({ _id: req.params.id });
+  if (!file) {
+    res.status(404).json({ message: "File not found" });
+  } else {
+    res.status(200).json(file);
+  }
+};
+
 module.exports = {
   uploadResume,
+  getFiles,
+  getFileById,
 };

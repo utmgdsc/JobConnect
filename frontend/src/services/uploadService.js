@@ -14,12 +14,23 @@ const uploadResume = async (file) => {
       },
     }
   );
-  console.log(response.data);
+  return response.data;
+}
+
+const getFiles = async () => {
+  const response = await axios.get("http://localhost:8000/api/get-files");
+  return response.data;
+}
+
+const getFileById = async (id) => {
+  const response = await axios.get(`http://localhost:8000/api/get-file/${id}`);
   return response.data;
 }
 
 const uploadService = {
   uploadResume,
+  getFiles,
+  getFileById,
 };
 
 export default uploadService;
