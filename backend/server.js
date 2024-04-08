@@ -5,6 +5,8 @@ const port = process.env.PORT || 5000;
 const passportConfig = require("./lib/passportConfig");
 const cors = require('cors');
 const app = express()
+const uploadController = require('./controllers/uploadController')
+const multer = require('multer')
 
 // Enable CORS for all origins
 
@@ -16,38 +18,11 @@ app.listen(port, () => console.log(`Server started on port ${port}`))
 app.use(passportConfig.initialize());
 
 
-const multer = require("multer");
-const mongoose = require("mongoose");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./files");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + file.originalname);
-  },
-});
-
-require("./models/pdfDetails");
-const PdfSchema = mongoose.model("PdfDetails");
-const upload = multer({ storage: storage });
-
-app.post("/upload-files", upload.single("file"), async (req, res) => {
-  console.log(req.file);
-  const title = req.body.title;
-  const fileName = req.file.filename;
-  try {
-    await PdfSchema.create({ title: title, pdf: fileName });
-    res.send({ status: "ok" });
-  } catch (error) {
-    res.json({ status: error });
-  }
-});
+const upload = multer({ dest: 'files/'})
+app.post('/api/upload-files', upload.single('file'), uploadController.uploadResume);
 
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
-// app.use('/api/upload-files', require("./routes/uploadRoutes"))
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
 app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"))
 app.use('/api/employerRoutes', require("./routes/employerRoutes"))

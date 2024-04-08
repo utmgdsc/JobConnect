@@ -56,10 +56,14 @@
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.2s;
+  display: block;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .application-button:hover {
   background-color: #003d82;
+  /* make the button as wide as the container */
 }
 
 .application-button[disabled],
@@ -95,6 +99,30 @@
   font-size: 0.9em;
   color: #555;
 }
+.radio-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-check-inline {
+  display: flex;
+  align-items: center;
+  /* Remove the width here if it was previously set to 100% */
+}
+
+/* Ensure the input is not too far from its label */
+.form-check-input {
+  margin-right: 0.5em; /* Adjust as needed */
+}
+
+.form-check-inline.no-option {
+  /* move to the right */
+  margin-right: 25em; /* Adjust as needed */
+}
+
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

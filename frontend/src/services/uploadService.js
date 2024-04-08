@@ -6,7 +6,7 @@ const uploadResume = async (file) => {
   formData.append("file", file);
   console.log(file)
   const response = await axios.post(
-    "http://localhost:8000/upload-files",
+    "http://localhost:8000/api/upload-files",
     formData,
     {
       headers: {

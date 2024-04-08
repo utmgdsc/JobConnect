@@ -21,6 +21,17 @@ const applicationSchema = new mongoose.Schema({
         state: String,
         postalCode: String
     },
+    relocation: {
+        type: Boolean,
+        default: false
+    },
+    authorized: {
+        type: Boolean,
+        default: false
+    },
+    experience: {
+        type: String,
+    },
     status: {
         type: String,
         enum: ['Pending', 'Accepted', 'Rejected'],
