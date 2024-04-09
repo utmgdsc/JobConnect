@@ -39,8 +39,8 @@ const jobSeekerSchema = mongoose.Schema({
                 type: String,
                 required: false
             },
-            startDate: Date,
-            endDate: Date, // Can be null if it's the current position
+            startYear: Number,
+            endYear: Number, // Can be null if it's the current position
             description: String,
         }],
         skills: [String], // Array of strings to list skills
@@ -51,8 +51,8 @@ const jobSeekerSchema = mongoose.Schema({
             },
             degree: String,
             fieldOfStudy: String,
-            startDate: Date,
-            endDate: Date,
+            startYear: Number,
+            endYear: Number,
         }]
     },
     resume: {

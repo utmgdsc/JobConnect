@@ -4,16 +4,18 @@ const express = require('express')
 const port = process.env.PORT || 5000;
 const passportConfig = require("./lib/passportConfig");
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const fs = require("fs");
 const app = express()
 
 // Enable CORS for all origins
 
 
-app.use(express.json());
 app.use(cors())
 
 app.listen(port, () => console.log(`Server started on port ${port}`))
-
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(passportConfig.initialize());
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
