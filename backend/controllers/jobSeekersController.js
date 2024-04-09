@@ -12,8 +12,6 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
-        console.log(name);
-        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -127,11 +125,10 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
         if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
         updateQuery['$addToSet']['eventRegistrations'] = { $each: updates.eventRegistrations };
     }
-
-    // Handle updates to applicationHistory
+    
     if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
-        if (!updateQuery['$push']) updateQuery['$push'] = {};
-        updateQuery['$push']['applicationHistory'] = { $each: updates.applicationHistory };
+        if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
+        updateQuery['$addToSet']['applicationHistory'] = { $each: updates.applicationHistory };
     }
 
     try {

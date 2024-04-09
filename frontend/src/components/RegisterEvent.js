@@ -38,11 +38,8 @@ const RegisterEvent = () => {
   const handleRegister = async () => {
     if (termsAccepted && eventDetails && currentUser) {
       try {
-        // Update event details
         const updatedEventApplicants = [...eventDetails.applicants, currentUser._id];
         await EventPostingsService.updateEvent(eventId, { applicants: updatedEventApplicants });
-        console.log(currentUser, "currentUser._id");
-        // Update user's event registration
         const updatedUserRegistrations = [...currentUser.eventRegistrations];
         updatedUserRegistrations.push(eventDetails._id); // Assuming eventDetails has _id field
         await jobSeekersService.addInfo(currentUser._id, { eventRegistrations: updatedUserRegistrations });
@@ -60,7 +57,16 @@ const RegisterEvent = () => {
         console.error("Error registering for the event:", error);
       }
     } else {
-      alert("Please accept the terms to register for the event.");
+      toast.error("Please accept the terms to apply for the job", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
 };
 

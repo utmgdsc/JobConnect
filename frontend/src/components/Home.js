@@ -142,9 +142,9 @@ const Home = () => {
                 opportunities, we're here to support your journey every step of
                 the way.
               </p>
-              <a href="#" className="btn btn-light mt-3">
+              <Link to="/resume" className="btn btn-light mt-3">
                 <i className="bi bi-chevron-right"></i> Learn More
-              </a>
+              </Link>
             </div>
           </div>
         </div>

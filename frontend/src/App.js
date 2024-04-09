@@ -69,12 +69,8 @@ function App() {
             <Route path="/logout" element={<Logout />} />
             <Route path="/apply-asset/:assetId" element={<ApplyAsset />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
-
             <Route path="resume" element={<ResumeFeedback />} />
             <Route path="register-event/:eventId" element={<RegisterEvent />} />
-
-
-
           </Routes>
           <MessagePopup
             open={popup.open}
