@@ -102,20 +102,8 @@ const Application = () => {
 
       // update job posting with the new application
       const updatedApplicants = [...jobDetails.applicants];
-      updatedApplicants.push({
-        jobSeeker: currentUser._id,
-        status: "Pending",
-        notes: "",
-      });
-
-      await jobPostingsService.updateJobPosting(id, { applicants: updatedApplicants });
-
-      // as a test lets get the application's resume
-      // print the job posting object
-      console.log(jobDetails, "job details")
-      // grab the applicant's object from the applicants array by _id
-      const applicant = updatedApplicants.find(applicant => applicant.jobSeeker === currentUser._id);
-      console.log(applicant, "applicant") 
+      updatedApplicants.push(latestApplication._id);
+      await jobPostingsService.updateJobPosting(jobDetails._id, { applicants: updatedApplicants });
 
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",
