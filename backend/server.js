@@ -7,6 +7,9 @@ const cors = require('cors');
 const app = express()
 const uploadController = require('./controllers/uploadController')
 const multer = require('multer')
+// const path = require('path')
+// app.use('/files', express.static(path.join(__dirname, 'files')))
+
 
 // Enable CORS for all origins
 
@@ -16,8 +19,6 @@ app.use(cors())
 app.listen(port, () => console.log(`Server started on port ${port}`))
 
 app.use(passportConfig.initialize());
-
-app.use("/files", express.static("files"));
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,7 +36,6 @@ const upload = multer({ storage: storage });
 app.post('/api/upload-files', upload.single('file'), uploadController.uploadResume);
 app.get('/api/get-files', uploadController.getFiles);
 
-// Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
 app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"))

@@ -7,10 +7,8 @@ const PdfDetails = require("../models/pdfDetails");
 const PdfSchema = mongoose.model("PdfDetails");
 
 const uploadResume = async (req, res) => {
-  console.log(req.file, "check file here");
   const title = req.body.title;
   const fileName = req.file.filename
-  console.log(fileName, "check file name here")
   try {
     await PdfSchema.create({ title: title, pdf: fileName });
     res.send({ status: "ok" });
