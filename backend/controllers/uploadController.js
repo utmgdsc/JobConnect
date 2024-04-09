@@ -22,7 +22,9 @@ const getFiles = async (req, res) => {
     PdfSchema.find({}).then((data) => {
       res.send({ status: "ok", data: data });
     });
-  } catch (error) {}
+  } catch (error) {
+    res.json({ status: error });
+  }
 };
 
 const getFileById = async (req, res) => {

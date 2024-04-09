@@ -7,10 +7,12 @@ const cors = require('cors');
 const app = express()
 const uploadController = require('./controllers/uploadController')
 const multer = require('multer')
-// const path = require('path')
-// app.use('/files', express.static(path.join(__dirname, 'files')))
+const path = require('path')
+console.log(path.join(__dirname, 'files'))
+app.use('/files', express.static(path.join(__dirname, 'files')))
 
-
+// console.log("test")
+// console.log(path.join(__dirname, 'files'), "path")
 // Enable CORS for all origins
 
 app.use(express.json());

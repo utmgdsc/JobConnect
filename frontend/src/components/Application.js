@@ -7,7 +7,6 @@ import applicationService from "../services/applicationService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Application.css"; // Ensure your CSS styles are set up for this page
-import { all } from "axios";
 
 const Application = () => {
   const navigate = useNavigate();
@@ -70,11 +69,6 @@ const Application = () => {
 
   const handleApplyNow = async () => {
     if (termsAccepted && jobDetails && currentUser) {
-      console.log(currentUser._id, "current user id")
-      // create application object
-
-      // get resume object
-      // grab the latest resume from allImages
       const resume = allImages[allImages.length - 1];
       
       const application = {

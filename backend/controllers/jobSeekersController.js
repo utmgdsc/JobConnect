@@ -124,12 +124,6 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
         if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
         updateQuery['$addToSet']['eventRegistrations'] = { $each: updates.eventRegistrations };
     }
-
-    // Handle updates to applicationHistory
-    // if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
-    //     if (!updateQuery['$push']) updateQuery['$push'] = {};
-    //     updateQuery['$push']['applicationHistory'] = { $each: updates.applicationHistory };
-    // }
     
     if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
         if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
