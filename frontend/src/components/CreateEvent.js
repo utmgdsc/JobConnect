@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import EventService from "../services/EventServices";
+import EmployerService from "../services/EmployerService";
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { userType } from "../lib/isAuth";
 import axios from "axios";
 import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
@@ -32,6 +32,26 @@ function CreateEvent() {
         accessibilityOptions: "",
         speakers: "",
         sponsors: "",
+    });
+
+    const [employer, setEmployer] = useState({
+        company: "",
+        email: "",
+        password: "",
+        description: "",
+        category: "",
+        website: "",
+        phone: "",
+        location: "",
+        reviews: [
+            {
+                rating: 0,
+                review: "",
+            },
+        ],
+        jobs: [],
+        assets: [],
+        events: [],
     });
 
     const { id } = useParams();
@@ -67,7 +87,14 @@ function CreateEvent() {
                     },
                 })
                 .then((response) => {
-                    console.log(response.data);
+                    setEvent((prevEvent) => {
+                        return {
+                            ...prevEvent,
+                            eventOwner: response.data._id,
+                            organizer: response.data.company,
+                        };
+                    });
+                    setEmployer(response.data);
                 })
                 .catch((err) => {
                     console.log(err.response.data);
@@ -128,6 +155,9 @@ function CreateEvent() {
             }
             else {
                 res = await EventService.createEvent(event);
+                const events = employer.events;
+                events.push(res._id);
+                await EmployerService.addEmployerInfo(employer._id, { events });
             }
             navigate(`/event/${id ? id : res._id}`)
                 .then(() => {
@@ -165,7 +195,7 @@ function CreateEvent() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Organizer:</label>
-                    <input required type="text" name="organizer" value={event.organizer} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="organizer" value={event.organizer} onChange={handleChange} className="form-control" disabled />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Event Type:</label>
