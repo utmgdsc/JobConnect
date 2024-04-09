@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import EmployerService from "../services/EmployerService";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
 
 function EmployerProfile() {
@@ -15,9 +17,19 @@ function EmployerProfile() {
 		website: "",
 		phone: "",
 		location: "",
+		reviews: [
+			{
+				rating: 0,
+				review: "",
+			},
+		],
+		jobs: [],
+		assets: [],
+		events: [],
 	});
 
 	const { id } = useParams();
+	const { navigate } = useNavigate();
 
 	useEffect(() => {
 		const fetchEmployer = async () => {
@@ -33,6 +45,24 @@ function EmployerProfile() {
 		if (id) {
 			fetchEmployer();
 		}
+
+		const getData = () => {
+			axios
+				.get(apiList.user, {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+					},
+				})
+				.then((response) => {
+					navigate(`/employer/${response.data._id}`);
+				})
+				.catch((err) => {
+					console.log(err.response?.data);
+				});
+		};
+
+		getData()
+
 	}, [id]);
 
 	function handleChange(event) {

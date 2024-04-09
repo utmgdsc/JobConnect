@@ -33,7 +33,7 @@ function EventDetails() {
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                const data = await EventService.getEvent(id);
+                const data = await EventService.getEventById(id);
                 setEvent(data); // Assuming data is the event seeker's information
             } catch (error) {
                 console.error("Failed to fetch event details:", error);

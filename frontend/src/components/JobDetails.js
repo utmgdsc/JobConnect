@@ -55,7 +55,7 @@ function JobDetails() {
                         }
                     </div>
                     <h5>{job.jobType}</h5>
-                    {job.salary && job.salary > 0 &&
+                    {job.salary &&
                         <h5>${job.salary}</h5>
                     }
                 </div>
