@@ -9,11 +9,10 @@ const Chat = () => {
     return (
         <Container>
             <h1>
-                Email:  {user?.email} -----{" "}
-                {!user?.isVerified ? (
+                {(user?.data.isVerified) ? (
                     <span className="verified">verified</span>
                 ) : (
-                    <span className="not-verified">Not verified</span>
+                    <span className="not-verified">Verification email has been sent to {user?.data.email} </span>
                 )}
             </h1>
         </Container>
