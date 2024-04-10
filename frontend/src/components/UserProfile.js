@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import jobSeekersService from "../services/jobSeekersService";
+import JobPostingsService from "../services/jobPostingsService";
+import AssetPostingsService from "../services/AssetPostingsService";
+import EventService from "../services/EventServices";
 import { useParams } from "react-router-dom"; // Import useParams
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -197,6 +200,43 @@ function UserProfile() {
     }
   }
 
+  async function deleteAccount(id) {
+    jobSeeker.applicationHistory.forEach(async (application) => {
+      try {
+        const job = await JobPostingsService.getJobPostingById(application.jobPosting)
+        const applicants = job.applicants.filter(applicant => applicant.jobSeeker !== id)
+        await JobPostingsService.updateJobPosting(application.jobPosting, { applicants })
+      } catch (error) {
+        console.error("Failed to find job posting:", error);
+      }
+      try {
+        const asset = await AssetPostingsService.getAssetPostingById(application.jobPosting)
+        const applicants = asset.applicants.filter(applicant => applicant !== id)
+        await AssetPostingsService.updateAssetPosting(application.jobPosting, { applicants })
+      } catch (error) {
+        console.error("Failed to find asset posting:", error);
+      }
+      try {
+        const event = await EventService.getEventById(application.jobPosting)
+        const applicants = event.registrants.filter(registrant => registrant !== id)
+        await EventService.updateEvent(application.jobPosting, { applicants })
+      } catch (error) {
+        console.error("Failed to find event posting:", error);
+      }
+    });
+    try {
+      await jobSeekersService.deleteJobSeeker(id)
+        .then(() => {
+          toast.success("Successfully deleted account!");
+        })
+        .catch(error => {
+          toast.error("Failed to delete account.");
+        });
+    } catch (error) {
+      console.error("Failed to delete job seeker:", error);
+    }
+  }
+
   return (
     <div className="container rounded bg-white py-4 mt-5 mb-5 border border-1">
       <ToastContainer
@@ -217,10 +257,44 @@ function UserProfile() {
             <img className="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="profile pic" />
             <span className="font-weight-bold">{jobSeeker.personalInformation.name}</span>
             <span className="text-black-50">{jobSeeker.personalInformation.username}</span>
-            <span> </span>
             <div className="text-center">
               <button className="btn btn-primary profile-button mt-4" form="save" type="submit">Save Profile</button>
             </div>
+            <div className="text-center">
+              <button className="btn btn-danger profile-button"
+                data-bs-toggle="modal"
+                data-bs-target={`#deleteModal${id}`}
+              >
+                Delete Account
+              </button>
+            </div>
+
+            {/* Modal for delete */}
+            <div className="modal fade" id={`deleteModal${id}`} tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="deleteModalLabel">Delete Account</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div className="modal-body">
+                    Are you sure you want to delete this account? This action cannot be undone.
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => deleteAccount(id)}
+                      data-bs-dismiss="modal"
+                    >
+                      Delete Account
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
