@@ -16,7 +16,7 @@ const applicationSchema = new mongoose.Schema({
         required: false
     },
     location: {
-        streetAddress: String,
+        address: String,
         city: String,
         state: String,
         postalCode: String

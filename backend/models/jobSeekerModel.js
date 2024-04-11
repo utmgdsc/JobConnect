@@ -21,10 +21,6 @@ const jobSeekerSchema = mongoose.Schema({
             type: String,
             required: false
         },
-        address: {
-            type: String,
-            required: false
-        },
     },
     professionalProfile: {
         experience: [{
@@ -64,7 +60,7 @@ const jobSeekerSchema = mongoose.Schema({
         }
     },
     location: {
-        streetAddress: String,
+        address: String,
         city: String,
         state: String,
         postalCode: String

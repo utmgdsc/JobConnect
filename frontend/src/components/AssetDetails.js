@@ -6,6 +6,7 @@ import "../App.css"; // Import the new CSS styles
 
 function AssetDetails() {
     const [asset, setAsset] = useState({
+        _id: "",
         owner: "",
         title: "",
         assetType: "",
@@ -77,9 +78,10 @@ function AssetDetails() {
                 <div className="px-4">
                     <button
                         className="btn btn-primary btn-md"
-                        onClick={() => navigate(`/application/`)}
+                        onClick={() => navigate(`/apply-asset/${asset._id}`)
+                        }
                     >
-                        Contact
+                        Rent asset
                     </button>
                 </div>
             </div>

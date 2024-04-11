@@ -44,7 +44,7 @@ const ApplyAsset = () => {
         updatedAsset.applicants.push(currentUser._id);
         console.log(currentUser._id, 'currentUser._id');
         console.log(assetId, 'assetId');
-        await AssetPostingsService.updateAsset(assetId, updatedAsset);
+        await AssetPostingsService.updateAssetPosting(assetId, updatedAsset);
 
         // Fetch current job seeker and update application history
         const user = await jobSeekersService.getJobSeeker(currentUser._id);
@@ -55,7 +55,7 @@ const ApplyAsset = () => {
             status: 'Applied'
           };
           user.applicationHistory.push(applicationData);
-          await jobSeekersService.addInfo(currentUser._id, { applicationHistory: user.applicationHistory });
+          await jobSeekersService.updateJobSeeker(currentUser._id, { applicationHistory: user.applicationHistory });
 
           // Notify user of successful application
           toast.success("Application Submitted", {
@@ -67,7 +67,8 @@ const ApplyAsset = () => {
             draggable: true,
             progress: undefined,
             theme: "dark",
-          });        } else {
+          });
+        } else {
           console.error('Error fetching current user');
         }
       } catch (error) {
@@ -91,17 +92,17 @@ const ApplyAsset = () => {
     <div className="apply-asset-container">
       <Navbar />
       <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <h2 className="apply-asset-title">Asset Details Overview</h2>
 
       {/* Asset Details Section */}
@@ -118,7 +119,7 @@ const ApplyAsset = () => {
         <p><span>Email:</span> {currentUser.personalInformation.contactDetails.email}</p>
         <p><span>Phone:</span> {currentUser.personalInformation.contactDetails.phone}</p>
         {/* Link to user's profile */}
-        <Link to="/user" className="profile-link">View Profile</Link>
+        <Link to={`/user/${currentUser._id}`} className="profile-link">View Profile</Link>
       </div>
 
       {/* Action Section */}

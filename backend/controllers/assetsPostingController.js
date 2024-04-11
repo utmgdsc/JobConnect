@@ -73,21 +73,18 @@ const deleteAssetPosting = async (req, res) => {
 // update an asset posting by ID
 const updateAssetPosting = async (req, res) => {
     const { id } = req.params;
-    const { assetProvider, owner, title, assetType, location, availability, condition, details, benefits, applicants, price } = req.body;
+    const updates = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send('Please input a valid id!');
     }
 
     try {
-        const updatedAssetPosting = await AssetPosting.findByIdAndUpdate(id, {
-            assetType,
-            location,
-            availability,
-            details,
-            benefits,
-            applicants // Include applicants in the update
-        }, { new: true });
+        const updatedAssetPosting = await AssetPosting.findOneAndUpdate(
+            { _id: id },
+            { $set: updates },
+            { new: true, runValidators: false }
+        );
 
         if (!updatedAssetPosting) {
             return res.status(404).send('Asset posting not found');

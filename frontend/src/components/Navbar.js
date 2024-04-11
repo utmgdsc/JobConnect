@@ -75,6 +75,13 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
+              {type && type === "applicant" && (
+                <li className="nav-item">
+                  <Link to={`/applicant-dashboard/${id}`} className="nav-link">
+                    Dashboard
+                  </Link>
+                </li>
+              )}
               {type && type === "employer" && (
                 <li className="nav-item">
                   <Link to={`/manage-postings/${id}`} className="nav-link">

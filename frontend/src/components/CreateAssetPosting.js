@@ -75,8 +75,8 @@ function CreateAssetPosting() {
                     setAssetPosting((prevAssetPosting) => {
                         return {
                             ...prevAssetPosting,
-                            assetProvider: response.data._id,
-                            owner: response.data.company,
+                            assetProvider: response?.data?._id || id,
+                            owner: response?.data?.company || assetPosting.owner
                         };
                     });
                     setEmployer(response.data);
@@ -158,6 +158,8 @@ function CreateAssetPosting() {
             console.error("Failed to create asset posting:", error);
         };
     }
+
+    console.log(assetPosting);
 
     return (
         <section className="container rounded bg-white p-4 mt-5 mb-5 border border-1">

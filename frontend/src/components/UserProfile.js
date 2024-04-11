@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import jobSeekersService from "../services/jobSeekersService";
 import JobPostingsService from "../services/jobPostingsService";
 import AssetPostingsService from "../services/AssetPostingsService";
+import ApplicationsService from "../services/applicationService";
 import EventService from "../services/EventServices";
 import { useParams } from "react-router-dom"; // Import useParams
 import { ToastContainer, toast } from "react-toastify";
@@ -23,7 +24,8 @@ function UserProfile() {
     applicationHistory: [],
     eventRegistrations: [],
   });
-
+  const [applications, setApplications] = useState([])
+  const [jobs, setJobs] = useState([])
   const [skills, setSkills] = useState("")
   const { id } = useParams();
 
@@ -43,6 +45,23 @@ function UserProfile() {
       fetchJobSeeker();
     }
   }, [id]);
+
+  useEffect(() => {
+    try {
+      if (applications.length === 0 && jobs.length === 0 && jobSeeker.applicationHistory.length > 0) {
+        jobSeeker.applicationHistory.map(async (application) => {
+          const app = await ApplicationsService.getApplicationByID(application)
+          const job = await JobPostingsService.getJobPostingById(app.jobPosting)
+          if (applications.length <= jobSeeker.applicationHistory.length && jobs.length <= jobSeeker.applicationHistory.length) {
+            setApplications((prevApplications) => [...prevApplications, app])
+            setJobs((prevJobs) => [...prevJobs, job])
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    }
+  }, [jobSeeker]);
 
   function handlePersonalInformationChange(name, value, prevJobSeeker) {
     return {
@@ -109,6 +128,7 @@ function UserProfile() {
   function handleChange(event) {
     const { name, value, } = event.target;
     setJobSeeker((prevJobSeeker) => {
+      console.log(prevJobSeeker.personalInformation);
       if (name in prevJobSeeker.personalInformation) {
         return handlePersonalInformationChange(name, value, prevJobSeeker);
       } else if (name in prevJobSeeker.personalInformation.contactDetails) {
@@ -203,23 +223,26 @@ function UserProfile() {
   async function deleteAccount(id) {
     jobSeeker.applicationHistory.forEach(async (application) => {
       try {
-        const job = await JobPostingsService.getJobPostingById(application.jobPosting)
-        const applicants = job.applicants.filter(applicant => applicant.jobSeeker !== id)
-        await JobPostingsService.updateJobPosting(application.jobPosting, { applicants })
+        const app = await ApplicationsService.getApplication(application);
+        const job = await JobPostingsService.getJobPostingById(app.jobPosting)
+        const newApplicants = job.applicants.filter(applicant => applicant !== id)
+        console.log(newApplicants);
+        await JobPostingsService.updateJobPosting(application.jobPosting, { applicants: newApplicants })
       } catch (error) {
         console.error("Failed to find job posting:", error);
       }
       try {
-        const asset = await AssetPostingsService.getAssetPostingById(application.jobPosting)
-        const applicants = asset.applicants.filter(applicant => applicant !== id)
-        await AssetPostingsService.updateAssetPosting(application.jobPosting, { applicants })
+        const app = await ApplicationsService.getApplication(application);
+        const asset = await AssetPostingsService.getAssetPostingById(app.jobPosting)
+        const newApplicants = asset.applicants.filter(applicant => applicant !== id)
+        await AssetPostingsService.updateAssetPosting(application.jobPosting, { applicants: newApplicants })
       } catch (error) {
         console.error("Failed to find asset posting:", error);
       }
       try {
-        const event = await EventService.getEventById(application.jobPosting)
-        const applicants = event.registrants.filter(registrant => registrant !== id)
-        await EventService.updateEvent(application.jobPosting, { applicants })
+        const event = await EventService.getEventById(application.eventRegistrations)
+        const newApplicants = event.registrants.filter(registrant => registrant !== id)
+        await EventService.updateEvent(application.eventRegistrations, { applicants: newApplicants })
       } catch (error) {
         console.error("Failed to find event posting:", error);
       }
@@ -330,7 +353,7 @@ function UserProfile() {
                 <div className="row mt-2">
                   <div className="col-md-6">
                     <label className="labels">Address</label>
-                    <input type="text" className="form-control" placeholder="Street Address" onChange={handleChange} name="streetAddress" value={jobSeeker.location?.streetAddress} />
+                    <input type="text" className="form-control" placeholder="Street Address" onChange={handleChange} name="address" value={jobSeeker.location?.address} />
                   </div>
                   <div className="col-md-6">
                     <label className="labels">City</label>
@@ -497,19 +520,19 @@ function UserProfile() {
           </div>
           <div className="col-md-12">
             <ul className="application-history">
-              {jobSeeker.applicationHistory.length > 0
-                ? jobSeeker.applicationHistory.map((application) => (
-                  <li key={application._id}>
-                    <p>Job Title: {application.jobTitle}</p>
-                    <p>Company: {application.company}</p>
+              {jobSeeker.applicationHistory.length > 0 ?
+                applications.map((app, i) => (
+                  <li key={app._id}>
+                    <p>Job Title: {jobs[i].jobTitle}</p>
+                    <p>Company: {jobs[i].company}</p>
                     <p>
                       Apply Date:{" "}
-                      {new Date(application.applyDate).toLocaleDateString()}
+                      {new Date(app.createdAt).toLocaleDateString()}
                     </p>
-                    <p>Status: {application.status}</p>
+                    <p>Status: {app.status}</p>
                   </li>
                 ))
-                : <p className="text-center">None</p>}
+                : "None"}
             </ul>
           </div>
         </div>
