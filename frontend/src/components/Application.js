@@ -82,7 +82,6 @@ const Application = () => {
         experience,
         status: "Pending",
       };
-      console.log(application._id);
 
       await applicationService.addApplication(application);
 
@@ -242,7 +241,7 @@ const Application = () => {
         {file && <span className="application-file-name">{file.name}</span>}
       </div>
       <div className="mb-3 form-check">
-        <input type="checkbox" className="form-check-input" id="termsAccepted" checked={termsAccepted} onChange={handleTermsAcceptance} />
+        <input type="checkbox" className="form-check-input" id="termsAccepted" checked={termsAccepted} onChange={handleTermsAcceptance} required />
         <label className="form-check-label" for="exampleCheck1">I agree to the terms and conditions.</label>
       </div>
       <div className="application-action">

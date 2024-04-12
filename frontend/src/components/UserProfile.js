@@ -26,7 +26,7 @@ function UserProfile() {
     eventRegistrations: [],
   });
   const [applications, setApplications] = useState([])
-  const [jobs, setJobs] = useState([])
+  const [postings, setPostings] = useState([])
   const [events, setEvents] = useState([])
   const [skills, setSkills] = useState("")
   const { id } = useParams();
@@ -50,13 +50,18 @@ function UserProfile() {
 
   const fetchApplications = async () => {
     try {
-      if (applications.length === 0 && jobs.length === 0 && jobSeeker.applicationHistory.length > 0) {
+      if (applications.length === 0 && postings.length === 0 && jobSeeker.applicationHistory.length > 0) {
         jobSeeker.applicationHistory.map(async (application) => {
           const app = await ApplicationsService.getApplicationByID(application)
-          const job = await JobPostingsService.getJobPostingById(app.jobPosting)
-          if (applications.length < jobSeeker.applicationHistory.length && jobs.length < jobSeeker.applicationHistory.length) {
+          let posting = {}
+          try {
+            posting = await JobPostingsService.getJobPostingById(app.jobPosting)
+          } catch (error) {
+            posting = await AssetPostingsService.getAssetPostingById(app.assetPosting)
+          }
+          if (applications.length < jobSeeker.applicationHistory.length && postings.length < jobSeeker.applicationHistory.length) {
             setApplications((prevApplications) => [...prevApplications, app])
-            setJobs((prevJobs) => [...prevJobs, job])
+            setPostings((prevPostings) => [...prevPostings, posting])
           }
         })
       }
@@ -81,7 +86,7 @@ function UserProfile() {
   }
 
   useEffect(() => {
-    if (jobSeeker?.applicationHistory?.length > 0 && applications.length === 0 && jobs.length === 0) {
+    if (jobSeeker?.applicationHistory?.length > 0 && applications.length === 0 && postings.length === 0) {
       fetchApplications()
     }
     if (jobSeeker?.eventRegistrations?.length > 0 && events.length === 0) {
@@ -249,20 +254,19 @@ function UserProfile() {
     jobSeeker.applicationHistory.forEach(async (applicationId) => {
       try {
         const app = await ApplicationsService.getApplicationByID(applicationId);
-        console.log(app);
         const job = await JobPostingsService.getJobPostingById(app.jobPosting)
-        console.log(job);
-        const newApplicants = job.applicants.filter(applicant => applicant !== id)
-        console.log(newApplicants);
-        await JobPostingsService.updateJobPosting(app.jobPosting, { applicants: newApplicants })
+        const newApplicants = job.applicants.filter(applicant => applicant !== applicationId)
+        await JobPostingsService.updateJobPosting(job._id, { applicants: newApplicants })
+        await ApplicationsService.deleteApplication(applicationId)
       } catch (error) {
         console.error("Failed to find job posting:", error);
       }
       try {
         const app = await ApplicationsService.getApplicationByID(applicationId);
         const asset = await AssetPostingsService.getAssetPostingById(app.assetPosting)
-        const newApplicants = asset.applicants.filter(applicant => applicant !== id)
-        await AssetPostingsService.updateAssetPosting(app.jobPosting, { applicants: newApplicants })
+        const newApplicants = asset.applicants.filter(applicant => applicant !== applicationId)
+        await AssetPostingsService.updateAssetPosting(asset._id, { applicants: newApplicants })
+        await ApplicationsService.deleteApplication(applicationId)
       } catch (error) {
         console.error("Failed to find asset posting:", error);
       }
@@ -551,8 +555,10 @@ function UserProfile() {
                 {jobSeeker.applicationHistory.length > 0 ?
                   applications.map((app, i) => (
                     <li key={app._id}>
-                      <p>Job Title: {jobs[i].jobTitle}</p>
-                      <p>Company: {jobs[i].company}</p>
+                      {postings[i].company && <p>Company: {postings[i].company}</p>}
+                      {postings[i].jobTitle && <p>Job Title: {postings[i].jobTitle}</p>}
+                      {postings[i].owner && <p>Owner: {postings[i].owner}</p>}
+                      {postings[i].title && <p>Asset: {postings[i].title}</p>}
                       <p>
                         Apply Date:{" "}
                         {new Date(app.createdAt).toLocaleDateString()}

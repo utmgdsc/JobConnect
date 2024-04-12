@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import AssetPostingsService from '../services/AssetPostingsService';
 import jobSeekersService from '../services/jobSeekersService';
+import applicationService from "../services/applicationService";
 import '../ApplyAsset.css';
 import Navbar from './Navbar';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ApplyAsset = () => {
+  const navigate = useNavigate();
   const { assetId } = useParams();
   const [assetDetails, setAssetDetails] = useState(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -37,43 +39,81 @@ const ApplyAsset = () => {
   };
 
   const handleApplyNow = async () => {
-    if (termsAccepted && currentUser && assetDetails) {
-      try {
-        // Update asset posting with applicant's ID
-        const updatedAsset = { ...assetDetails };
-        updatedAsset.applicants.push(currentUser._id);
-        console.log(currentUser._id, 'currentUser._id');
-        console.log(assetId, 'assetId');
-        await AssetPostingsService.updateAssetPosting(assetId, updatedAsset);
+    // if (termsAccepted && currentUser && assetDetails) {
+    //   try {
+    //     // Update asset posting with applicant's ID
+    //     const updatedAsset = { ...assetDetails };
+    //     updatedAsset.applicants.push(currentUser._id);
+    //     console.log(currentUser._id, 'currentUser._id');
+    //     console.log(assetId, 'assetId');
+    //     await AssetPostingsService.updateAssetPosting(assetId, updatedAsset);
 
-        // Fetch current job seeker and update application history
-        const user = await jobSeekersService.getJobSeeker(currentUser._id);
-        if (user) {
-          const applicationData = {
-            assetPosting: assetId,
-            applyDate: new Date(),
-            status: 'Applied'
-          };
-          user.applicationHistory.push(applicationData);
-          await jobSeekersService.updateJobSeeker(currentUser._id, { applicationHistory: user.applicationHistory });
+    //     // Fetch current job seeker and update application history
+    //     const user = await jobSeekersService.getAssetSeeker(currentUser._id);
+    //     if (user) {
+    //       const applicationData = {
+    //         assetPosting: assetId,
+    //         applyDate: new Date(),
+    //         status: 'Applied'
+    //       };
+    //       console.log(user);
+    //       user.applicationHistory.push(applicationData);
+    //       console.log(user.applicationHistory, 'user.applicationHistory');
+    //       await jobSeekersService.updateAssetSeeker(currentUser._id, { applicationHistory: user.applicationHistory });
 
-          // Notify user of successful application
-          toast.success("Application Submitted", {
-            position: "bottom-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        } else {
-          console.error('Error fetching current user');
-        }
-      } catch (error) {
-        console.error('Error submitting application:', error);
-      }
+    //       // Notify user of successful application
+    //       toast.success("Application Submitted", {
+    //         position: "bottom-left",
+    //         autoClose: 5000,
+    //         hideProgressBar: false,
+    //         closeOnClick: true,
+    //         pauseOnHover: true,
+    //         draggable: true,
+    //         progress: undefined,
+    //         theme: "dark",
+    //       });
+    //     } else {
+    //       console.error('Error fetching current user');
+    //     }
+    //   } catch (error) {
+    //     console.error('Error submitting application:', error);
+    //   }
+    // }
+
+    if (termsAccepted && assetDetails && currentUser) {
+      const application = {
+        assetPosting: assetDetails._id,
+        jobSeeker: currentUser._id,
+        status: "Accepted",
+      };
+
+      await applicationService.addApplication(application);
+
+      const app = await applicationService.getApplications();
+      //grab the latest application
+      const latestApplication = app[app.length - 1];
+
+      const updatedApplications = [...currentUser.applicationHistory];
+      updatedApplications.push(latestApplication._id);
+      await jobSeekersService.addInfo(currentUser._id, { applicationHistory: updatedApplications });
+
+      // update asset posting with the new application
+      const updatedApplicants = [...assetDetails.applicants];
+      updatedApplicants.push(latestApplication._id);
+      await AssetPostingsService.updateAssetPosting(assetDetails._id, { applicants: updatedApplicants });
+
+      navigate("/")
+
+      toast.success("Application Submitted Successfully!", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     } else {
       alert('Please accept the terms and make sure you are logged in to apply.');
     }
@@ -131,6 +171,7 @@ const ApplyAsset = () => {
             className="apply-asset-checkbox"
             checked={termsAccepted}
             onChange={handleTermsAcceptance}
+            required
           />
           <label htmlFor="termsAccepted">
             I am above 16 years old and agree to the terms and conditions.

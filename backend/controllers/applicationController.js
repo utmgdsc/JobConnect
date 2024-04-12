@@ -24,13 +24,15 @@ const createApplication = asyncHandler(async (req, res) => {
 });
 
 const deleteApplication = asyncHandler(async (req, res) => {
-    const application = await Application.findById(req.params.id);
-    if (application) {
-        await application.remove();
-        res.json({ message: 'Application removed' });
-    } else {
-        res.status(404);
-        throw new Error('Application not found');
+    try {
+        const app = await Application.findOneAndDelete({ "_id": req.params.id });
+        if (app) {
+            res.status(200).json({ message: 'Application deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Application not found' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Error deleting app' });
     }
 });
 
