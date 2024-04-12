@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
     .save()
     .then(() => {
       const userDetails =
-        user.type == "employer"
+        user.type === "employer"
           ? new employer({
             userId: user._id,
             company: data.name,

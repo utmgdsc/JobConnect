@@ -50,7 +50,7 @@ const ApplyAsset = () => {
         const user = await jobSeekersService.getJobSeeker(currentUser._id);
         if (user) {
           const applicationData = {
-            jobPosting: assetId,
+            assetPosting: assetId,
             applyDate: new Date(),
             status: 'Applied'
           };

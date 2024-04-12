@@ -54,7 +54,7 @@ function JobSeekerFetcher() {
                     return `${exp.title} at ${exp.company}, from ${startDate}, ${exp.description}`;
                   })
                   .join("; ")
-                : "None"}
+                : <h3 className="text-center">None</h3>}
             </p>
             <p>
               Education:{" "}
@@ -67,15 +67,22 @@ function JobSeekerFetcher() {
                     return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startDate}, ${edu.endDate}`;
                   })
                   .join("; ")
-                : "None"}
+                : <h3 className="text-center">None</h3>}
             </p>
           </div>
 
           <div className="section">
             <h3>Job Preferences</h3>
-            <p>Desired Industry: {jobSeeker.jobPreferences.desiredIndustry}</p>
-            <p>Location: {jobSeeker.jobPreferences.location}</p>
-            <p>Job Type: {jobSeeker.jobPreferences.jobType}</p>
+            <p>Desired Industry: {jobSeeker.jobPreferences?.desiredIndustry}</p>
+            <p>Job Type: {jobSeeker.jobPreferences?.jobType}</p>
+          </div>
+
+          <div className="section">
+            <h3>Location</h3>
+            <p>Address: {jobSeeker.location?.address}</p>
+            <p>City: {jobSeeker.location?.city}</p>
+            <p>Province: {jobSeeker.location?.province}</p>
+            <p>Postal Code: {jobSeeker.location?.postalCode}</p>
           </div>
 
           <div className="section">
@@ -93,7 +100,7 @@ function JobSeekerFetcher() {
                     <p>Status: {application.status}</p>
                   </li>
                 ))
-                : "None"}
+                : <h3 className="text-center">None</h3>}
             </ul>
           </div>
         </>

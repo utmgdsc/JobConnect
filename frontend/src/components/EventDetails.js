@@ -55,7 +55,7 @@ function EventDetails() {
                     </div>
                     <div className="d-flex">
                         {event.organizer &&
-                            <h3>{event.organizer}</h3>
+                            <h3><a href={`/employer-dashboard/${event._id}`}>{event.organizer}</a></h3>
                         }
                         {event.location &&
                             <h5 className="ms-auto">{event.location}</h5>

@@ -47,7 +47,7 @@ function AssetDetails() {
                     </div>
                     <div className="d-flex">
                         {asset.owner &&
-                            <h3>{asset.owner}</h3>
+                            <h3><a href={`/employer-dashboard/${asset._id}`}>{asset.owner}</a></h3>
                         }
                         {asset.location &&
                             <h5 className="ms-auto">{asset.location}</h5>

@@ -14,6 +14,7 @@ import Application from "./components/Application";
 import EmployerProfile from "./components/EmployerProfile";
 import UserProfile from "./components/UserProfile";
 import ProfileDashboard from "./components/ProfileDashboard";
+import EmployerDashboard from "./components/EmployerDashboard";
 import ApplicantsList from "./components/ApplicantsList";
 import Jobs from "./components/Jobs";
 import AssetPostings from "./components/AssetPostings";
@@ -53,6 +54,7 @@ function App() {
             <Route path="/employer/:id" element={<EmployerProfile />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/applicant-dashboard/:id" element={<ProfileDashboard />} />
+            <Route path="/employer-dashboard/:id" element={<EmployerDashboard />} />
             <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/assets" element={<AssetPostings />} />

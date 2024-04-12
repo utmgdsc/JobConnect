@@ -71,6 +71,7 @@ const Application = () => {
     if (termsAccepted && jobDetails && currentUser) {
       const resume = allImages[allImages.length - 1];
 
+
       const application = {
         jobPosting: jobDetails._id,
         jobSeeker: currentUser._id,
@@ -81,11 +82,12 @@ const Application = () => {
         experience,
         status: "Pending",
       };
+      console.log(application._id);
 
       await applicationService.addApplication(application);
 
       submitImage();
-      const app = await applicationService.getApplication(application._id);
+      const app = await applicationService.getApplications();
       //grab the latest application
       const latestApplication = app[app.length - 1];
 

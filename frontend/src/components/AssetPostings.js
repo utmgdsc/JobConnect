@@ -73,6 +73,7 @@ const AssetPostings = () => {
                 <h3>{posting.title}</h3>
               </div>
               <div className="card-body">
+                <p>Posted by: <a href={`/employer-dashboard/${posting._id}`}>{posting.company}</a></p>
                 <p>Location: {posting.location}</p>
                 <p>Type: {posting.assetType}</p>
                 {posting.condition && <p>Condition: {posting.condition}</p>}

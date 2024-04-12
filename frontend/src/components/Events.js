@@ -90,7 +90,7 @@ const Events = () => {
                 &#9660;
               </span>
             </div>
-            <p>Organized by: {event.organizer}</p>
+            <p>Organized by: <a href={`/employer-dashboard/${event._id}`}>{event.organizer}</a></p>
             <p>{event.location}</p>
             <p>Type: {event.eventType}</p>
             {expandedEventId === event._id && (

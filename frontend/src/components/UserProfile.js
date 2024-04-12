@@ -457,7 +457,7 @@ function UserProfile() {
                         </div>
                       </li>
                     ))
-                    : "None"}
+                    : <h3 className="text-center">None</h3>}
                 </ul>
               </div>
             </div>
@@ -507,7 +507,7 @@ function UserProfile() {
                         </div>
                       </li>
                     ))
-                    : "None"}
+                    : <h3 className="text-center">None</h3>}
                 </ul>
               </div>
             </div>
@@ -532,7 +532,7 @@ function UserProfile() {
                     <p>Status: {app.status}</p>
                   </li>
                 ))
-                : "None"}
+                : <h3 className="text-center">None</h3>}
             </ul>
           </div>
         </div>
