@@ -39,47 +39,6 @@ const ApplyAsset = () => {
   };
 
   const handleApplyNow = async () => {
-    // if (termsAccepted && currentUser && assetDetails) {
-    //   try {
-    //     // Update asset posting with applicant's ID
-    //     const updatedAsset = { ...assetDetails };
-    //     updatedAsset.applicants.push(currentUser._id);
-    //     console.log(currentUser._id, 'currentUser._id');
-    //     console.log(assetId, 'assetId');
-    //     await AssetPostingsService.updateAssetPosting(assetId, updatedAsset);
-
-    //     // Fetch current job seeker and update application history
-    //     const user = await jobSeekersService.getAssetSeeker(currentUser._id);
-    //     if (user) {
-    //       const applicationData = {
-    //         assetPosting: assetId,
-    //         applyDate: new Date(),
-    //         status: 'Applied'
-    //       };
-    //       console.log(user);
-    //       user.applicationHistory.push(applicationData);
-    //       console.log(user.applicationHistory, 'user.applicationHistory');
-    //       await jobSeekersService.updateAssetSeeker(currentUser._id, { applicationHistory: user.applicationHistory });
-
-    //       // Notify user of successful application
-    //       toast.success("Application Submitted", {
-    //         position: "bottom-left",
-    //         autoClose: 5000,
-    //         hideProgressBar: false,
-    //         closeOnClick: true,
-    //         pauseOnHover: true,
-    //         draggable: true,
-    //         progress: undefined,
-    //         theme: "dark",
-    //       });
-    //     } else {
-    //       console.error('Error fetching current user');
-    //     }
-    //   } catch (error) {
-    //     console.error('Error submitting application:', error);
-    //   }
-    // }
-
     if (termsAccepted && assetDetails && currentUser) {
       const application = {
         assetPosting: assetDetails._id,
