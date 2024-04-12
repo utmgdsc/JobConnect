@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
     .save()
     .then(() => {
       const userDetails =
-        user.type == "employer"
+        user.type === "employer"
           ? new employer({
             userId: user._id,
             company: data.name,
@@ -74,10 +74,12 @@ exports.register = async (req, res) => {
           : new JobSeeker({
             userId: user._id,
             personalInformation: {
-              name: data.name,
+              name: data.name || "",
+              age: 0,
+              username: "",
               contactDetails: {
-                email: data.email,
-                phone: data.phone
+                email: data.email || "",
+                phone: data.phone || "",
               },
               jobPreferences: {
                 desiredIndustry: "",

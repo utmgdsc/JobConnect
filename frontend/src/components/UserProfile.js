@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import jobSeekersService from "../services/jobSeekersService";
+import JobPostingsService from "../services/jobPostingsService";
+import AssetPostingsService from "../services/AssetPostingsService";
+import EventServices from "../services/EventServices";
+import ApplicationsService from "../services/applicationService";
+import EventService from "../services/EventServices";
 import { useParams } from "react-router-dom"; // Import useParams
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,7 +25,9 @@ function UserProfile() {
     applicationHistory: [],
     eventRegistrations: [],
   });
-
+  const [applications, setApplications] = useState([])
+  const [postings, setPostings] = useState([])
+  const [events, setEvents] = useState([])
   const [skills, setSkills] = useState("")
   const { id } = useParams();
 
@@ -40,6 +47,52 @@ function UserProfile() {
       fetchJobSeeker();
     }
   }, [id]);
+
+  const fetchApplications = async () => {
+    try {
+      if (applications.length === 0 && postings.length === 0 && jobSeeker.applicationHistory.length > 0) {
+        jobSeeker.applicationHistory.map(async (application) => {
+          const app = await ApplicationsService.getApplicationByID(application)
+          let posting = {}
+          try {
+            posting = await JobPostingsService.getJobPostingById(app.jobPosting)
+          } catch (error) {
+            posting = await AssetPostingsService.getAssetPostingById(app.assetPosting)
+          }
+          if (applications.length < jobSeeker.applicationHistory.length && postings.length < jobSeeker.applicationHistory.length) {
+            setApplications((prevApplications) => [...prevApplications, app])
+            setPostings((prevPostings) => [...prevPostings, posting])
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    }
+  }
+
+  const fetchEvents = async () => {
+    try {
+      if (events.length === 0 && jobSeeker.eventRegistrations.length > 0) {
+        jobSeeker.eventRegistrations.map(async (event) => {
+          const e = await EventService.getEventById(event)
+          if (events.length < jobSeeker.eventRegistrations.length) {
+            setEvents((prevEvents) => [...prevEvents, e])
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (jobSeeker?.applicationHistory?.length > 0 && applications.length === 0 && postings.length === 0) {
+      fetchApplications()
+    }
+    if (jobSeeker?.eventRegistrations?.length > 0 && events.length === 0) {
+      fetchEvents()
+    }
+  }, [jobSeeker]);
 
   function handlePersonalInformationChange(name, value, prevJobSeeker) {
     return {
@@ -197,6 +250,49 @@ function UserProfile() {
     }
   }
 
+  async function deleteAccount(id) {
+    jobSeeker.applicationHistory.forEach(async (applicationId) => {
+      try {
+        const app = await ApplicationsService.getApplicationByID(applicationId);
+        const job = await JobPostingsService.getJobPostingById(app.jobPosting)
+        const newApplicants = job.applicants.filter(applicant => applicant !== applicationId)
+        await JobPostingsService.updateJobPosting(job._id, { applicants: newApplicants })
+        await ApplicationsService.deleteApplication(applicationId)
+      } catch (error) {
+        console.error("Failed to find job posting:", error);
+      }
+      try {
+        const app = await ApplicationsService.getApplicationByID(applicationId);
+        const asset = await AssetPostingsService.getAssetPostingById(app.assetPosting)
+        const newApplicants = asset.applicants.filter(applicant => applicant !== applicationId)
+        await AssetPostingsService.updateAssetPosting(asset._id, { applicants: newApplicants })
+        await ApplicationsService.deleteApplication(applicationId)
+      } catch (error) {
+        console.error("Failed to find asset posting:", error);
+      }
+    });
+    jobSeeker.eventRegistrations.forEach(async (eventId) => {
+      try {
+        const event = await EventService.getEventById(eventId)
+        const newApplicants = event.registrants.filter(registrant => registrant !== id)
+        await EventService.updateEvent(eventId, { registrants: newApplicants })
+      } catch (error) {
+        console.error("Failed to find event posting:", error);
+      }
+    });
+    // try {
+    //   await jobSeekersService.deleteJobSeeker(id)
+    //     .then(() => {
+    //       toast.success("Successfully deleted account!");
+    //     })
+    //     .catch(error => {
+    //       toast.error("Failed to delete account.");
+    //     });
+    // } catch (error) {
+    //   console.error("Failed to delete job seeker:", error);
+    // }
+  }
+
   return (
     <div className="container rounded bg-white py-4 mt-5 mb-5 border border-1">
       <ToastContainer
@@ -217,10 +313,44 @@ function UserProfile() {
             <img className="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg" alt="profile pic" />
             <span className="font-weight-bold">{jobSeeker.personalInformation.name}</span>
             <span className="text-black-50">{jobSeeker.personalInformation.username}</span>
-            <span> </span>
             <div className="text-center">
               <button className="btn btn-primary profile-button mt-4" form="save" type="submit">Save Profile</button>
             </div>
+            <div className="text-center">
+              <button className="btn btn-danger profile-button"
+                data-bs-toggle="modal"
+                data-bs-target={`#deleteModal${id}`}
+              >
+                Delete Account
+              </button>
+            </div>
+
+            {/* Modal for delete */}
+            <div className="modal fade" id={`deleteModal${id}`} tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="deleteModalLabel">Delete Account</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div className="modal-body">
+                    Are you sure you want to delete this account? This action cannot be undone.
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => deleteAccount(id)}
+                      data-bs-dismiss="modal"
+                    >
+                      Delete Account
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -256,7 +386,7 @@ function UserProfile() {
                 <div className="row mt-2">
                   <div className="col-md-6">
                     <label className="labels">Address</label>
-                    <input type="text" className="form-control" placeholder="Street Address" onChange={handleChange} name="streetAddress" value={jobSeeker.location?.streetAddress} />
+                    <input type="text" className="form-control" placeholder="Street Address" onChange={handleChange} name="address" value={jobSeeker.location?.address} />
                   </div>
                   <div className="col-md-6">
                     <label className="labels">City</label>
@@ -360,7 +490,7 @@ function UserProfile() {
                         </div>
                       </li>
                     ))
-                    : "None"}
+                    : <h3 className="text-center">None</h3>}
                 </ul>
               </div>
             </div>
@@ -410,33 +540,62 @@ function UserProfile() {
                         </div>
                       </li>
                     ))
-                    : "None"}
+                    : <h3 className="text-center">None</h3>}
                 </ul>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="offset-md-4 col-md-6 p-3 py-3">
-          <div className="d-flex justify-content-center align-items-center mb-3">
-            <h4 className="text-center">Application History</h4>
+          <div className="col-md-6 p-3 py-3">
+            <div className="d-flex justify-content-center align-items-center mb-3">
+              <h4 className="text-center">Application History</h4>
+            </div>
+            <div className="col-md-12">
+              <ul className="application-history">
+                {jobSeeker.applicationHistory.length > 0 ?
+                  applications.map((app, i) => (
+                    <li key={app._id}>
+                      {postings[i].company && <p>Company: {postings[i].company}</p>}
+                      {postings[i].jobTitle && <p>Job Title: {postings[i].jobTitle}</p>}
+                      {postings[i].owner && <p>Owner: {postings[i].owner}</p>}
+                      {postings[i].title && <p>Asset: {postings[i].title}</p>}
+                      <p>
+                        Apply Date:{" "}
+                        {new Date(app.createdAt).toLocaleDateString()}
+                      </p>
+                      <p>Status: {app.status}</p>
+                    </li>
+                  ))
+                  : <h3 className="text-center">None</h3>}
+              </ul>
+            </div>
           </div>
-          <div className="col-md-12">
-            <ul className="application-history">
-              {jobSeeker.applicationHistory.length > 0
-                ? jobSeeker.applicationHistory.map((application) => (
-                  <li key={application._id}>
-                    <p>Job Title: {application.jobTitle}</p>
-                    <p>Company: {application.company}</p>
-                    <p>
-                      Apply Date:{" "}
-                      {new Date(application.applyDate).toLocaleDateString()}
-                    </p>
-                    <p>Status: {application.status}</p>
-                  </li>
-                ))
-                : <p className="text-center">None</p>}
-            </ul>
+
+          <div className="col-md-6 p-3 py-3">
+            <div className="d-flex justify-content-center align-items-center mb-3">
+              <h4 className="text-center">Event Registrations</h4>
+            </div>
+            <div className="col-md-12">
+              <ul className="application-history">
+                {jobSeeker.eventRegistrations.length > 0 ?
+                  events.map((event, i) => (
+                    <li key={event._id}>
+                      <p>Organizer: {event.organizer}</p>
+                      <p>Event Name: {event.eventName}</p>
+                      <p>Location: {event.location}</p>
+                      <p>
+                        Start Date:{" "}
+                        {new Date(event.startDate).toLocaleDateString()}
+                      </p>
+                      <p>
+                        End Date:{" "}
+                        {new Date(event.endDate).toLocaleDateString()}
+                      </p>
+                    </li>
+                  ))
+                  : <h3 className="text-center">None</h3>}
+              </ul>
+            </div>
           </div>
         </div>
 

@@ -80,13 +80,13 @@ const Jobs = () => {
     const code = e.target.value;
     setPostalCode(code);
     let city = ""
-    if (code.length == 5 && /^\d+$/.test(code)) {
+    if (code.length === 5 && /^\d+$/.test(code)) {
       city = await convertPostalCodeToCity(code);
     }
     else if (code.length >= 3 && !/^\d+$/.test(code)) {
       city = await convertPostalCodeToCity(code.substring(0, 3));
     }
-    if (city == null) {
+    if (city === null) {
       return null;
     }
     else if (city.includes("(")) {
@@ -102,10 +102,10 @@ const Jobs = () => {
   const convertPostalCodeToCity = async (postalCode) => {
     let url = "";
 
-    if (postalCode.length == 5) {
+    if (postalCode.length === 5) {
       // us postal code
       url = `https://api.zippopotam.us/US/${postalCode}`;
-    } else if (postalCode.length == 3) {
+    } else if (postalCode.length === 3) {
       // canada postal code
       url = `https://api.zippopotam.us/CA/${postalCode}`;
     }
@@ -113,7 +113,7 @@ const Jobs = () => {
       const response = await fetch(url);
       const data = await response.json();
       let cityName = data.places[0]["place name"];
-  
+
       const normalizedCityName = cityName.replace(/\b(North|South|East|West|Northeast|Northwest|Southeast|Southwest)\b/gi, '').trim();
       return normalizedCityName;
     } catch (error) {
@@ -121,7 +121,7 @@ const Jobs = () => {
       return null;
     }
   };
-  
+
 
   return (
     <div className="jobs-container">
@@ -184,15 +184,15 @@ const Jobs = () => {
             </div>
           </div>
           <div className="postal-code-input">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Enter Postal Code..."
-          value={postalCode}
-          onChange={handlePostalCodeChange}
-        />
-        {cityFromPostalCode && <p>Jobs in {cityFromPostalCode}</p>}
-        </div>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Postal Code..."
+              value={postalCode}
+              onChange={handlePostalCodeChange}
+            />
+            {cityFromPostalCode && <p>Jobs in {cityFromPostalCode}</p>}
+          </div>
         </div>
         {localStorage.getItem("type") === "employer" &&
           <div className="row">
@@ -212,7 +212,7 @@ const Jobs = () => {
                 onClick={() => selectJob(posting)}
               >
                 <h3>{posting.jobTitle}</h3>
-                <p>Posted by: {posting.company}</p>
+                <p>Posted by: <a href={`/employer-dashboard/${posting._id}`}>{posting.company}</a></p>
                 <p>{posting.location}</p>
                 <p>Type: {posting.jobType}</p>
               </div>
@@ -220,7 +220,7 @@ const Jobs = () => {
           </div>
           {selectedJobId && (
             <div className="col">
-              {/* <img src={toronto} class="img-fluid" />{" "} */}
+              {/* <img src={toronto} className="img-fluid" />{" "} */}
               {/* Company image or something?}
               {/* Assuming job details are accessed by ID */}
               <h3>

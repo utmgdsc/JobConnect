@@ -48,6 +48,7 @@ const EmployerSchema = new mongoose.Schema({
     reviews: [{
         review: String,
         rating: Number,
+        name: String,
         timestamp: {
             type: Date,
             default: Date.now

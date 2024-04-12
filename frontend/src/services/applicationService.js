@@ -2,10 +2,15 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/api/applicationRoutes";
 
-const getApplication = async (id) => {
+const getApplications = async (id) => {
     const response = await axios.get(API_URL);
     return response.data;
 };
+
+const getApplicationByID = async (id) => {
+    const response = await axios.get(API_URL + `/${id}`);
+    return response.data;
+}
 
 const deleteApplication = async (id) => {
     const response = await axios.delete(API_URL + `/${id}`);
@@ -23,7 +28,8 @@ const addApplication = async (newData) => {
 };
 
 const ApplicationsService = {
-    getApplication,
+    getApplications,
+    getApplicationByID,
     updateApplication,
     deleteApplication,
     addApplication,

@@ -15,7 +15,7 @@ const Application = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [file, setFile] = useState("");
   const [location, setLocation] = useState({
-    streetAddress: '',
+    address: '',
     city: '',
     province: '',
     postalCode: ''
@@ -33,10 +33,10 @@ const Application = () => {
   }, [id]);
 
   useEffect(() => {
-    if (currentUser?.personalInformation?.address) {
+    if (currentUser?.location?.address) {
       setLocation((prevLocation) => ({
         ...prevLocation,
-        streetAddress: currentUser.personalInformation.address,
+        address: currentUser.location.address,
       }));
     }
   }, [currentUser]);
@@ -44,10 +44,10 @@ const Application = () => {
   useEffect(() => {
     getPdf();
   }, []);
-    const getPdf = async () => {
-      const pdf = await uploadService.getFiles();
-      setAllImages(pdf.data);
-    };
+  const getPdf = async () => {
+    const pdf = await uploadService.getFiles();
+    setAllImages(pdf.data);
+  };
 
   const fetchJobDetails = async () => {
     try {
@@ -70,7 +70,8 @@ const Application = () => {
   const handleApplyNow = async () => {
     if (termsAccepted && jobDetails && currentUser) {
       const resume = allImages[allImages.length - 1];
-      
+
+
       const application = {
         jobPosting: jobDetails._id,
         jobSeeker: currentUser._id,
@@ -85,7 +86,7 @@ const Application = () => {
       await applicationService.addApplication(application);
 
       submitImage();
-      const app = await applicationService.getApplication(application._id);
+      const app = await applicationService.getApplications();
       //grab the latest application
       const latestApplication = app[app.length - 1];
 
@@ -98,6 +99,8 @@ const Application = () => {
       const updatedApplicants = [...jobDetails.applicants];
       updatedApplicants.push(latestApplication._id);
       await jobPostingsService.updateJobPosting(jobDetails._id, { applicants: updatedApplicants });
+
+      navigate("/")
 
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",
@@ -161,51 +164,51 @@ const Application = () => {
       <h2 className="application-title">{jobDetails.jobTitle}</h2>
       <div className="application-section">
         <h3>Contact Information</h3>
-          <div>
-            <strong>Name:</strong><br></br>
-            <span>{currentUser.personalInformation.name}</span>
-          </div>
-          <br></br>
-          <div>
-            <strong>Email address:</strong><br></br>
-            <span>{currentUser.personalInformation.contactDetails.email}</span>
-          </div>
-          <br></br>
-          <div>
-            <strong>Phone number:</strong><br></br>
-            <span>{currentUser.personalInformation.contactDetails.phone}</span>
-          </div>
+        <div>
+          <strong>Name:</strong><br></br>
+          <span>{currentUser.personalInformation.name}</span>
+        </div>
+        <br></br>
+        <div>
+          <strong>Email address:</strong><br></br>
+          <span>{currentUser.personalInformation.contactDetails.email}</span>
+        </div>
+        <br></br>
+        <div>
+          <strong>Phone number:</strong><br></br>
+          <span>{currentUser.personalInformation.contactDetails.phone}</span>
+        </div>
       </div>
       <div className="application-section">
         <h4>Location</h4>
-        <input name="streetAddress" value={location.streetAddress} onChange={handleLocationChange} placeholder="Street address" />
+        <input name="address" value={location.address} onChange={handleLocationChange} placeholder="Street address" />
         <input name="city" value={location.city} onChange={handleLocationChange} placeholder="City" />
         <input name="province" value={location.province} onChange={handleLocationChange} placeholder="Province" />
         <input name="postalCode" value={location.postalCode} onChange={handleLocationChange} placeholder="Postal code" />
       </div>
-        <strong>Are you willing to relocate?</strong><br></br>
-        <div className="radio-group">
-          <div className="form-check form-check-inline yes-option">
-            <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio1" value="yes" onChange={handleRelocationChange} />
-            <label className="form-check-label" htmlFor="inlineRadio1">Yes</label>
-          </div>
-          <div className="form-check form-check-inline no-option">
-            <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio2" value="no" onChange={handleRelocationChange} />
-            <label className="form-check-label" htmlFor="inlineRadio2">No</label>
-          </div>
+      <strong>Are you willing to relocate?</strong><br></br>
+      <div className="radio-group">
+        <div className="form-check form-check-inline yes-option">
+          <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio1" value="yes" onChange={handleRelocationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio1">Yes</label>
         </div>
+        <div className="form-check form-check-inline no-option">
+          <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio2" value="no" onChange={handleRelocationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio2">No</label>
+        </div>
+      </div>
       <br></br>
-        <strong>Are you legally authorized to work in Canada?</strong><br></br>
-        <div className="radio-group">
-          <div className="form-check form-check-inline yes-option">
-            <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio3" value="yes" onChange={handleAuthorizationChange} />
-            <label className="form-check-label" htmlFor="inlineRadio3">Yes</label>
-          </div>
-          <div className="form-check form-check-inline no-option">
-            <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio4" value="no" onChange={handleAuthorizationChange} />
-            <label className="form-check-label" htmlFor="inlineRadio4">No</label>
-          </div>
+      <strong>Are you legally authorized to work in Canada?</strong><br></br>
+      <div className="radio-group">
+        <div className="form-check form-check-inline yes-option">
+          <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio3" value="yes" onChange={handleAuthorizationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio3">Yes</label>
         </div>
+        <div className="form-check form-check-inline no-option">
+          <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio4" value="no" onChange={handleAuthorizationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio4">No</label>
+        </div>
+      </div>
       <br></br>
       <strong> How many years of experience do you have in this field?</strong><br></br>
       <div className="radio-group">
@@ -237,10 +240,10 @@ const Application = () => {
         </div>
         {file && <span className="application-file-name">{file.name}</span>}
       </div>
-      <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="termsAccepted" checked={termsAccepted} onChange={handleTermsAcceptance} />
-          <label class="form-check-label" for="exampleCheck1">I agree to the terms and conditions.</label>
-        </div>
+      <div className="mb-3 form-check">
+        <input type="checkbox" className="form-check-input" id="termsAccepted" checked={termsAccepted} onChange={handleTermsAcceptance} required />
+        <label className="form-check-label" for="exampleCheck1">I agree to the terms and conditions.</label>
+      </div>
       <div className="application-action">
         <button className="application-button" onClick={handleApplyNow}>Apply Now</button>
       </div>

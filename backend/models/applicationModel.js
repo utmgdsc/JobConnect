@@ -4,7 +4,12 @@ const applicationSchema = new mongoose.Schema({
     jobPosting: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'JobPosting',
-        required: true
+        required: false
+    },
+    assetPosting: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AssetPosting',
+        required: false,
     },
     jobSeeker: {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,7 +21,7 @@ const applicationSchema = new mongoose.Schema({
         required: false
     },
     location: {
-        streetAddress: String,
+        address: String,
         city: String,
         state: String,
         postalCode: String

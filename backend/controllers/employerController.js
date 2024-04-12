@@ -57,14 +57,16 @@ const registerEmployer = async (req, res) => {
 };
 
 const deleteEmployer = asyncHandler(async (req, res) => {
-    await Employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
-        if (err) {
-            res.status(500).json({ message: 'Error deleting employer ' });
-        } else {
+    try {
+        const employer = await Employer.findOneAndDelete({ "_id": req.params.id });
+        if (employer) {
             res.status(200).json({ message: 'Employer deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Employer not found' });
         }
-    })
-
+    } catch (err) {
+        res.status(500).json({ message: 'Error deleting employer' });
+    }
 });
 
 const getEmployer = asyncHandler(async (req, res) => {
