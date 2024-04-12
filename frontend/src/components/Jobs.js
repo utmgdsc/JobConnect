@@ -220,7 +220,7 @@ const Jobs = () => {
           </div>
           {selectedJobId && (
             <div className="col">
-              {/* <img src={toronto} class="img-fluid" />{" "} */}
+              {/* <img src={toronto} className="img-fluid" />{" "} */}
               {/* Company image or something?}
               {/* Assuming job details are accessed by ID */}
               <h3>
