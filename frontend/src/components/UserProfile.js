@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import jobSeekersService from "../services/jobSeekersService";
 import JobPostingsService from "../services/jobPostingsService";
 import AssetPostingsService from "../services/AssetPostingsService";
+import EventServices from "../services/EventServices";
 import ApplicationsService from "../services/applicationService";
 import EventService from "../services/EventServices";
 import { useParams } from "react-router-dom"; // Import useParams
@@ -26,6 +27,7 @@ function UserProfile() {
   });
   const [applications, setApplications] = useState([])
   const [jobs, setJobs] = useState([])
+  const [events, setEvents] = useState([])
   const [skills, setSkills] = useState("")
   const { id } = useParams();
 
@@ -46,13 +48,13 @@ function UserProfile() {
     }
   }, [id]);
 
-  useEffect(() => {
+  const fetchApplications = async () => {
     try {
       if (applications.length === 0 && jobs.length === 0 && jobSeeker.applicationHistory.length > 0) {
         jobSeeker.applicationHistory.map(async (application) => {
           const app = await ApplicationsService.getApplicationByID(application)
           const job = await JobPostingsService.getJobPostingById(app.jobPosting)
-          if (applications.length <= jobSeeker.applicationHistory.length && jobs.length <= jobSeeker.applicationHistory.length) {
+          if (applications.length < jobSeeker.applicationHistory.length && jobs.length < jobSeeker.applicationHistory.length) {
             setApplications((prevApplications) => [...prevApplications, app])
             setJobs((prevJobs) => [...prevJobs, job])
           }
@@ -60,6 +62,30 @@ function UserProfile() {
       }
     } catch (error) {
       console.error("Failed to fetch applications:", error);
+    }
+  }
+
+  const fetchEvents = async () => {
+    try {
+      if (events.length === 0 && jobSeeker.eventRegistrations.length > 0) {
+        jobSeeker.eventRegistrations.map(async (event) => {
+          const e = await EventService.getEventById(event)
+          if (events.length < jobSeeker.eventRegistrations.length) {
+            setEvents((prevEvents) => [...prevEvents, e])
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (jobSeeker?.applicationHistory?.length > 0 && applications.length === 0 && jobs.length === 0) {
+      fetchApplications()
+    }
+    if (jobSeeker?.eventRegistrations?.length > 0 && events.length === 0) {
+      fetchEvents()
     }
   }, [jobSeeker]);
 
@@ -128,7 +154,6 @@ function UserProfile() {
   function handleChange(event) {
     const { name, value, } = event.target;
     setJobSeeker((prevJobSeeker) => {
-      console.log(prevJobSeeker.personalInformation);
       if (name in prevJobSeeker.personalInformation) {
         return handlePersonalInformationChange(name, value, prevJobSeeker);
       } else if (name in prevJobSeeker.personalInformation.contactDetails) {
@@ -221,43 +246,47 @@ function UserProfile() {
   }
 
   async function deleteAccount(id) {
-    jobSeeker.applicationHistory.forEach(async (application) => {
+    jobSeeker.applicationHistory.forEach(async (applicationId) => {
       try {
-        const app = await ApplicationsService.getApplication(application);
+        const app = await ApplicationsService.getApplicationByID(applicationId);
+        console.log(app);
         const job = await JobPostingsService.getJobPostingById(app.jobPosting)
+        console.log(job);
         const newApplicants = job.applicants.filter(applicant => applicant !== id)
         console.log(newApplicants);
-        await JobPostingsService.updateJobPosting(application.jobPosting, { applicants: newApplicants })
+        await JobPostingsService.updateJobPosting(app.jobPosting, { applicants: newApplicants })
       } catch (error) {
         console.error("Failed to find job posting:", error);
       }
       try {
-        const app = await ApplicationsService.getApplication(application);
-        const asset = await AssetPostingsService.getAssetPostingById(app.jobPosting)
+        const app = await ApplicationsService.getApplicationByID(applicationId);
+        const asset = await AssetPostingsService.getAssetPostingById(app.assetPosting)
         const newApplicants = asset.applicants.filter(applicant => applicant !== id)
-        await AssetPostingsService.updateAssetPosting(application.jobPosting, { applicants: newApplicants })
+        await AssetPostingsService.updateAssetPosting(app.jobPosting, { applicants: newApplicants })
       } catch (error) {
         console.error("Failed to find asset posting:", error);
       }
+    });
+    jobSeeker.eventRegistrations.forEach(async (eventId) => {
       try {
-        const event = await EventService.getEventById(application.eventRegistrations)
+        const event = await EventService.getEventById(eventId)
         const newApplicants = event.registrants.filter(registrant => registrant !== id)
-        await EventService.updateEvent(application.eventRegistrations, { applicants: newApplicants })
+        await EventService.updateEvent(eventId, { registrants: newApplicants })
       } catch (error) {
         console.error("Failed to find event posting:", error);
       }
     });
-    try {
-      await jobSeekersService.deleteJobSeeker(id)
-        .then(() => {
-          toast.success("Successfully deleted account!");
-        })
-        .catch(error => {
-          toast.error("Failed to delete account.");
-        });
-    } catch (error) {
-      console.error("Failed to delete job seeker:", error);
-    }
+    // try {
+    //   await jobSeekersService.deleteJobSeeker(id)
+    //     .then(() => {
+    //       toast.success("Successfully deleted account!");
+    //     })
+    //     .catch(error => {
+    //       toast.error("Failed to delete account.");
+    //     });
+    // } catch (error) {
+    //   console.error("Failed to delete job seeker:", error);
+    // }
   }
 
   return (
@@ -512,28 +541,55 @@ function UserProfile() {
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="offset-md-4 col-md-6 p-3 py-3">
-          <div className="d-flex justify-content-center align-items-center mb-3">
-            <h4 className="text-center">Application History</h4>
+          <div className="col-md-6 p-3 py-3">
+            <div className="d-flex justify-content-center align-items-center mb-3">
+              <h4 className="text-center">Application History</h4>
+            </div>
+            <div className="col-md-12">
+              <ul className="application-history">
+                {jobSeeker.applicationHistory.length > 0 ?
+                  applications.map((app, i) => (
+                    <li key={app._id}>
+                      <p>Job Title: {jobs[i].jobTitle}</p>
+                      <p>Company: {jobs[i].company}</p>
+                      <p>
+                        Apply Date:{" "}
+                        {new Date(app.createdAt).toLocaleDateString()}
+                      </p>
+                      <p>Status: {app.status}</p>
+                    </li>
+                  ))
+                  : <h3 className="text-center">None</h3>}
+              </ul>
+            </div>
           </div>
-          <div className="col-md-12">
-            <ul className="application-history">
-              {jobSeeker.applicationHistory.length > 0 ?
-                applications.map((app, i) => (
-                  <li key={app._id}>
-                    <p>Job Title: {jobs[i].jobTitle}</p>
-                    <p>Company: {jobs[i].company}</p>
-                    <p>
-                      Apply Date:{" "}
-                      {new Date(app.createdAt).toLocaleDateString()}
-                    </p>
-                    <p>Status: {app.status}</p>
-                  </li>
-                ))
-                : <h3 className="text-center">None</h3>}
-            </ul>
+
+          <div className="col-md-6 p-3 py-3">
+            <div className="d-flex justify-content-center align-items-center mb-3">
+              <h4 className="text-center">Event Registrations</h4>
+            </div>
+            <div className="col-md-12">
+              <ul className="application-history">
+                {jobSeeker.eventRegistrations.length > 0 ?
+                  events.map((event, i) => (
+                    <li key={event._id}>
+                      <p>Organizer: {event.organizer}</p>
+                      <p>Event Name: {event.eventName}</p>
+                      <p>Location: {event.location}</p>
+                      <p>
+                        Start Date:{" "}
+                        {new Date(event.startDate).toLocaleDateString()}
+                      </p>
+                      <p>
+                        End Date:{" "}
+                        {new Date(event.endDate).toLocaleDateString()}
+                      </p>
+                    </li>
+                  ))
+                  : <h3 className="text-center">None</h3>}
+              </ul>
+            </div>
           </div>
         </div>
 

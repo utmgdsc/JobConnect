@@ -101,6 +101,8 @@ const Application = () => {
       updatedApplicants.push(latestApplication._id);
       await jobPostingsService.updateJobPosting(jobDetails._id, { applicants: updatedApplicants });
 
+      navigate("/")
+
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",
         autoClose: 5000,
@@ -111,8 +113,6 @@ const Application = () => {
         progress: undefined,
         theme: "dark",
       });
-
-      navigate("/dashboard");
     }
   };
 
