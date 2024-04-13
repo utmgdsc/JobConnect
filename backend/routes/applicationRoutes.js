@@ -23,6 +23,6 @@ router.post('/', createApplication)
 router.delete('/:id', deleteApplication)
 
 // PUT (update) an application by ID
-router.put('/:id', updateApplication)
+router.put('/replace/:id', updateApplication)
 
 module.exports = router

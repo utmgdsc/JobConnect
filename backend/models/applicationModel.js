@@ -42,7 +42,12 @@ const applicationSchema = new mongoose.Schema({
         enum: ['Pending', 'Accepted', 'Rejected'],
         default: 'Pending'
     },
-    notes: String,
+    rating: {
+        type: Number, 
+        default: 0
+    },
+     notes: String,
+    
     // Any other relevant fields
 }, {
     timestamps: true
