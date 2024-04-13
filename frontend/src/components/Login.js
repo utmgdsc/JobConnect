@@ -8,8 +8,10 @@ import EmailInput from "../lib/EmailInput";
 // import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 import { Container, Form, Button, Nav } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
+  const navigate = useNavigate();
   const setPopup = useContext(SetPopupContext);
   const [loggedin, setLoggedin] = useState(isAuth());
 
@@ -62,6 +64,7 @@ const Login = (props) => {
             severity: "success",
             message: "Logged in successfully",
           });
+          refresh();
           console.log(response);
         })
         .catch((err) => {
@@ -79,6 +82,10 @@ const Login = (props) => {
         message: "Incorrect Input",
       });
     }
+  };
+
+  const refresh = () => {
+    navigate(0)
   };
 
   return loggedin ? (
