@@ -40,8 +40,6 @@ const fetchCurrentUser = async () => {
     if (!token) {
       throw new Error('User is not authenticated');
     }
-    console.log(token, 'token')
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,

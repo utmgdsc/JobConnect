@@ -55,6 +55,6 @@ export default {
   getAllAssetPostings,
   getAssetPostingById,
   createAssetPosting,
-  updateAsset: updateAssetPosting,
+  updateAssetPosting,
   deleteAssetPosting,
 };

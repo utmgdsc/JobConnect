@@ -1,12 +1,17 @@
 const mongoose = require('mongoose');
 
 const CareerEventSchema = new mongoose.Schema({
+    eventOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employer',
+        required: true
+    },
     eventName: {
         type: String,
         required: true
     },
     applicants: {
-        type:  [mongoose.Schema.Types.ObjectId],
+        type: [mongoose.Schema.Types.ObjectId],
         ref: 'JobSeeker',
         required: true,
     },

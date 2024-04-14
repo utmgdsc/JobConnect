@@ -12,8 +12,6 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
-        console.log(name);
-        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -128,10 +126,9 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
         updateQuery['$addToSet']['eventRegistrations'] = { $each: updates.eventRegistrations };
     }
 
-    // Handle updates to applicationHistory
     if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
-        if (!updateQuery['$push']) updateQuery['$push'] = {};
-        updateQuery['$push']['applicationHistory'] = { $each: updates.applicationHistory };
+        if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
+        updateQuery['$addToSet']['applicationHistory'] = { $each: updates.applicationHistory };
     }
 
     try {
@@ -156,6 +153,7 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
+
         console.log(user)
     if (user.type === "employer") {
         console.log(user);
@@ -191,7 +189,11 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
             console.error('Error fetching job seeker:', error);
             res.status(500).json({ error: 'Server error' });
         }
-        
+    } catch (error) {
+        console.error('Error fetching job seeker:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+
 });
 
 

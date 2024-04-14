@@ -33,7 +33,7 @@ function EventDetails() {
     useEffect(() => {
         const fetchEvent = async () => {
             try {
-                const data = await EventService.getEvent(id);
+                const data = await EventService.getEventById(id);
                 setEvent(data); // Assuming data is the event seeker's information
             } catch (error) {
                 console.error("Failed to fetch event details:", error);
@@ -55,7 +55,7 @@ function EventDetails() {
                     </div>
                     <div className="d-flex">
                         {event.organizer &&
-                            <h3>{event.organizer}</h3>
+                            <h3><a href={`/employer-dashboard/${event._id}`}>{event.organizer}</a></h3>
                         }
                         {event.location &&
                             <h5 className="ms-auto">{event.location}</h5>

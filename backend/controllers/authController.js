@@ -64,6 +64,7 @@ exports.register = async (req, res) => {
     });
 
 
+
     if (!name || !email || !password)
       return res.status(400).json("All fields are required...");
 
@@ -266,3 +267,4 @@ exports.login = async (req, res) => {
 //     res.status(500).send('Server Error');
 //   }
 // };
+
