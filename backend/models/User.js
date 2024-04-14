@@ -11,6 +11,10 @@ let schema = new mongoose.Schema(
       required: true,
       match: /^[\w-]+(?:\.[\w-]+)*@(?:[\w-]+\.)+[a-zA-Z]{2,7}$/ // Add a regex pattern to validate email format
     },
+    name: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -52,7 +56,7 @@ schema.pre("save", function (next) {
 // Password verification upon login
 schema.methods.login = function (password) {
   let user = this;
-
+  // return bcrypt.compare(password, user.password)
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, user.password, (err, result) => {
       if (err) {
