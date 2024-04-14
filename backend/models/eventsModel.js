@@ -10,11 +10,7 @@ const CareerEventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    applicants: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'JobSeeker',
-        required: true,
-    },
+ 
     organizer: {
         type: String,
         required: true
