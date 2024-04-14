@@ -3,12 +3,13 @@ import EmployerService from "../services/EmployerService";
 import jobPostingsService from "../services/jobPostingsService";
 import AssetPostingsService from "../services/AssetPostingsService";
 import EventService from "../services/EventServices";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
+import { useNavigate } from "react-router-dom";
 
 function EmployerProfile() {
 	const [employer, setEmployer] = useState({
@@ -32,7 +33,7 @@ function EmployerProfile() {
 	});
 
 	const { id } = useParams();
-	const { navigate } = useNavigate();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchEmployer = async () => {
@@ -132,6 +133,10 @@ function EmployerProfile() {
 			});
 	}
 
+	const logout = () => {
+		navigate("/logout");
+	};
+
 	return (
 		<div className="container rounded bg-white py-4 mt-5 mb-5 border border-1">
 			<ToastContainer
@@ -163,7 +168,9 @@ function EmployerProfile() {
 								Delete Account
 							</button>
 						</div>
-
+						<div className="text-center mt-4">
+							<button className="btn btn-danger" onClick={logout}>Logout</button>
+						</div>
 						{/* Modal for delete */}
 						<div className="modal fade" id={`deleteModal${id}`} tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 							<div className="modal-dialog">
@@ -186,6 +193,7 @@ function EmployerProfile() {
 											Delete Account
 										</button>
 									</div>
+
 								</div>
 							</div>
 						</div>
