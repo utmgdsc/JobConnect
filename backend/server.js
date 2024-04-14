@@ -52,14 +52,15 @@ app.use('/files', express.static(path.join(__dirname, 'files')));
 
 // Define other routes
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"));
-app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"));
-app.use('/api/employerRoutes', require("./routes/employerRoutes"));
-app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"));
-app.use('/api/eventsRoutes', require("./routes/eventsRoutes"));
-app.use('/api/subscribe', require("./routes/subscribeRoutes"));
-app.use('/api/applicationRoutes', require('./routes/applicationRoutes'));
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
+app.use('/api/referralRoutes', require("./routes/referralRoutes"))
+app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"))
+app.use('/api/employerRoutes', require("./routes/employerRoutes"))
+app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))
+app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))
+app.use('/api/subscribe', require("./routes/subscribeRoutes"))
+app.use('/api/applicationRoutes', require('./routes/applicationRoutes'))
+
 
 connectDB();

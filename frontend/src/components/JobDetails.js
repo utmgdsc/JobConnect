@@ -101,6 +101,14 @@ function JobDetails() {
                         Apply Now
                     </button>
                 </div>
+                <div className="px-4">
+                    <button
+                        className="btn btn-primary btn-md"
+                        onClick={() => navigate(`/refer/${id}`)}
+                    >
+                        Refer a friend
+                    </button>
+                </div>
             </div>
         </div>
     );

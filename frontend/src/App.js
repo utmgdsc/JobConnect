@@ -35,7 +35,7 @@ import ResumeFeedback from "./components/ResumeFeedback";
 import RegisterEvent from "./components/RegisterEvent";
 import { AuthContext } from "./context/AuthContext";
 import VerifyEmail from "./components/VerifyEmail";
-import Chat from "./components/Chat";
+import Referral from "./components/Referral"
 export const SetPopupContext = createContext();
 
 // Define a Header component that only shows navigation links on the home page ('/')
@@ -51,6 +51,7 @@ function App() {
             <Route path="/register" element={(user && user.isVerified) ? <Home /> : <Register />} />
             <Route path="/login" element={(user && user.isVerified) ? <Home /> : <Login />} />
             <Route path="/application/:id" element={<Application />} />
+            <Route path="/refer/:id" element={<Referral />} />
             <Route path="/employer/:id" element={<EmployerProfile />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/applicant-dashboard/:id" element={<ProfileDashboard />} />

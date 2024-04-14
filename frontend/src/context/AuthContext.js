@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
 import { createContext, useCallback, useState } from "react";
 import apiList from "../lib/apiList";
-
+import isAuth from "../lib/isAuth";
 import axios from "axios";
 export const AuthContext = createContext();
 
@@ -14,6 +14,8 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
+  const [referError, setReferError] = useState(null);
+  const [isReferLoading, setIsReferLoading] = useState(false);
   const [registerInfo, setRegisterInfo] = useState({
     name: "",
     email: "",
@@ -26,7 +28,15 @@ export const AuthContextProvider = ({ children }) => {
     experience: [],
     education: [],
     resume:"",
+    description:"",
     age: ""
+  });
+  const [referralInfo, setReferralInfo] = useState({
+    name: "",
+    email: "",
+    relationship: "",
+    phone: "",
+    description:""
   });
 
   const [education, setEducation] = useState([
@@ -67,10 +77,17 @@ export const AuthContextProvider = ({ children }) => {
     }));
   }, []);
 
+  const updateReferralInfo = useCallback((info) => {
+    setReferralInfo((prevInfo) => ({
+      ...prevInfo,
+      ...info,
+    }));
+  }, []);
+
   const updateUser = useCallback((response) => {
-    user = JSON.stringify(response)
-    localStorage.setItem("User", user);
-    localStorage.setItem("type", user.type);
+    localStorage.setItem("token", response.token)
+    localStorage.setItem("User", response);
+    localStorage.setItem("type", response.type);
     setUser(response);
   }, []);
 
@@ -135,6 +152,47 @@ export const AuthContextProvider = ({ children }) => {
     },
     [registerInfo, education, setPopup]
   );
+  const referUser = useCallback(
+    async (id) => { // Accept id as a parameter
+      setIsReferLoading(true);
+      setReferError(null);
+      try {
+        let updatedDetails = {
+          ...referralInfo,
+        };
+  
+        console.log("Referral Info", updatedDetails);
+        const token = isAuth();
+        if (!token) {
+          throw new Error('User is not authenticated');
+        }
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        var response = await axios.post(`${apiList.refer}/${id}`, updatedDetails, config); // Use the id in the URL
+        setIsReferLoading(false);
+        if (response.error) {
+          return setReferError(response);
+        }
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Your referral has been submitted",
+        });
+      } catch {
+        setIsReferLoading(false);
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Referral failed",
+        });
+      }
+    },
+    [referralInfo, setPopup]
+  );
+  
 
   const loginUser = useCallback(
     async (e) => {
@@ -163,6 +221,7 @@ export const AuthContextProvider = ({ children }) => {
         // console.log("this is user", response.data)
         setUser(response.data);
       } catch {
+        setIsLoginLoading(false);
         setPopup({
           open: true,
           severity: "error",
@@ -205,6 +264,11 @@ export const AuthContextProvider = ({ children }) => {
         isRegisterLoading,
         logoutUser,
         updateUser,
+        referralInfo,
+        updateReferralInfo,
+        referUser,
+        isReferLoading,
+        referError
       }}
     >
       {children}

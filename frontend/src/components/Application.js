@@ -81,6 +81,7 @@ const Application = () => {
         authorized: isAuthorized,
         experience,
         status: "Pending",
+        referrals:[]
       };
 
       await applicationService.addApplication(application);
@@ -157,7 +158,7 @@ const Application = () => {
   if (!jobDetails || !currentUser) {
     return <div>Loading...</div>;
   }
-
+  
   return (
     <div className="application-container">
       <ToastContainer />
@@ -250,7 +251,6 @@ const Application = () => {
     </div>
   );
 };
-
 
 
 export default Application;
