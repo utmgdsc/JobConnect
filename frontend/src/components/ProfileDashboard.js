@@ -2,11 +2,26 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; // Import useParams
 import jobSeekersService from "../services/jobSeekersService";
+import ApplicationsService from "../services/applicationService";
+import JobPostingsService from "../services/jobPostingsService";
 import "../dashboard.css";
 import Navbar from "./Navbar";
 
 function JobSeekerFetcher() {
-  const [jobSeeker, setJobSeeker] = useState(null);
+  const [jobSeeker, setJobSeeker] = useState({
+    personalInformation: {
+      contactDetails: {},
+    },
+    location: {},
+    jobPreferences: {},
+    professionalProfile: {
+      experience: [],
+      education: [],
+      skills: [],
+    },
+    applicationHistory: [],
+    eventRegistrations: [],
+  });
   const { id } = useParams();
 
   const fetchJobSeeker = async () => {
@@ -23,7 +38,34 @@ function JobSeekerFetcher() {
       fetchJobSeeker();
     }
   }, [id, fetchJobSeeker]);
-  // ... inside your component's return statement
+
+  const [applications, setApplications] = useState([])
+  const [jobs, setJobs] = useState([])
+
+  const fetchApplications = async () => {
+    try {
+      if (applications.length === 0 && jobs.length === 0 && jobSeeker.applicationHistory.length > 0) {
+        jobSeeker.applicationHistory.map(async (application) => {
+          const app = await ApplicationsService.getApplicationByID(application)
+          const job = await JobPostingsService.getJobPostingById(app.jobPosting)
+          if (applications.length < jobSeeker.applicationHistory.length && jobs.length < jobSeeker.applicationHistory.length) {
+            console.log(jobSeeker.applicationHistory.length);
+            setApplications((prevApplications) => [...prevApplications, app])
+            setJobs((prevJobs) => [...prevJobs, job])
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (jobSeeker?.applicationHistory?.length > 0 && applications.length === 0 && jobs.length === 0) {
+      fetchApplications()
+    }
+  }, [jobSeeker]);
+
   return (
     <div className="dashboard">
       <Navbar />
@@ -73,27 +115,34 @@ function JobSeekerFetcher() {
 
           <div className="section">
             <h3>Job Preferences</h3>
-            <p>Desired Industry: {jobSeeker.jobPreferences.desiredIndustry}</p>
-            <p>Location: {jobSeeker.jobPreferences.location}</p>
-            <p>Job Type: {jobSeeker.jobPreferences.jobType}</p>
+            <p>Desired Industry: {jobSeeker.jobPreferences?.desiredIndustry}</p>
+            <p>Job Type: {jobSeeker.jobPreferences?.jobType}</p>
+          </div>
+
+          <div className="section">
+            <h3>Location</h3>
+            <p>Address: {jobSeeker.location?.address}</p>
+            <p>City: {jobSeeker.location?.city}</p>
+            <p>Province: {jobSeeker.location?.province}</p>
+            <p>Postal Code: {jobSeeker.location?.postalCode}</p>
           </div>
 
           <div className="section">
             <h3>Application History</h3>
             <ul className="application-history">
-              {jobSeeker.applicationHistory.length > 0
-                ? jobSeeker.applicationHistory.map((application) => (
-                  <li key={application._id}>
-                    <p>Job Title: {application.jobTitle}</p>
-                    <p>Company: {application.company}</p>
+              {jobSeeker.applicationHistory.length > 0 ?
+                applications.map((app, i) => (
+                  <li key={app._id}>
+                    <p>Job Title: {jobs[i].jobTitle}</p>
+                    <p>Company: {jobs[i].company}</p>
                     <p>
                       Apply Date:{" "}
-                      {new Date(application.applyDate).toLocaleDateString()}
+                      {new Date(app.createdAt).toLocaleDateString()}
                     </p>
-                    <p>Status: {application.status}</p>
+                    <p>Status: {app.status}</p>
                   </li>
                 ))
-                : "None"}
+                : <h3 className="text-center">None</h3>}
             </ul>
           </div>
         </>

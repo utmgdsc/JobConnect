@@ -14,6 +14,7 @@ import Application from "./components/Application";
 import EmployerProfile from "./components/EmployerProfile";
 import UserProfile from "./components/UserProfile";
 import ProfileDashboard from "./components/ProfileDashboard";
+import EmployerDashboard from "./components/EmployerDashboard";
 import ApplicantsList from "./components/ApplicantsList";
 import Jobs from "./components/Jobs";
 import AssetPostings from "./components/AssetPostings";
@@ -24,11 +25,12 @@ import EventDetails from "./components/EventDetails";
 import CreateJobPosting from "./components/CreateJobPosting";
 import CreateAssetPosting from "./components/CreateAssetPosting";
 import CreateEvent from "./components/CreateEvent";
+import ManagePostings from "./components/ManagePostings";
 import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Register from "./components/Register"
 import MessagePopup from "./lib/MessagePopup";
-import "./App.css";import ApplyAsset from "./components/ApplyAsset";
+import "./App.css"; import ApplyAsset from "./components/ApplyAsset";
 import ResumeFeedback from "./components/ResumeFeedback";
 import RegisterEvent from "./components/RegisterEvent";
 import { AuthContext } from "./context/AuthContext";
@@ -52,6 +54,7 @@ function App() {
             <Route path="/employer/:id" element={<EmployerProfile />} />
             <Route path="/user/:id" element={<UserProfile />} />
             <Route path="/applicant-dashboard/:id" element={<ProfileDashboard />} />
+            <Route path="/employer-dashboard/:id" element={<EmployerDashboard />} />
             <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/assets" element={<AssetPostings />} />
@@ -62,18 +65,15 @@ function App() {
             <Route path="/create/job/:id?" element={<CreateJobPosting />} />
             <Route path="/create/asset/:id?" element={<CreateAssetPosting />} />
             <Route path="/create/event/:id?" element={<CreateEvent />} />
+            <Route path="/manage-postings/:id" element={<ManagePostings />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/apply-asset/:assetId" element={<ApplyAsset />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
-
-          <Route path="resume" element={<ResumeFeedback />} />
-          <Route path="register-event/:eventId" element={<RegisterEvent />} />
-
-
-
-        </Routes>
+            <Route path="resume" element={<ResumeFeedback />} />
+            <Route path="register-event/:eventId" element={<RegisterEvent />} />
+          </Routes>
           <MessagePopup
             open={popup.open}
             setOpen={(status) =>

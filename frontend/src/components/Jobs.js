@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import jobPostingsService from "../services/jobPostingsService";
 import "../jobs.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import toronto from "../images/toronto.jpg";
+
 
 const Jobs = () => {
   const [jobPostings, setJobPostings] = useState([]);
@@ -14,12 +15,14 @@ const Jobs = () => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   // Assuming you have a list of all possible locations
   const [allLocations, setAllLocations] = useState([]);
+  const [postalCode, setPostalCode] = useState("");
+  const [cityFromPostalCode, setCityFromPostalCode] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchJobPostings();
-  }, [jobPostings]);
+  }, []);
 
   const fetchJobPostings = async () => {
     try {
@@ -72,6 +75,53 @@ const Jobs = () => {
       posting.location.toLowerCase().includes(locationInput.toLowerCase())
     );
   });
+
+  const handlePostalCodeChange = async (e) => {
+    const code = e.target.value;
+    setPostalCode(code);
+    let city = ""
+    if (code.length === 5 && /^\d+$/.test(code)) {
+      city = await convertPostalCodeToCity(code);
+    }
+    else if (code.length >= 3 && !/^\d+$/.test(code)) {
+      city = await convertPostalCodeToCity(code.substring(0, 3));
+    }
+    if (city === null) {
+      return null;
+    }
+    else if (city.includes("(")) {
+      const trimcity = city.split(" (")[0];
+      setCityFromPostalCode(trimcity);
+      setLocationInput(trimcity);
+    } else {
+      setCityFromPostalCode(city);
+      setLocationInput(city);
+    }
+  };
+
+  const convertPostalCodeToCity = async (postalCode) => {
+    let url = "";
+
+    if (postalCode.length === 5) {
+      // us postal code
+      url = `https://api.zippopotam.us/US/${postalCode}`;
+    } else if (postalCode.length === 3) {
+      // canada postal code
+      url = `https://api.zippopotam.us/CA/${postalCode}`;
+    }
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      let cityName = data.places[0]["place name"];
+
+      const normalizedCityName = cityName.replace(/\b(North|South|East|West|Northeast|Northwest|Southeast|Southwest)\b/gi, '').trim();
+      return normalizedCityName;
+    } catch (error) {
+      console.error("Error fetching city from postal code:", error);
+      return null;
+    }
+  };
+
 
   return (
     <div className="jobs-container">
@@ -133,7 +183,26 @@ const Jobs = () => {
               </button>
             </div>
           </div>
+          <div className="postal-code-input">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter Postal Code..."
+              value={postalCode}
+              onChange={handlePostalCodeChange}
+            />
+            {cityFromPostalCode && <p>Jobs in {cityFromPostalCode}</p>}
+          </div>
         </div>
+        {localStorage.getItem("type") === "employer" &&
+          <div className="row">
+            <div className="col">
+              <Link to="/create/job" className="btn btn-primary mb-3 w-100">
+                Create job
+              </Link>
+            </div>
+          </div>
+        }
         <div className="row">
           <div className="col">
             {filteredJobPostings.map((posting) => (
@@ -143,7 +212,7 @@ const Jobs = () => {
                 onClick={() => selectJob(posting)}
               >
                 <h3>{posting.jobTitle}</h3>
-                <p>Posted by: {posting.company}</p>
+                <p>Posted by: <a href={`/employer-dashboard/${posting._id}`}>{posting.company}</a></p>
                 <p>{posting.location}</p>
                 <p>Type: {posting.jobType}</p>
               </div>
@@ -151,7 +220,7 @@ const Jobs = () => {
           </div>
           {selectedJobId && (
             <div className="col">
-              {/* <img src={toronto} class="img-fluid" />{" "} */}
+              {/* <img src={toronto} className="img-fluid" />{" "} */}
               {/* Company image or something?}
               {/* Assuming job details are accessed by ID */}
               <h3>

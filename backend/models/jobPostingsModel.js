@@ -1,29 +1,22 @@
 const mongoose = require('mongoose');
 
 const jobPostingSchema = new mongoose.Schema({
-    company: {
+    employer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Employer',
+    },
+    company: {
+        type: String,
+        required: true
     },
     jobTitle: {
         type: String,
         required: true
     },
-    applicants: [{
-        jobSeeker: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'JobSeeker',
-            required: true
-        },
-        status: {
-            type: String,
-            enum: ['Pending', 'Accepted', 'Rejected'],
-            default: 'Pending'
-        },
-        notes: {
-            type: String
-        },
-        // Additional fields for applicant assessment (e.g., test scores, interview feedback)
+    applicants: [{ // Modified part
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Application',
+        required: false
     }],
     location: {
         type: String,
