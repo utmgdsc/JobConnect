@@ -10,7 +10,11 @@ const CareerEventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
- 
+    applicants: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'JobSeeker',
+        required: true,
+    },
     organizer: {
         type: String,
         required: true
@@ -24,10 +28,6 @@ const CareerEventSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['Workshop', 'Seminar', 'Job Fair', 'Networking Event', 'Webinar']
-    },
-    eventDate: {
-        type: Date,
-        required: true
     },
     startDate: {
         type: Date,
@@ -63,18 +63,7 @@ const CareerEventSchema = new mongoose.Schema({
         ref: 'JobSeeker',
         required: true,
     },
-    location: {
-        type: String,
-        required: true
-    },
-    startTime: {
-        type: Date,
-        required: true
-    },
-    endTime: {
-        type: Date,
-        required: true
-    }
+
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
 });
