@@ -44,6 +44,7 @@ app.get('/api/get-files', uploadController.getFiles);
 
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/jobSeekersRoutes', require("./routes/jobSeekersRoutes"))
+app.use('/api/referralRoutes', require("./routes/referralRoutes"))
 app.use('/api/jobPostingRoutes', require("./routes/jobPostingRoutes"))
 app.use('/api/employerRoutes', require("./routes/employerRoutes"))
 app.use('/api/assetPostingRoutes', require("./routes/assetPostingRoutes"))

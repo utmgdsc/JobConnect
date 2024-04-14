@@ -14,6 +14,8 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
+  const [referError, setReferError] = useState(null);
+  const [isReferLoading, setIsReferLoading] = useState(false);
   const [registerInfo, setRegisterInfo] = useState({
     name: "",
     email: "",
@@ -26,7 +28,15 @@ export const AuthContextProvider = ({ children }) => {
     experience: [],
     education: [],
     resume:"",
+    description:"",
     age: ""
+  });
+  const [referralInfo, setReferralInfo] = useState({
+    name: "",
+    email: "",
+    how: "",
+    phone: "",
+    description:""
   });
 
   const [education, setEducation] = useState([
@@ -62,6 +72,13 @@ export const AuthContextProvider = ({ children }) => {
 
   const updateRegisterInfo = useCallback((info) => {
     setRegisterInfo((prevInfo) => ({
+      ...prevInfo,
+      ...info,
+    }));
+  }, []);
+
+  const updateReferralInfo = useCallback((info) => {
+    setReferralInfo((prevInfo) => ({
       ...prevInfo,
       ...info,
     }));
@@ -135,6 +152,38 @@ export const AuthContextProvider = ({ children }) => {
     },
     [registerInfo, education, setPopup]
   );
+  const referUser = useCallback(
+    async (id) => { // Accept id as a parameter
+      setIsReferLoading(true);
+      setReferError(null);
+      try {
+        let updatedDetails = {
+          ...referralInfo,
+        };
+  
+        console.log("Referral Info", updatedDetails);
+        var response = await axios.post(`${apiList.refer}/${id}`, updatedDetails); // Use the id in the URL
+        setIsReferLoading(false);
+        if (response.error) {
+          return setReferError(response);
+        }
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Your referral has been submitted",
+        });
+      } catch {
+        setIsReferLoading(false);
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Referral failed",
+        });
+      }
+    },
+    [referralInfo, setPopup]
+  );
+  
 
   const loginUser = useCallback(
     async (e) => {
@@ -205,6 +254,11 @@ export const AuthContextProvider = ({ children }) => {
         isRegisterLoading,
         logoutUser,
         updateUser,
+        referralInfo,
+        updateReferralInfo,
+        referUser,
+        isReferLoading,
+        referError
       }}
     >
       {children}

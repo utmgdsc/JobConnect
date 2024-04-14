@@ -11,6 +11,7 @@ const apiList = {
   user: `${server}/jobSeekersRoutes/`,
   applicants: `${server}/api/applicants`,
   verify: `${server}/auth/verify-email`,
+  refer: `${server}/referralRoutes/`
 };
 
 export default apiList;

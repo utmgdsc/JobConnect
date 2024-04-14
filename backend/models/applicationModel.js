@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const referralSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    phone: String,
+    relationship: String,
+    recommendation: String
+});
+
 const applicationSchema = new mongoose.Schema({
     jobPosting: {
         type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +34,7 @@ const applicationSchema = new mongoose.Schema({
         state: String,
         postalCode: String
     },
+    referrals: [referralSchema],
     relocation: {
         type: Boolean,
         default: false
