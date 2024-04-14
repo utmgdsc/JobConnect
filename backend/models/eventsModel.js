@@ -29,6 +29,10 @@ const CareerEventSchema = new mongoose.Schema({
         required: true,
         enum: ['Workshop', 'Seminar', 'Job Fair', 'Networking Event', 'Webinar']
     },
+    eventDate: {
+        type: Date,
+        required: true
+    },
     startDate: {
         type: Date,
         required: true
@@ -63,7 +67,18 @@ const CareerEventSchema = new mongoose.Schema({
         ref: 'JobSeeker',
         required: true,
     },
-
+    location: {
+        type: String,
+        required: true
+    },
+    startTime: {
+        type: Date,
+        required: true
+    },
+    endTime: {
+        type: Date,
+        required: true
+    }
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
 });
