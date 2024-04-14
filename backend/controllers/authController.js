@@ -72,10 +72,10 @@ exports.register = async (req, res) => {
 
     // if (!validator.isStrongPassword(password))
     //   return res.status(400).json("Password must be a strong password..");
-    console.log("password before encryption", user.password)
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-    console.log("password after encryption", user.password)
+    // console.log("password before encryption", user.password)
+    // const salt = await bcrypt.genSalt(10);
+    // user.password = await bcrypt.hash(user.password, salt);
+    // console.log("password after encryption", user.password)
     await user.save();
     console.log("user", user)
     const userDetails =
@@ -118,7 +118,7 @@ exports.register = async (req, res) => {
     sendVerificationMail(user);
 
     const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-
+    console.log(token);
     res
       .status(200)
       .json({ _id: user._id, name, email, type, token, isVerified: user.isVerified });
@@ -206,29 +206,33 @@ exports.register = async (req, res) => {
 // };
 
 exports.login = async (req, res) => {
+  console.log(req.body)
   const { email, password } = req.body;
-
   try {
     let user = await User.findOne({ email });
-
-    if (!user) return res.status(400).json("Invalid email or password...");
-
-    console.log("pw", password)
-    console.log("user.pw", user.password)
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword)
-      return res.status(400).json("Invalid email or password...");
-
-    const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      type: user.type,
-      token: token,
-      isVerified: user?.isVerified,
+    if (!user) return res.status(401).json("Invalid email");
+    user.login(password)
+    .then(() => {
+      console.log("login success")
+      const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
+      console.log(token);
+      res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        type: user.type,
+        token: token,
+        isVerified: user?.isVerified,
     });
+      // Successful login
+      // Proceed with further actions
+    })
+    .catch(() => {
+      // Invalid password
+      return res.status(400).json("Invalid password");
+    });
+    // if (!(user.login(password)))
+    //   return res.status(400).json("Invalid password");
   } catch (error) {
     console.log(error);
     res.status(500).json(error);

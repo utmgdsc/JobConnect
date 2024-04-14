@@ -156,6 +156,7 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
+        console.log(user)
     if (user.type === "employer") {
         console.log(user);
         Employer.findOne({ userId: user._id })

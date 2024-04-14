@@ -56,7 +56,7 @@ schema.pre("save", function (next) {
 // Password verification upon login
 schema.methods.login = function (password) {
   let user = this;
-
+  // return bcrypt.compare(password, user.password)
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, user.password, (err, result) => {
       if (err) {
