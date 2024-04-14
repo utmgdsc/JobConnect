@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EventPostingsService from "../services/EventServices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Events = () => {
   const [eventPostings, setEventPostings] = useState([]);
@@ -16,7 +16,7 @@ const Events = () => {
 
   useEffect(() => {
     fetchEventPostings();
-  }, [eventPostings]);
+  }, []);
 
   const fetchEventPostings = async () => {
     try {
@@ -67,6 +67,15 @@ const Events = () => {
         <option value="Networking Event">Networking Event</option>
         <option value="Webinar">Webinar</option>
       </select>
+      {localStorage.getItem("type") === "employer" &&
+        <div className="row">
+          <div className="col">
+            <Link to="/create/event" className="btn btn-primary mb-3 w-100">
+              Create event
+            </Link>
+          </div>
+        </div>
+      }
       <div className="event-listings">
         {filteredEventPostings.map((event) => (
           <div key={event._id} className="event-posting">
@@ -81,7 +90,7 @@ const Events = () => {
                 &#9660;
               </span>
             </div>
-            <p>Organized by: {event.organizer}</p>
+            <p>Organized by: <a href={`/employer-dashboard/${event._id}`}>{event.organizer}</a></p>
             <p>{event.location}</p>
             <p>Type: {event.eventType}</p>
             {expandedEventId === event._id && (

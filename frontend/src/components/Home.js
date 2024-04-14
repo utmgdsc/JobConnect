@@ -101,10 +101,10 @@ const Home = () => {
                   </div>
                   <h3 className="card-title mb-3">Explore Job Opportunities</h3>
                   <p className="card-text">
-                    Dive into a wide array of exciting job opportunities across
+                    Dive into a wide array of exciting and rewarding job opportunities across
                     various industries. Whether you're starting your career or
-                    looking for a change, find positions that match your skills
-                    and passions. Let's shape your future together.
+                    looking for a change, find positions that match your skills, experience
+                    and passions. Let's shape your future together and achieve your career goals.
                   </p>
                   <Link to="/jobs" className="btn btn-primary">
                     Discover Jobs
@@ -142,9 +142,9 @@ const Home = () => {
                 opportunities, we're here to support your journey every step of
                 the way.
               </p>
-              <a href="#" className="btn btn-light mt-3">
+              <Link to="/resume" className="btn btn-light mt-3">
                 <i className="bi bi-chevron-right"></i> Learn More
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -48,14 +48,14 @@ function JobDetails() {
                     </div>
                     <div className="d-flex">
                         {job.company &&
-                            <h3>{job.company}</h3>
+                            <h3><a href={`/employer-dashboard/${job._id}`}>{job.company}</a></h3>
                         }
                         {job.location &&
                             <h5 className="ms-auto">{job.location}</h5>
                         }
                     </div>
                     <h5>{job.jobType}</h5>
-                    {job.salary && job.salary > 0 &&
+                    {job.salary &&
                         <h5>${job.salary}</h5>
                     }
                 </div>
