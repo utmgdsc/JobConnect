@@ -1,14 +1,35 @@
-const dodtenv = require('dotenv').config()
-const connectDB = require('./config/db')
-const express = require('express')
+const dotenv = require('dotenv').config();
+const connectDB = require('./config/db');
+const express = require('express');
 const port = process.env.PORT || 5000;
 const passportConfig = require("./lib/passportConfig");
 const cors = require('cors');
+
+const multer = require('multer');
+const resumeController = require('./controllers/resumeController'); // Assuming you will create this
+
+
+app.use(express.json());
+app.use(cors());
+app.use(passportConfig.initialize());
+
+// Middleware for parsing multipart/form-data
+const upload = multer({ dest: 'uploads/' });
+
+// Add the resume analysis route
+app.post('/api/analyze-resume', upload.single('resume'), resumeController.analyzeResume);
+
+// Define other routes
+
+
+
+
+app.listen(port, () => console.log(`Server started on port ${port}`));
+
 const bodyParser = require('body-parser');
 const fs = require("fs");
 const app = express()
 const uploadController = require('./controllers/uploadController')
-const multer = require('multer')
 const path = require('path')
 console.log(path.join(__dirname, 'files'))
 app.use('/files', express.static(path.join(__dirname, 'files')))
@@ -19,7 +40,6 @@ app.use('/files', express.static(path.join(__dirname, 'files')))
 
 
  // app.use(express.json());
-app.use(cors())
 
 app.listen(port, () => console.log(`Server started on port ${port}`))
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -52,3 +72,4 @@ app.use('/api/subscribe', require("./routes/subscribeRoutes"))
 app.use('/api/applicationRoutes', require('./routes/applicationRoutes'))
 
 connectDB()
+
