@@ -68,7 +68,9 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   const updateUser = useCallback((response) => {
-    localStorage.setItem("User", JSON.stringify(response));
+    user = JSON.stringify(response)
+    localStorage.setItem("User", user);
+    localStorage.setItem("type", user.type);
     setUser(response);
   }, []);
 
@@ -110,8 +112,10 @@ export const AuthContextProvider = ({ children }) => {
       if (response.error) {
         return setRegisterError(response);
       }
-
-      localStorage.setItem("User", JSON.stringify(response));
+      user = JSON.stringify(response)
+  
+      localStorage.setItem("User", user);
+      localStorage.setItem("type", user.type)
       setUser(response);
       setPopup({
         open: true,
@@ -137,14 +141,16 @@ export const AuthContextProvider = ({ children }) => {
       try {
         const response = await (axios.post(apiList.login, loginInfo))
         setIsLoginLoading(false);
-        console.log("This is saved to localstorage : ", response)
-        localStorage.setItem("User", response);
+        localStorage.setItem("User", response.data);
+        localStorage.setItem("type", response.data.type)
+        console.log("user", response.data)
+        console.log("type", response.data.type)
         setPopup({
           open: true,
           severity: "success",
           message: "Logged in successfully",
         });
-        console.log("this is user", response.data)
+        // console.log("this is user", response.data)
         setUser(response.data);
       } catch {
         setPopup({

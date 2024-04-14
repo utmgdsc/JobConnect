@@ -7,7 +7,7 @@ const Login = () => {
   const { loginInfo, updateLoginInfo, loginUser, loginError, isLoginLoading, user } =
     useContext(AuthContext);
 
-    return user ? (
+    return (user && user.isVerified) ? (
     <Navigate to="/" />
   ) : (
     <>
