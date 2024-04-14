@@ -49,6 +49,7 @@ const jobPostingSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    keywords: [String],
 }, {
     timestamps: true
 });

@@ -18,6 +18,7 @@ function JobDetails() {
             requirements: [],
             benefits: [],
         },
+        keywords: [],
     });
 
     const { id } = useParams();
@@ -91,6 +92,12 @@ function JobDetails() {
                                 <li key={index}>{item}</li>
                             ))}
                         </ul>
+                    </div>
+                )}
+                {job.keywords.length > 0 && (
+                    <div className="mb-1 px-4">
+                        <h4>Tags:</h4>
+                        <p>{job.keywords.join(", ")}</p>
                     </div>
                 )}
                 <div className="px-4">

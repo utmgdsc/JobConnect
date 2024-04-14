@@ -25,6 +25,7 @@ function CreateJobPosting() {
             benefits: [],
         },
         applicants: [],
+        keywords: [],
     });
     const [details, setDetails] = useState({
         responsibilities: "",
@@ -103,7 +104,16 @@ function CreateJobPosting() {
 
     function handleChange(event) {
         const { name, value, type, checked } = event.target;
-        if (name === "description") {
+        if (name === "keywords") {
+            const keywordsArray = value.split(',').map(keyword => keyword.trim()); // Convert comma-separated string to array
+            setJobPosting((prevJobPosting) => ({
+                ...prevJobPosting,
+                keywords: keywordsArray,
+            }));
+            // print keywords array
+        }
+
+        else if (name === "description") {
             setJobPosting((prevJobPosting) => {
                 return {
                     ...prevJobPosting,
@@ -236,6 +246,10 @@ function CreateJobPosting() {
                     <label className="form-label">Benefits:</label>
                     <div className="form-text text-muted">Each item should go on a separate line.</div>
                     <textarea name="benefits" value={details.benefits} onChange={handleTextChange} onBlur={handleBlur} className="form-control" />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Keywords:</label>
+                    <input type="text" name="keywords" value={jobPosting.keywords.join(", ")} onChange={handleChange} className="form-control" placeholder="Enter keywords separated by commas" />
                 </div>
                 <button type="submit" className="btn btn-primary">{id ? "Update Job Posting" : "Create Job Posting"}</button>
             </form>
