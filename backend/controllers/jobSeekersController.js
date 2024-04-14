@@ -189,12 +189,8 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
             console.error('Error fetching job seeker:', error);
             res.status(500).json({ error: 'Server error' });
         }
-    } catch (error) {
-        console.error('Error fetching job seeker:', error);
-        res.status(500).json({ error: 'Server error' });
-    }
-
-});
+    } 
+);
 
 
 module.exports = {
