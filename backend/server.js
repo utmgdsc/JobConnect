@@ -1,37 +1,44 @@
 const dotenv = require('dotenv').config();
 const connectDB = require('./config/db');
 const express = require('express');
-const port = process.env.PORT || 5000;
-const passportConfig = require("./lib/passportConfig");
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const multer = require('multer');
-const bodyParser = require('body-parser');
 const fs = require("fs");
-const uploadController = require('./controllers/uploadController');
 const path = require('path');
+const passportConfig = require("./lib/passportConfig");
+
 const resumeController = require('./controllers/resumeController');
+const uploadController = require('./controllers/uploadController');
+
 const app = express();
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
-app.use(passportConfig.initialize());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(passportConfig.initialize());
 
-// Middleware for parsing multipart/form-data
+// Define storage options dynamically based on route
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./files");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + ".pdf");
-  },
+    destination: function (req, file, cb) {
+        if (req.path === '/api/analyze-resume') {
+            cb(null, 'uploads/'); // Temporary folder for processing
+            console.log("working")
+        } else {
+            cb(null, './files'); // Permanent storage folder
+        }
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + file.originalname;
+        cb(null, uniqueSuffix);
+    }
 });
 
 const upload = multer({ storage: storage });
 
-// Add the resume analysis route
+// Route for analyzing resumes
 app.post('/api/analyze-resume', upload.single('resume'), resumeController.analyzeResume);
 
 // Route for uploading files
@@ -55,4 +62,5 @@ app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))
 app.use('/api/subscribe', require("./routes/subscribeRoutes"))
 app.use('/api/applicationRoutes', require('./routes/applicationRoutes'))
 
-connectDB()
+
+connectDB();
