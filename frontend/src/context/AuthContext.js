@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { createContext, useCallback, useState } from "react";
 import apiList from "../lib/apiList";
 import axios from "axios";
-
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
+  const [popup, setPopup] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
   const [user, setUser] = useState(null);
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
@@ -52,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
   
   useEffect(() => {
     const user = localStorage.getItem("User");
-    setUser(JSON.parse(user));
+    setUser(user);
   }, []);
 
   const updateRegisterInfo = useCallback((info) => {
@@ -108,9 +112,14 @@ export const AuthContextProvider = ({ children }) => {
 
       localStorage.setItem("User", JSON.stringify(response));
       setUser(response);
-      window.alert("Verification email has been sent to " + registerInfo.email);
+      setPopup({
+        open: true,
+        severity: "success",
+        message: "Verification email has been sent to " + registerInfo.email,
+      });
+      // window.alert("Verification email has been sent to " + registerInfo.email);
     },
-    [registerInfo, education]
+    [registerInfo, education, setPopup]
   );
 
   const loginUser = useCallback(
@@ -124,18 +133,32 @@ export const AuthContextProvider = ({ children }) => {
       //   `${baseUrl}/users/login`,
       //   JSON.stringify(loginInfo)
       // );
-      const response = await (axios.post(apiList.login, loginInfo))
-
-      setIsLoginLoading(false);
-
-      if (response.error) {
-        return setLoginError(response);
+      try {
+        const response = await (axios.post(apiList.login, loginInfo))
+        setIsLoginLoading(false);
+        console.log("This is saved to localstorage : ", response)
+        localStorage.setItem("User", response);
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Logged in successfully",
+        });
+        console.log("this is user", response.data)
+        setUser(response.data);
+      } catch {
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Incorrect password",
+        });
+        return
       }
-      console.log("This is saved to localstorage : ", response)
-      localStorage.setItem("User", response);
-      setUser(response);
+
+      // if (response.error) {
+      //   return setLoginError(response);
+      // }
     },
-    [loginInfo]
+    [loginInfo, setPopup]
   );
 
   const logoutUser = useCallback(() => {
@@ -152,6 +175,8 @@ export const AuthContextProvider = ({ children }) => {
         registerInfo,
         updateRegisterInfo,
         loginInfo,
+        popup,
+        setPopup,
         education,
         setEducation,
         experience,

@@ -38,21 +38,16 @@ export const SetPopupContext = createContext();
 
 // Define a Header component that only shows navigation links on the home page ('/')
 function App() {
-  const { user } = useContext(AuthContext);
-  const [popup, setPopup] = useState({
-    open: false,
-    severity: "",
-    message: "",
-  });
+  const { user, popup, setPopup } = useContext(AuthContext);
   return (
     <Router>
       <div className="App">
         <SetPopupContext.Provider value={setPopup}>
           <Navbar />
           <Routes>
-            <Route path="/" element={user ? <Home /> : <Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={user ? <Chat /> : <Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/register" element={(user && user.isVerified) ? <Home /> : <Register />} />
+            <Route path="/login" element={(user && user.isVerified) ? <Home /> : <Login />} />
             <Route path="/application/:id" element={<Application />} />
             <Route path="/employer/:id" element={<EmployerProfile />} />
             <Route path="/user/:id" element={<UserProfile />} />

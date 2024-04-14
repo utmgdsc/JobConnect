@@ -16,7 +16,7 @@ const debounce = (func, delay) => {
 };
 
 const VerifyEmail = () => {
-    const { user, updateUser } = useContext(AuthContext);
+    const { user, updateUser, setPopup } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -47,7 +47,11 @@ const VerifyEmail = () => {
 
     useEffect(() => {
         if (user?.isVerified) {
-            setIsAccountVerifiedAlertShown(true);
+            setPopup({
+                open: true,
+                severity: "success",
+                message: "Verification success, redirecting...",
+              });
             setTimeout(() => {
                 navigate("/");
             }, 3000);

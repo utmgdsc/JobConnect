@@ -1,12 +1,15 @@
 import { useContext } from "react";
 import { Alert, Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { loginInfo, updateLoginInfo, loginUser, loginError, isLoginLoading } =
+  const { loginInfo, updateLoginInfo, loginUser, loginError, isLoginLoading, user } =
     useContext(AuthContext);
 
-  return (
+    return user ? (
+    <Navigate to="/" />
+  ) : (
     <>
       <Form onSubmit={loginUser}>
         <Row
