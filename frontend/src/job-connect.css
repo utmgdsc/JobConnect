@@ -16,6 +16,13 @@ body::before {
   }
 }
 
+/* in your job-connect.css */
+.icon-custom-size {
+  width: 24px;  /* Keep width constant */
+  height: 18px; /* New height */
+}
+
+
 
 
 .form-control {

@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom"; // Import useParams
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../UserProfile.css";
+import { useNavigate } from "react-router-dom";
 
 function UserProfile() {
   const [jobSeeker, setJobSeeker] = useState({
@@ -30,6 +31,7 @@ function UserProfile() {
   const [events, setEvents] = useState([])
   const [skills, setSkills] = useState("")
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobSeeker = async () => {
@@ -293,6 +295,11 @@ function UserProfile() {
     }
   }
 
+  const logout = () => {
+    navigate("/logout");
+    navigate(0)
+  };
+
   return (
     <div className="container rounded bg-white py-4 mt-5 mb-5 border border-1">
       <ToastContainer
@@ -323,6 +330,9 @@ function UserProfile() {
               >
                 Delete Account
               </button>
+              <div className="text-center mt-4">
+                <button className="btn btn-danger" onClick={logout}>Logout</button>
+              </div>
             </div>
 
             {/* Modal for delete */}
