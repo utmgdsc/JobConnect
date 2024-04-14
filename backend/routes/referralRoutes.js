@@ -6,7 +6,7 @@ const {
 } = require('../controllers/referralController.js')
 
 // router.get('/', jwtAuth, getCurrentJobSeeker)
-router.get('/:id', jwtAuth, addReferral)
+router.post('/:id', jwtAuth, addReferral)
 
 
 module.exports = router

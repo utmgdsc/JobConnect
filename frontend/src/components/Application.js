@@ -81,6 +81,7 @@ const Application = () => {
         authorized: isAuthorized,
         experience,
         status: "Pending",
+        referrals:[]
       };
 
       await applicationService.addApplication(application);

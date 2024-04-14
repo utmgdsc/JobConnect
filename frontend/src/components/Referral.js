@@ -23,7 +23,7 @@ const Referral = () => {
   };
   return (
     <>
-      <Form onSubmit={referUser}>
+      <Form onSubmit={handleReferUser}>
         <Row
           style={{
             height: "100vh",
@@ -67,16 +67,15 @@ const Referral = () => {
                 select
                 label="How do you know this person?"
                 variant="outlined"
-                value={referralInfo.type}
+                value={referralInfo.relationship}
                 onChange={(e) =>
-                  updateReferralInfo({ ...referralInfo, type: e.target.value })
+                  updateReferralInfo({ ...referralInfo, relationship: e.target.value })
                 }
               >
-                <MenuItem value="applicant">We directly worked together</MenuItem>
-                <MenuItem value="employer">We worked together</MenuItem>
-                <MenuItem value="employer">We studied together</MenuItem>
-                <MenuItem value="employer">We're friends</MenuItem>
-                <MenuItem value="employer">We just met</MenuItem>
+                <MenuItem value="workedTogether">We directly worked together</MenuItem>
+                <MenuItem value="studiedTogether">We studied together</MenuItem>
+                <MenuItem value="friends">We're friends</MenuItem>
+                <MenuItem value="justMet">We just met</MenuItem>
               </TextField>
               <TextField
                   label="Recommendation"

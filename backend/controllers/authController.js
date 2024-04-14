@@ -37,6 +37,7 @@ exports.verifyEmail = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        type: user.type,
         token,
         isVerified: user?.isVerified,
       })
@@ -62,8 +63,6 @@ exports.register = async (req, res) => {
       password,
       emailToken: randString(),
     });
-
-
 
     if (!name || !email || !password)
       return res.status(400).json("All fields are required...");
