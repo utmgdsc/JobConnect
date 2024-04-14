@@ -4,6 +4,9 @@ import axios from "axios";
 import apiList from "../lib/apiList";
 import "../job-connect.css";
 
+// Importing the SVG icon (ensure you have this file in your assets directory)
+import ProfileIcon from '../images/profile4.svg';
+
 const Navbar = () => {
   const [type, setType] = useState("");
   const [id, setId] = useState("");
@@ -27,7 +30,6 @@ const Navbar = () => {
     getData();
     setType(localStorage.getItem("type"));
   }, [type, id]);
-
 
   return (
     <div>
@@ -96,24 +98,10 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              {type && type === "employer" ? (
-                <li className="nav-item">
-                  <Link to={`/employer/${id}`} className="nav-link">
-                    Settings
-                  </Link>
-                </li>
-              ) : type && (
-                <li className="nav-item">
-                  <Link to={`/user/${id}`} className="nav-link">
-                    Settings
-                  </Link>
-                </li>
-              )}
               <li className="nav-item">
                 <a href="/#questions" className="nav-link">
                   FAQ
-                </a>{" "}
-                {/* Using an anchor link */}
+                </a>
               </li>
               {!type && (
                 <li className="nav-item">
@@ -131,8 +119,8 @@ const Navbar = () => {
               )}
               {type && (
                 <li className="nav-item">
-                  <Link to="/logout" className="nav-link">
-                    Logout
+                  <Link to={type === "employer" ? `/employer/${id}` : `/user/${id}`} className="nav-link">
+                    <img src={ProfileIcon} alt="Settings" className="icon-custom-size" />
                   </Link>
                 </li>
               )}
