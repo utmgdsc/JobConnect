@@ -3,7 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import AssetPostingsService from '../services/AssetPostingsService';
 import jobSeekersService from '../services/jobSeekersService';
 import applicationService from "../services/applicationService";
-import '../ApplyAsset.css';
+import uploadService from "../services/uploadService"; // Import the upload service
+import "../Application.css";
 import Navbar from './Navbar';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,11 +15,28 @@ const ApplyAsset = () => {
   const [assetDetails, setAssetDetails] = useState(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [file, setFile] = useState(null); // For file upload
+  const [allImages, setAllImages] = useState(null); // To store uploaded files
+  const [location, setLocation] = useState({
+    streetAddress: '',
+    city: '',
+    province: '',
+    postalCode: ''
+  });
+  const [isWillingToRelocate, setIsWillingToRelocate] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [experience, setExperience] = useState('');
 
   useEffect(() => {
     fetchAssetDetails();
     fetchCurrentUserDetails();
+    getPdf();
   }, [assetId]);
+
+  const getPdf = async () => {
+    const pdf = await uploadService.getFiles();
+    setAllImages(pdf.data);
+  };
 
   const fetchAssetDetails = async () => {
     try {
@@ -38,31 +56,55 @@ const ApplyAsset = () => {
     }
   };
 
+  const handleLocationChange = (e) => {
+    const { name, value } = e.target;
+    setLocation(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRelocationChange = (value) => {
+    setIsWillingToRelocate(value === 'yes');
+  };
+
+  const handleAuthorizationChange = (value) => {
+    setIsAuthorized(value === 'yes');
+  };
+
+  const handleExperienceChange = (value) => {
+    setExperience(value);
+  };
   const handleApplyNow = async () => {
-    if (termsAccepted && assetDetails && currentUser) {
-      const application = {
-        assetPosting: assetDetails._id,
-        jobSeeker: currentUser._id,
-        status: "Accepted",
-      };
-
+    if (!termsAccepted) {
+      toast.warn('Please accept the terms and conditions.');
+      return;
+    }
+    if (!currentUser || !assetDetails) {
+      toast.warn('Please make sure you are logged in to apply.');
+      return;
+    }
+    if (assetDetails.applicants && assetDetails.applicants.includes(currentUser._id)) {
+      toast.warn('You have already applied to this asset posting.');
+      return;
+    }
+  
+    const latestFile = allImages[allImages.length - 1];
+    const application = {
+      assetPosting: assetDetails._id,
+      jobSeeker: currentUser._id,
+      resume: latestFile._id, // Assuming there is a resume requirement
+      status: "Pending",
+    };
+  
+    try {
       await applicationService.addApplication(application);
-
       const app = await applicationService.getApplications();
-      //grab the latest application
       const latestApplication = app[app.length - 1];
-
-      const updatedApplications = [...currentUser.applicationHistory];
-      updatedApplications.push(latestApplication._id);
+  
+      const updatedApplications = [...currentUser.applicationHistory, latestApplication._id];
       await jobSeekersService.addInfo(currentUser._id, { applicationHistory: updatedApplications });
-
-      // update asset posting with the new application
-      const updatedApplicants = [...assetDetails.applicants];
-      updatedApplicants.push(latestApplication._id);
+  
+      const updatedApplicants = [...assetDetails.applicants, latestApplication._id];
       await AssetPostingsService.updateAssetPosting(assetDetails._id, { applicants: updatedApplicants });
-
-      navigate("/")
-
+  
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",
         autoClose: 5000,
@@ -73,8 +115,24 @@ const ApplyAsset = () => {
         progress: undefined,
         theme: "dark",
       });
-    } else {
-      alert('Please accept the terms and make sure you are logged in to apply.');
+    } catch (error) {
+      console.error("Failed to submit application:", error);
+      toast.error('Failed to submit application.');
+    }
+  };
+
+  const handleResumeUpload = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+  const submitImage = async () => {
+    if (file) {
+      try {
+        const response = await uploadService.uploadResume(file);
+        getPdf(); // Refresh uploaded files list
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
     }
   };
 
@@ -86,59 +144,94 @@ const ApplyAsset = () => {
     return <div>Loading...</div>;
   }
 
-
   return (
-    <div className="apply-asset-container">
-      <Navbar />
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-      <h2 className="apply-asset-title">Asset Details Overview</h2>
-
-      {/* Asset Details Section */}
-      <div className="apply-asset-section">
-        <p><span>Type:</span> {assetDetails.assetType}</p>
-        <p><span>Location:</span> {assetDetails.location}</p>
-        <p><span>Description:</span> {assetDetails.details.description}</p>
-      </div>
-
-      {/* User Confirmation Section */}
-      <div className="apply-asset-section">
-        <h3>Confirm these details are correct</h3>
-        <p><span>Name:</span> {currentUser.personalInformation.name}</p>
-        <p><span>Email:</span> {currentUser.personalInformation.contactDetails.email}</p>
-        <p><span>Phone:</span> {currentUser.personalInformation.contactDetails.phone}</p>
-        {/* Link to user's profile */}
-        <Link to={`/user/${currentUser._id}`} className="profile-link">View Profile</Link>
-      </div>
-
-      {/* Action Section */}
-      <div className="apply-asset-action">
+    <div className="application-container">
+      <ToastContainer />
+      <h2 className="application-title">{assetDetails.owner}</h2>
+      <div className="application-section">
+        <h3>Contact Information</h3>
         <div>
-          <input
-            type="checkbox"
-            id="termsAccepted"
-            className="apply-asset-checkbox"
-            checked={termsAccepted}
-            onChange={handleTermsAcceptance}
-            required
-          />
-          <label htmlFor="termsAccepted">
-            I am above 16 years old and agree to the terms and conditions.
-          </label>
+          <strong>Name:</strong><br></br>
+          <span>{currentUser.personalInformation.name}</span>
         </div>
-        <button className="apply-asset-button" onClick={handleApplyNow}>
-          Apply Now
-        </button>
+        <br></br>
+        <div>
+          <strong>Email address:</strong><br></br>
+          <span>{currentUser.personalInformation.contactDetails.email}</span>
+        </div>
+        <br></br>
+        <div>
+          <strong>Phone number:</strong><br></br>
+          <span>{currentUser.personalInformation.contactDetails.phone}</span>
+        </div>
+      </div>
+      <div className="application-section">
+        <h4>Location</h4>
+        <input name="address" value={location.address} onChange={handleLocationChange} placeholder="Street address" />
+        <input name="city" value={location.city} onChange={handleLocationChange} placeholder="City" />
+        <input name="province" value={location.province} onChange={handleLocationChange} placeholder="Province" />
+        <input name="postalCode" value={location.postalCode} onChange={handleLocationChange} placeholder="Postal code" />
+      </div>
+      <strong>Are you willing to relocate?</strong><br></br>
+      <div className="radio-group">
+        <div className="form-check form-check-inline yes-option">
+          <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio1" value="yes" onChange={handleRelocationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio1">Yes</label>
+        </div>
+        <div className="form-check form-check-inline no-option">
+          <input className="form-check-input" type="radio" name="relocationOptions" id="inlineRadio2" value="no" onChange={handleRelocationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio2">No</label>
+        </div>
+      </div>
+      <br></br>
+      <strong>Are you legally authorized to work in Canada?</strong><br></br>
+      <div className="radio-group">
+        <div className="form-check form-check-inline yes-option">
+          <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio3" value="yes" onChange={handleAuthorizationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio3">Yes</label>
+        </div>
+        <div className="form-check form-check-inline no-option">
+          <input className="form-check-input" type="radio" name="workAuthorizationOptions" id="inlineRadio4" value="no" onChange={handleAuthorizationChange} />
+          <label className="form-check-label" htmlFor="inlineRadio4">No</label>
+        </div>
+      </div>
+      <br></br>
+      <strong> How many years of experience do you have in this field?</strong><br></br>
+      <div className="radio-group">
+        <div className="form-check form-check-inline yes-option">
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio5" value="0-1" onChange={handleExperienceChange} />
+          <label className="form-check-label" htmlFor="inlineRadio5">0-1</label>
+        </div>
+        <div className="form-check form-check-inline no-option">
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio6" value="1-3" onChange={handleExperienceChange} />
+          <label className="form-check-label" htmlFor="inlineRadio6">1-3</label>
+        </div>
+      </div>
+      <div className="radio-group">
+        <div className="form-check form-check-inline yes-option">
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio7" value="3-5" onChange={handleExperienceChange} />
+          <label className="form-check-label" htmlFor="inlineRadio7">3-5</label>
+        </div>
+        <div className="form-check form-check-inline no-option">
+          <input className="form-check-input" type="radio" name="experienceOptions" id="inlineRadio8" value="5+" onChange={handleExperienceChange} />
+          <label className="form-check-label" htmlFor="inlineRadio8">5+</label>
+        </div>
+      </div>
+      <br></br>
+      <div className="application-section">
+        <h4>Add a resume for the employer</h4>
+        <div className="application-file-upload">
+          <input type="file" id="resumeUpload" onChange={handleResumeUpload} accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+          <label htmlFor="resumeUpload">Please upload your resume in PDF or Word format</label>
+        </div>
+        {file && <span className="application-file-name">{file.name}</span>}
+      </div>
+      <div className="mb-3 form-check">
+        <input type="checkbox" className="form-check-input" id="termsAccepted" checked={termsAccepted} onChange={handleTermsAcceptance} required />
+        <label className="form-check-label" for="exampleCheck1">I agree to the terms and conditions.</label>
+      </div>
+      <div className="application-action">
+        <button className="application-button" onClick={handleApplyNow}>Apply Now</button>
       </div>
     </div>
   );

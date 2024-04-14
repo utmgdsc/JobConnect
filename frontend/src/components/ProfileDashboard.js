@@ -24,6 +24,7 @@ function JobSeekerFetcher() {
   });
   const { id } = useParams();
 
+  
   const fetchJobSeeker = async () => {
     try {
       const data = await jobSeekersService.getJobSeeker(id);
@@ -47,11 +48,9 @@ function JobSeekerFetcher() {
       if (applications.length === 0 && jobs.length === 0 && jobSeeker.applicationHistory.length > 0) {
         jobSeeker.applicationHistory.map(async (application) => {
           const app = await ApplicationsService.getApplicationByID(application)
-          const job = await JobPostingsService.getJobPostingById(app.jobPosting)
           if (applications.length < jobSeeker.applicationHistory.length && jobs.length < jobSeeker.applicationHistory.length) {
             console.log(jobSeeker.applicationHistory.length);
             setApplications((prevApplications) => [...prevApplications, app])
-            setJobs((prevJobs) => [...prevJobs, job])
           }
         })
       }
@@ -65,6 +64,9 @@ function JobSeekerFetcher() {
       fetchApplications()
     }
   }, [jobSeeker]);
+
+
+  
 
   return (
     <div className="dashboard">
@@ -127,24 +129,7 @@ function JobSeekerFetcher() {
             <p>Postal Code: {jobSeeker.location?.postalCode}</p>
           </div>
 
-          <div className="section">
-            <h3>Application History</h3>
-            <ul className="application-history">
-              {jobSeeker.applicationHistory.length > 0 ?
-                applications.map((app, i) => (
-                  <li key={app._id}>
-                    <p>Job Title: {jobs[i].jobTitle}</p>
-                    <p>Company: {jobs[i].company}</p>
-                    <p>
-                      Apply Date:{" "}
-                      {new Date(app.createdAt).toLocaleDateString()}
-                    </p>
-                    <p>Status: {app.status}</p>
-                  </li>
-                ))
-                : <h3 className="text-center">None</h3>}
-            </ul>
-          </div>
+
         </>
       )}
     </div>
