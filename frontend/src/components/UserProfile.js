@@ -282,17 +282,17 @@ function UserProfile() {
         console.error("Failed to find event posting:", error);
       }
     });
-    // try {
-    //   await jobSeekersService.deleteJobSeeker(id)
-    //     .then(() => {
-    //       toast.success("Successfully deleted account!");
-    //     })
-    //     .catch(error => {
-    //       toast.error("Failed to delete account.");
-    //     });
-    // } catch (error) {
-    //   console.error("Failed to delete job seeker:", error);
-    // }
+    try {
+      await jobSeekersService.deleteJobSeeker(id)
+        .then(() => {
+          toast.success("Successfully deleted account!");
+        })
+        .catch(error => {
+          toast.error("Failed to delete account.");
+        });
+    } catch (error) {
+      console.error("Failed to delete job seeker:", error);
+    }
   }
 
   const logout = () => {

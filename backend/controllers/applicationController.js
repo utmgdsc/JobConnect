@@ -41,6 +41,8 @@ const updateApplication = asyncHandler(async (req, res) => {
     if (application) {
         application.status = req.body.status || application.status;
         application.location = req.body.location || application.location;
+        application.notes = req.body.notes || application.notes;
+        application.rating = req.body.rating || application.rating;
 
         const updatedApplication = await application.save();
         res.json(updatedApplication);

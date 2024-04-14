@@ -1,13 +1,15 @@
 import { useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
-
-import { SetPopupContext } from "../App";
+import { AuthContext } from "../context/AuthContext";
 
 const Logout = (props) => {
-  const setPopup = useContext(SetPopupContext);
+  // const setPopup = useContext(AuthContext);
+  const { logoutUser, setPopup } = useContext(AuthContext);
   useEffect(() => {
+    logoutUser()
     localStorage.removeItem("token");
     localStorage.removeItem("type");
+
     setPopup({
       open: true,
       severity: "success",

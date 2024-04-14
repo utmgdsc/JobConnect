@@ -1,106 +1,213 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { createContext, useCallback, useState } from "react";
 import apiList from "../lib/apiList";
-// import { json } from "express";
+
 import axios from "axios";
-
-
-export const AuthContext = createContext()
+export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [registerError, setRegisterError] = useState(null);
-    const [isRegisterLoading, setIsRegisterLoading] = useState(false);
-    const [registerInfo, setRegisterInfo] = useState({
-        name: "",
-        email: "",
-        password: "",
-    })
-    const [loginError, setLoginError] = useState(null);
-    const [isLoginLoading, setIsLoginLoading] = useState(false);
-    const [loginInfo, setLoginInfo] = useState({
-        email: "",
-        password: "",
-    });
+  const [popup, setPopup] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
+  const [user, setUser] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
+  const [isRegisterLoading, setIsRegisterLoading] = useState(false);
+  const [registerInfo, setRegisterInfo] = useState({
+    name: "",
+    email: "",
+    type: "",
+    password: "",
+    phone: "",
+    company: "",
+    address: "",
+    skills: [],
+    experience: [],
+    education: [],
+    resume:"",
+    age: ""
+  });
 
-    useEffect(() => {
-        const user = localStorage.getItem("User");
-        setUser(JSON.parse(user));
-    }, []);
+  const [education, setEducation] = useState([
+    {
+      institution: "",
+      degree: "", 
+      fieldOfStudy: "", 
+      startYear: "",
+      endYear: "",
+    },
+  ]);
 
-    const updateRegisterInfo = useCallback((info) => {
-        setRegisterInfo(info);
-    }, [])
+  const [experience, setExperience] = useState([
+    {
+      title: "",
+      company: "", 
+      description: "", 
+      startYear: "",
+      endYear: "",
+    },
+  ]);
+  const [loginError, setLoginError] = useState(null);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [loginInfo, setLoginInfo] = useState({
+    email: "",
+    password: "",
+  });
+  
+  useEffect(() => {
+    const user = localStorage.getItem("User");
+    setUser(user);
+  }, []);
 
-    const updateLoginInfo = useCallback((info) => {
-        setLoginInfo(info);
-    }, [])
+  const updateRegisterInfo = useCallback((info) => {
+    setRegisterInfo((prevInfo) => ({
+      ...prevInfo,
+      ...info,
+    }));
+  }, []);
 
-    const updateUser = useCallback((response) => {
-        localStorage.setItem("User", JSON.stringify(response));
+  const updateUser = useCallback((response) => {
+    user = JSON.stringify(response)
+    localStorage.setItem("User", user);
+    localStorage.setItem("type", user.type);
+    setUser(response);
+  }, []);
+
+  const updateLoginInfo = useCallback((info) => {
+    setLoginInfo(info);
+  }, []);
+
+  const registerUser = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      setIsRegisterLoading(true);
+      setRegisterError(null);
+      try {
+        let updatedDetails = {
+          ...registerInfo,
+          education: education
+            .filter((obj) => obj.institution.trim() !== "")
+            .map((obj) => {
+              if (obj["endYear"] === "") {
+                delete obj["endYear"];
+              }
+              return obj;
+            }),
+            experience: experience
+            .filter((obj) => obj.title.trim() !== "")
+            .map((obj) => {
+              if (obj["endYear"] === "") {
+                delete obj["endYear"];
+              }
+              return obj;
+            }),
+        };
+  
+        console.log("UPDATED DETAILS", updatedDetails)
+        var response = await (axios.post(apiList.register, updatedDetails))
+        setIsRegisterLoading(false);
+        if (response.error) {
+          return setRegisterError(response);
+        }
+        let user = response.data
+
+        localStorage.setItem("User", user);
+        localStorage.setItem("type", user.type)
+        console.log("success2")
         setUser(response);
-    }, [])
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Verification email has been sent to " + registerInfo.email,
+        });
+        console.log("success2")
+      } catch {
+        setIsLoginLoading(false)
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Registration failed",
+        });
+      }
+      
+    },
+    [registerInfo, education, setPopup]
+  );
 
-    const registerUser = useCallback(
-        async (e) => {
-            e.preventDefault();
-            setIsRegisterLoading(true);
-            setRegisterError(null);
-            const response = await (axios.post(apiList.register, JSON.stringify({ registerInfo })))
-            setIsRegisterLoading(false);
+  const loginUser = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-            if (response.error) {
-                return setRegisterInfo(response);
-            }
+      setIsLoginLoading(true);
+      setLoginError(null);
 
-            localStorage.setItem("User", JSON.stringify(response));
-            setUser(response)
-        },
-        [registerInfo]
-    );
+      // const response = await postRequest(
+      //   `${baseUrl}/users/login`,
+      //   JSON.stringify(loginInfo)
+      // );
+      try {
+        const response = await (axios.post(apiList.login, loginInfo))
+        setIsLoginLoading(false);
+        localStorage.setItem("User", response.data);
+        localStorage.setItem("type", response.data.type)
+        localStorage.setItem("token", response.data.token)
+        console.log("user", response.data)
+        console.log("type", response.data.type)
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Logged in successfully",
+        });
+        // console.log("this is user", response.data)
+        setUser(response.data);
+      } catch {
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Incorrect password",
+        });
+        return
+      }
 
-    const loginUser = useCallback(
-        async (e) => {
-            e.preventDefault();
-            setIsLoginLoading(true);
-            setLoginError(null);
-            const response = await (axios.post(apiList.login, JSON.stringify({ loginInfo })))
-            setIsLoginLoading(false);
+      // if (response.error) {
+      //   return setLoginError(response);
+      // }
+    },
+    [loginInfo, setPopup]
+  );
 
-            if (response.error) {
-                return setLoginInfo(response);
-            }
+  const logoutUser = useCallback(() => {
+    localStorage.removeItem("User");
+    setUser(null);
+  }, []);
 
-            localStorage.setItem("User", JSON.stringify(response));
-            setUser(response)
-        },
-        [loginInfo]
-    );
-
-    const logoutUser = useCallback(() => {
-        localStorage.removeItem("User");
-        setUser(null);
-    }, []);
-
-    return (
-        <AuthContext.Provider
-            value={{
-                user,
-                registerUser,
-                loginUser,
-                registerInfo,
-                updateRegisterInfo,
-                loginInfo,
-                updateLoginInfo,
-                loginError,
-                isLoginLoading,
-                registerError,
-                isRegisterLoading,
-                logoutUser,
-                updateUser
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
-}
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        registerUser,
+        loginUser,
+        registerInfo,
+        updateRegisterInfo,
+        loginInfo,
+        popup,
+        setPopup,
+        education,
+        setEducation,
+        experience,
+        setExperience,
+        updateLoginInfo,
+        loginError,
+        isLoginLoading,
+        registerError,
+        isRegisterLoading,
+        logoutUser,
+        updateUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};

@@ -153,42 +153,44 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
-        if (user.type === "employer") {
-            console.log(user);
-            Employer.findOne({ userId: user._id })
-                .then((recruiter) => {
-                    if (recruiter === null) {
-                        res.status(404).json({
-                            message: "User does not exist",
-                        });
-                        return;
-                    }
-                    res.json(recruiter);
-                })
-                .catch((err) => {
-                    res.status(400).json(err);
-                });
-        } else {
-            JobSeeker.findOne({ userId: user._id })
-                .then((jobApplicant) => {
-                    if (jobApplicant === null) {
-                        res.status(404).json({
-                            message: "User does not exist",
-                        });
-                        return;
-                    }
-                    res.json(jobApplicant);
-                })
-                .catch((err) => {
-                    res.status(400).json(err);
-                });
-        }
-    } catch (error) {
-        console.error('Error fetching job seeker:', error);
-        res.status(500).json({ error: 'Server error' });
-    }
 
-});
+        console.log(user)
+    if (user.type === "employer") {
+        console.log(user);
+        Employer.findOne({ userId: user._id })
+        .then((recruiter) => {
+            if (recruiter == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+            }
+            res.json(recruiter);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        });
+    } else {
+        JobSeeker.findOne({ userId: user._id })
+        .then((jobApplicant) => {
+            if (jobApplicant == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+            }
+            res.json(jobApplicant);
+        })
+        .catch((err) => {
+            res.status(400).json(err);
+        });
+    }
+        } catch (error) {
+            console.error('Error fetching job seeker:', error);
+            res.status(500).json({ error: 'Server error' });
+        }
+    } 
+);
 
 
 module.exports = {

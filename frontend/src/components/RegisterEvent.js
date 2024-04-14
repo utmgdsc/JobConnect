@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import "../ApplyAsset.css";
 const RegisterEvent = () => {
   const { eventId } = useParams();
   const [eventDetails, setEventDetails] = useState(null);
@@ -36,28 +36,26 @@ const RegisterEvent = () => {
   };
 
   const handleRegister = async () => {
-    if (termsAccepted && eventDetails && currentUser) {
-      try {
-        const updatedEventApplicants = [...eventDetails.applicants, currentUser._id];
-        await EventPostingsService.updateEvent(eventId, { applicants: updatedEventApplicants });
-        const updatedUserRegistrations = [...currentUser.eventRegistrations];
-        updatedUserRegistrations.push(eventDetails._id); // Assuming eventDetails has _id field
-        await jobSeekersService.addInfo(currentUser._id, { eventRegistrations: updatedUserRegistrations });
-
-        toast.success("Application Submitted", {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });         } catch (error) {
-        console.error("Error registering for the event:", error);
-      }
-    } else {
-      toast.error("Please accept the terms to apply for the job", {
+    if (!termsAccepted) {
+      toast.error("Please accept the terms to apply for the event");
+      return;
+    }
+    if (!eventDetails || !currentUser) {
+      toast.warn("Please ensure event details and user are loaded correctly.");
+      return;
+    }
+    if (eventDetails.registrants && eventDetails.registrants.includes(currentUser._id)) {
+      toast.warn("You have already registered for this event.");
+      return;
+    }
+  
+    try {
+      const updatedEventApplicants = [...eventDetails.registrants, currentUser._id];
+      await EventPostingsService.updateEvent(eventId, { registrants: updatedEventApplicants });
+      const updatedUserRegistrations = [...currentUser.eventRegistrations, eventId];
+      await jobSeekersService.addInfo(currentUser._id, { eventRegistrations: updatedUserRegistrations });
+  
+      toast.success("Successfully registered for the event", {
         position: "bottom-left",
         autoClose: 5000,
         hideProgressBar: false,
@@ -67,9 +65,12 @@ const RegisterEvent = () => {
         progress: undefined,
         theme: "dark",
       });
+    } catch (error) {
+      console.error("Error registering for the event:", error);
+      toast.error("Error during event registration.");
     }
-};
-
+  };
+  
 
   
   
@@ -113,6 +114,9 @@ const RegisterEvent = () => {
         <p><span>Name:</span> {currentUser.personalInformation.name}</p>
         <p><span>Email:</span> {currentUser.personalInformation.contactDetails.email}</p>
         <p><span>Phone:</span> {currentUser.personalInformation.contactDetails.phone}</p>
+        <p><span>Date:</span> {eventDetails.eventDate}</p>
+        <p><span>Start Time:</span> {eventDetails.startTime}</p>
+        <p><span>End Time:</span> {eventDetails.endTime}</p>
         {/* Display other user details as needed */}
       </div>
       
