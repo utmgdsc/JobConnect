@@ -34,7 +34,7 @@ const analyzeResume = async (req, res) => {
 
       // Make the request to the OpenAI Chat API
       console.log("hello");
-      const openAIResponse = await axios.post('https://api.openai.com/v1/chat/completions', payload, {
+      const openAIResponse = await axios.post('', payload, {
         headers: {
             'Authorization': 'Bearer ',
             'Content-Type': 'application/json',
