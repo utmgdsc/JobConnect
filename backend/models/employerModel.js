@@ -5,7 +5,7 @@ const EmployerSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-      },
+    },
     company: {
         type: String,
         required: true
@@ -14,12 +14,16 @@ const EmployerSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    email: {
+        type: String,
+    },
     phone: {
         type: Number,
     },
     location: {
         type: String, // Could be a string or a nested schema for detailed location (even remote?) or loc object
-        required: false
+        required: false,
+        default: ""
     },
     category: {
         type: String,
@@ -27,9 +31,7 @@ const EmployerSchema = new mongoose.Schema({
     },
     website: {
         type: String,
-    },
-    phone: {
-        type: Number,
+        default: ""
     },
     jobs: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -46,6 +48,7 @@ const EmployerSchema = new mongoose.Schema({
     reviews: [{
         review: String,
         rating: Number,
+        name: String,
         timestamp: {
             type: Date,
             default: Date.now

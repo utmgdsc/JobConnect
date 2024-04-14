@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const JobSeeker = require('../models/jobSeekerModel'); // Ensure this path is correct
+const Employer = require('../models/employerModel');
 
 const registerJobSeeker = async (req, res) => {
     // Destructuring nested properties from req.body
@@ -11,8 +12,6 @@ const registerJobSeeker = async (req, res) => {
 
     // Basic validation to check if essential fields are present
     if (!name || !email || !age || !username) {
-        console.log(name);
-        console.log(contactDetails);
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -127,10 +126,9 @@ const addJobSeekerInfo = asyncHandler(async (req, res) => {
         updateQuery['$addToSet']['eventRegistrations'] = { $each: updates.eventRegistrations };
     }
 
-    // Handle updates to applicationHistory
     if (updates.applicationHistory && Array.isArray(updates.applicationHistory)) {
-        if (!updateQuery['$push']) updateQuery['$push'] = {};
-        updateQuery['$push']['applicationHistory'] = { $each: updates.applicationHistory };
+        if (!updateQuery['$addToSet']) updateQuery['$addToSet'] = {};
+        updateQuery['$addToSet']['applicationHistory'] = { $each: updates.applicationHistory };
     }
 
     try {
@@ -155,7 +153,10 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
-    if (user.type === "recruiter") {
+
+        console.log(user)
+    if (user.type === "employer") {
+        console.log(user);
         Employer.findOne({ userId: user._id })
         .then((recruiter) => {
             if (recruiter == null) {
@@ -188,8 +189,8 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
             console.error('Error fetching job seeker:', error);
             res.status(500).json({ error: 'Server error' });
         }
-        
-});
+    } 
+);
 
 
 module.exports = {

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const assetPostingSchema = new mongoose.Schema({
+    assetProvider: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employer',
+        required: true
+    },
     owner: {
         type: String,
         required: true

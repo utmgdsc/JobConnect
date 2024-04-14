@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AssetPostingsService from "../services/AssetPostingsService";
 import "../jobs.css"; // Assuming you want to use the same CSS file
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const AssetPostings = () => {
   const [assetPostings, setAssetPostings] = useState([]);
@@ -53,6 +53,15 @@ const AssetPostings = () => {
           </div>
         </div>
       </div>
+      {localStorage.getItem("type") === "employer" &&
+        <div className="row">
+          <div className="col">
+            <Link to="/create/asset" className="btn btn-primary mb-3 w-100">
+              Create asset
+            </Link>
+          </div>
+        </div>
+      }
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {filteredAssetPostings.map((posting) => (
           <div
@@ -64,6 +73,7 @@ const AssetPostings = () => {
                 <h3>{posting.title}</h3>
               </div>
               <div className="card-body">
+                <p>Posted by: <a href={`/employer-dashboard/${posting._id}`}>{posting.company}</a></p>
                 <p>Location: {posting.location}</p>
                 <p>Type: {posting.assetType}</p>
                 {posting.condition && <p>Condition: {posting.condition}</p>}

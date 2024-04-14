@@ -1,7 +1,7 @@
 // Import necessary dependencies
 import React, { useState, useEffect } from "react";
-import EventPostingsService from "../services/EventServices";
-import jobSeekersService from "../services/jobSeekersService";
+import EventService from "../services/EventServices";
+import UserService from "../services/UserService";
 import { useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,7 +20,7 @@ const RegisterEvent = () => {
 
   const fetchEventDetails = async () => {
     try {
-      const data = await EventPostingsService.getEventById(eventId);
+      const data = await EventService.getEventById(eventId);
       setEventDetails(data);
     } catch (error) {
       console.error("Error fetching event details:", error);
@@ -29,7 +29,7 @@ const RegisterEvent = () => {
 
   const fetchCurrentUserDetails = async () => {
     try {
-      const user = await jobSeekersService.fetchCurrentUser();
+      const user = await UserService.getCurrentUser();
       setCurrentUser(user);
     } catch (error) {
       console.error("Error fetching current user details:", error);
@@ -39,14 +39,12 @@ const RegisterEvent = () => {
   const handleRegister = async () => {
     if (termsAccepted && eventDetails && currentUser) {
       try {
-        // Update event details
         const updatedEventApplicants = [...eventDetails.applicants, currentUser._id];
-        await EventPostingsService.updateEvent(eventId, { applicants: updatedEventApplicants });
+        await EventService.updateEvent(eventId, { applicants: updatedEventApplicants });
         
-        // Update user's event registration
         const updatedUserRegistrations = [...currentUser.eventRegistrations];
-        updatedUserRegistrations.push(eventDetails._id); // Assuming eventDetails has _id field
-        await jobSeekersService.addInfo(currentUser._id, { eventRegistrations: updatedUserRegistrations });
+        updatedUserRegistrations.push(eventDetails._id);
+        await UserService.updateUser(currentUser._id, { eventRegistrations: updatedUserRegistrations });
 
         toast.success("Application Submitted", {
           position: "bottom-left",
@@ -62,7 +60,16 @@ const RegisterEvent = () => {
         console.error("Error registering for the event:", error);
       }
     } else {
-      alert("Please accept the terms to register for the event.");
+      toast.error("Please accept the terms to apply for the event", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 

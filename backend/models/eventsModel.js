@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const CareerEventSchema = new mongoose.Schema({
+    eventOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employer',
+        required: true
+    },
     eventName: {
         type: String,
         required: true

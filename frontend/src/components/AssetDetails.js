@@ -6,6 +6,7 @@ import "../App.css"; // Import the new CSS styles
 
 function AssetDetails() {
     const [asset, setAsset] = useState({
+        _id: "",
         owner: "",
         title: "",
         assetType: "",
@@ -46,7 +47,7 @@ function AssetDetails() {
                     </div>
                     <div className="d-flex">
                         {asset.owner &&
-                            <h3>{asset.owner}</h3>
+                            <h3><a href={`/employer-dashboard/${asset._id}`}>{asset.owner}</a></h3>
                         }
                         {asset.location &&
                             <h5 className="ms-auto">{asset.location}</h5>
@@ -56,7 +57,7 @@ function AssetDetails() {
                         <h5>{asset.assetType}</h5>
                         {asset.condition && <h5 className="ms-auto">{asset.condition}</h5>}
                     </div>
-                    {asset.price && asset.price > 0 &&
+                    {asset.price &&
                         <h5>${asset.price}</h5>
                     }
                 </div>
@@ -77,9 +78,10 @@ function AssetDetails() {
                 <div className="px-4">
                     <button
                         className="btn btn-primary btn-md"
-                        onClick={() => navigate(`/application/`)}
+                        onClick={() => navigate(`/apply-asset/${asset._id}`)
+                        }
                     >
-                        Contact
+                        Rent asset
                     </button>
                 </div>
             </div>

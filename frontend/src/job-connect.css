@@ -15,6 +15,9 @@ body::before {
     width: 50%;
   }
 }
+
+
+
 .form-control {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -43,3 +46,22 @@ width: auto; /* Add this to keep the button width normal */
     margin-top: 9px;
     margin-bottom: 10px;
 }
+
+.accordion-button:hover {
+  /* make background colour no colour */
+  background-color: transparent;
+}
+
+/* If the above doesn't work, target the accordion item more specifically */
+#questions-accordion .accordion-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed), .accordion-button:active {
+  background-color: transparent !important; /* Makes the background color transparent */
+  color: inherit !important; /* Optional: ensures the text color remains consistent */
+}
+
+
+

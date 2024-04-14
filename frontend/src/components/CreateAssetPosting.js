@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import AssetPostingsService from "../services/AssetPostingsService";
+import EmployerService from "../services/EmployerService";
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import apiList from "../lib/apiList";
 import "../App.css"; // Import the new CSS styles
 
 function CreateAssetPosting() {
@@ -21,6 +24,26 @@ function CreateAssetPosting() {
         benefits: [],
     });
     const [benefits, setBenefits] = useState("");
+
+    const [employer, setEmployer] = useState({
+        company: "",
+        email: "",
+        password: "",
+        description: "",
+        category: "",
+        website: "",
+        phone: "",
+        location: "",
+        reviews: [
+            {
+                rating: 0,
+                review: "",
+            },
+        ],
+        jobs: [],
+        assets: [],
+        events: [],
+    });
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -40,6 +63,31 @@ function CreateAssetPosting() {
         if (id) {
             fetchAssetPosting();
         }
+
+        const getData = () => {
+            axios
+                .get(apiList.user, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                })
+                .then((response) => {
+                    setAssetPosting((prevAssetPosting) => {
+                        return {
+                            ...prevAssetPosting,
+                            assetProvider: response?.data?._id || id,
+                            owner: response?.data?.company || assetPosting.owner
+                        };
+                    });
+                    setEmployer(response.data);
+                })
+                .catch((err) => {
+                    console.log(err.response.data);
+                });
+        };
+
+        getData()
+
     }, [id]);
 
     function handleChange(event) {
@@ -84,6 +132,10 @@ function CreateAssetPosting() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        if (assetPosting.price < 0) {
+            toast.error("Price cannot be negative.");
+            return;
+        }
         try {
             let res = {}
             if (id) {
@@ -91,6 +143,9 @@ function CreateAssetPosting() {
             }
             else {
                 res = await AssetPostingsService.createAssetPosting(assetPosting);
+                const assets = employer.assets;
+                assets.push(res._id);
+                await EmployerService.addEmployerInfo(employer._id, { assets });
             }
             navigate(`/asset/${id ? id : res._id}`)
                 .then(() => {
@@ -103,6 +158,8 @@ function CreateAssetPosting() {
             console.error("Failed to create asset posting:", error);
         };
     }
+
+    console.log(assetPosting);
 
     return (
         <section className="container rounded bg-white p-4 mt-5 mb-5 border border-1">
@@ -124,7 +181,7 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Owner:</label>
-                    <input required type="text" name="owner" value={assetPosting.owner} onChange={handleChange} className="form-control" />
+                    <input required type="text" name="owner" value={assetPosting.owner} onChange={handleChange} className="form-control" disabled />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Title:</label>
@@ -136,7 +193,7 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Price:</label>
-                    <input required type="text" name="price" value={assetPosting.price} onChange={handleChange} className="form-control" />
+                    <input required type="number" name="price" value={assetPosting.price} onChange={handleChange} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Location:</label>
@@ -153,8 +210,8 @@ function CreateAssetPosting() {
                     </div>
                     <div className="mb-3 col-md-6">
                         <label className="form-label">Condition:</label>
-                        <select name="condition" value={assetPosting.condition} onChange={handleChange} className="form-select">
-                            <option value="">Select</option>
+                        <select required name="condition" value={assetPosting.condition} onChange={handleChange} className="form-select">
+                            <option value=""></option>
                             <option value="Used">Used</option>
                             <option value="Fair">Fair</option>
                             <option value="Good">Good</option>
@@ -164,7 +221,7 @@ function CreateAssetPosting() {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Description:</label>
-                    <textarea name="description" value={assetPosting.details.description} onChange={handleChange} className="form-control" />
+                    <textarea name="description" value={assetPosting.details.description} onChange={handleChange} className="form-control" required />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Benefits:</label>
