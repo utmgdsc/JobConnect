@@ -84,45 +84,54 @@ export const AuthContextProvider = ({ children }) => {
 
       setIsRegisterLoading(true);
       setRegisterError(null);
-      let updatedDetails = {
-        ...registerInfo,
-        education: education
-          .filter((obj) => obj.institution.trim() !== "")
-          .map((obj) => {
-            if (obj["endYear"] === "") {
-              delete obj["endYear"];
-            }
-            return obj;
-          }),
-          experience: experience
-          .filter((obj) => obj.title.trim() !== "")
-          .map((obj) => {
-            if (obj["endYear"] === "") {
-              delete obj["endYear"];
-            }
-            return obj;
-          }),
-      };
-
-      console.log("UPDATED DETAILS", updatedDetails)
-      const response = await (axios.post(apiList.register, updatedDetails))
-      
-      setIsRegisterLoading(false);
-
-      if (response.error) {
-        return setRegisterError(response);
-      }
-      user = JSON.stringify(response)
+      try {
+        let updatedDetails = {
+          ...registerInfo,
+          education: education
+            .filter((obj) => obj.institution.trim() !== "")
+            .map((obj) => {
+              if (obj["endYear"] === "") {
+                delete obj["endYear"];
+              }
+              return obj;
+            }),
+            experience: experience
+            .filter((obj) => obj.title.trim() !== "")
+            .map((obj) => {
+              if (obj["endYear"] === "") {
+                delete obj["endYear"];
+              }
+              return obj;
+            }),
+        };
   
-      localStorage.setItem("User", user);
-      localStorage.setItem("type", user.type)
-      setUser(response);
-      setPopup({
-        open: true,
-        severity: "success",
-        message: "Verification email has been sent to " + registerInfo.email,
-      });
-      // window.alert("Verification email has been sent to " + registerInfo.email);
+        console.log("UPDATED DETAILS", updatedDetails)
+        var response = await (axios.post(apiList.register, updatedDetails))
+        setIsRegisterLoading(false);
+        if (response.error) {
+          return setRegisterError(response);
+        }
+        let user = response.data
+
+        localStorage.setItem("User", user);
+        localStorage.setItem("type", user.type)
+        console.log("success2")
+        setUser(response);
+        setPopup({
+          open: true,
+          severity: "success",
+          message: "Verification email has been sent to " + registerInfo.email,
+        });
+        console.log("success2")
+      } catch {
+        setIsLoginLoading(false)
+        setPopup({
+          open: true,
+          severity: "error",
+          message: "Registration failed",
+        });
+      }
+      
     },
     [registerInfo, education, setPopup]
   );
@@ -143,6 +152,7 @@ export const AuthContextProvider = ({ children }) => {
         setIsLoginLoading(false);
         localStorage.setItem("User", response.data);
         localStorage.setItem("type", response.data.type)
+        localStorage.setItem("token", response.data.token)
         console.log("user", response.data)
         console.log("type", response.data.type)
         setPopup({

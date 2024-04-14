@@ -61,6 +61,7 @@ const Application = () => {
   const fetchCurrentUserDetails = async () => {
     try {
       const user = await jobSeekersService.fetchCurrentUser();
+      console.log(user)
       setCurrentUser(user);
     } catch (error) {
       console.error("Error fetching current user details:", error);
