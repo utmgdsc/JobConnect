@@ -113,6 +113,9 @@ const RegisterEvent = () => {
         <p><span>Name:</span> {currentUser.personalInformation.name}</p>
         <p><span>Email:</span> {currentUser.personalInformation.contactDetails.email}</p>
         <p><span>Phone:</span> {currentUser.personalInformation.contactDetails.phone}</p>
+        <p><span>Date:</span> {eventDetails.eventDate}</p>
+        <p><span>Start Time:</span> {eventDetails.startTime}</p>
+        <p><span>End Time:</span> {eventDetails.endTime}</p>
         {/* Display other user details as needed */}
       </div>
       
