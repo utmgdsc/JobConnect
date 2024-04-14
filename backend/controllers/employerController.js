@@ -57,14 +57,16 @@ const registerEmployer = async (req, res) => {
 };
 
 const deleteEmployer = asyncHandler(async (req, res) => {
-    await Employer.findOneAndDelete({ "_id": req.params.id }, (err, employer) => {
-        if (err) {
-            res.status(500).json({ message: 'Error deleting employer ' });
-        } else {
+    try {
+        const employer = await Employer.findOneAndDelete({ "_id": req.params.id });
+        if (employer) {
             res.status(200).json({ message: 'Employer deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Employer not found' });
         }
-    })
-
+    } catch (err) {
+        res.status(500).json({ message: 'Error deleting employer' });
+    }
 });
 
 const getEmployer = asyncHandler(async (req, res) => {
@@ -108,6 +110,18 @@ const addEmployerInfo = asyncHandler(async (req, res) => {
     // Check and build update query for responsibilities
     if (updates.reviews && Array.isArray(updates.reviews)) {
         updateQuery['reviews'] = { $each: updates.reviews };
+    }
+    // Check and build update query for responsibilities
+    if (updates.jobs && Array.isArray(updates.jobs)) {
+        updateQuery['jobs'] = { $each: updates.jobs };
+    }
+    // Check and build update query for responsibilities
+    if (updates.assets && Array.isArray(updates.assets)) {
+        updateQuery['assets'] = { $each: updates.assets };
+    }
+    // Check and build update query for responsibilities
+    if (updates.events && Array.isArray(updates.events)) {
+        updateQuery['events'] = { $each: updates.events };
     }
 
     try {

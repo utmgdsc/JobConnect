@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const jobSeekerSchema = mongoose.Schema({
     userId: {
@@ -7,7 +7,7 @@ const jobSeekerSchema = mongoose.Schema({
     },
     personalInformation: {
         name: {
-            type:String,
+            type: String,
             required: true
         },
         contactDetails: {
@@ -20,14 +20,7 @@ const jobSeekerSchema = mongoose.Schema({
         age: {
             type: String,
             required: false
-
         },
-        
-        address: {
-            type: String,
-            required: false
-        },
-
     },
     professionalProfile: {
         experience: [{
@@ -39,8 +32,8 @@ const jobSeekerSchema = mongoose.Schema({
                 type: String,
                 required: false
             },
-            startDate: Date,
-            endDate: Date, // Can be null if it's the current position
+            startYear: Number,
+            endYear: Number, // Can be null if it's the current position
             description: String,
         }],
         skills: [String], // Array of strings to list skills
@@ -51,8 +44,8 @@ const jobSeekerSchema = mongoose.Schema({
             },
             degree: String,
             fieldOfStudy: String,
-            startDate: Date,
-            endDate: Date,
+            startYear: Number,
+            endYear: Number,
         }]
     },
     resume: {
@@ -61,32 +54,30 @@ const jobSeekerSchema = mongoose.Schema({
     },
     jobPreferences: {
         desiredIndustry: String,
-        location: String,
         jobType: {
             type: String,
             enum: ['Full-time', 'Part-time', 'Contract', 'Temporary'] // Example job types
         }
     },
+    location: {
+        address: String,
+        city: String,
+        state: String,
+        postalCode: String
+    },
     eventRegistrations: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'CareerEvent',
-            required: false
-}],
-
-    applicationHistory: [{
-        jobPosting: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'JobPosting',
-            required: false
-        },
-        applyDate: Date,
-        status: {
-            type: String,
-            enum: ['Applied', 'Interviewing', 'Offered', 'Rejected', 'Accepted']
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CareerEvent',
+        required: false
+    }],
+    applicationHistory: [{ // Modified part
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Application',
+        required: false
     }]
+}, {
+    timestamps: true // Adds createdAt and updatedAt timestamps
 });
-
 
 const JobSeeker = mongoose.model('JobSeeker', jobSeekerSchema);
 

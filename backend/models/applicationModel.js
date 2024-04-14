@@ -4,7 +4,12 @@ const applicationSchema = new mongoose.Schema({
     jobPosting: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'JobPosting',
-        required: true
+        required: false
+    },
+    assetPosting: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AssetPosting',
+        required: false,
     },
     jobSeeker: {
         type: mongoose.Schema.Types.ObjectId,
@@ -12,21 +17,37 @@ const applicationSchema = new mongoose.Schema({
         required: true
     },
     resume: {
-        type: String, // Assuming the resume is stored as a URL or file path
+        type: mongoose.Schema.Types.ObjectId,
         required: false
     },
     location: {
-        streetAddress: String,
+        address: String,
         city: String,
         state: String,
         postalCode: String
+    },
+    relocation: {
+        type: Boolean,
+        default: false
+    },
+    authorized: {
+        type: Boolean,
+        default: false
+    },
+    experience: {
+        type: String,
     },
     status: {
         type: String,
         enum: ['Pending', 'Accepted', 'Rejected'],
         default: 'Pending'
     },
-    notes: String,
+    rating: {
+        type: Number, 
+        default: 0
+    },
+     notes: String,
+    
     // Any other relevant fields
 }, {
     timestamps: true

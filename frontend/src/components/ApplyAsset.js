@@ -51,49 +51,39 @@ const ApplyAsset = () => {
     setIsSubmitting(true); // Disable further submissions
   
     try {
-      // Check if the user has already applied for this job posting
-      const alreadyApplied = currentUser.applicationHistory.some(application => application.jobPosting === assetId);
+      const application = {
+        assetPosting: assetDetails._id,
+        jobSeeker: currentUser._id,
+        status: "Accepted",
+      };
   
-      if (alreadyApplied) {
-        toast.error("You have already applied for this job posting", {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      } else {
-        const updatedAsset = { ...assetDetails };
-        updatedAsset.applicants.push(currentUser._id);
-        await AssetPostingsService.updateAsset(assetId, updatedAsset);
+      await applicationService.addApplication(application);
   
-        const user = await jobSeekersService.getJobSeeker(currentUser._id);
-        if (user) {
-          const applicationData = {
-            jobPosting: assetId,
-            applyDate: new Date(),
-            status: 'Applied'
-          };
-          user.applicationHistory.push(applicationData);
-          await jobSeekersService.addInfo(currentUser._id, { applicationHistory: user.applicationHistory });
+      const app = await applicationService.getApplications();
+      // Grab the latest application
+      const latestApplication = app[app.length - 1];
   
-          toast.success("Application Submitted", {
-            position: "bottom-left",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        } else {
-          console.error('Error fetching current user');
-        }
-      }
+      const updatedApplications = [...currentUser.applicationHistory];
+      updatedApplications.push(latestApplication._id);
+      await jobSeekersService.addInfo(currentUser._id, { applicationHistory: updatedApplications });
+  
+      // Update asset posting with the new application
+      const updatedApplicants = [...assetDetails.applicants];
+      updatedApplicants.push(latestApplication._id);
+      await AssetPostingsService.updateAssetPosting(assetDetails._id, { applicants: updatedApplicants });
+  
+      toast.success("Application Submitted Successfully!", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+  
+      navigate("/");
     } catch (error) {
       console.error('Error submitting application:', error);
       // Optionally, show an error toast here
@@ -101,8 +91,7 @@ const ApplyAsset = () => {
   
     setIsSubmitting(false); // Re-enable submissions
   };
-  
-  
+    
   const handleTermsAcceptance = () => {
     setTermsAccepted(!termsAccepted);
   };

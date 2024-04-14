@@ -26,14 +26,15 @@ const getAssetPostingById = async (req, res) => {
 
 // create a new asset posting
 const createAssetPosting = async (req, res) => {
-    const { owner, title, assetType, location, availability, condition, details, price, benefits } = req.body;
+    const { assetProvider, owner, title, assetType, location, availability, condition, details, price, benefits } = req.body;
 
-    if (!owner || !title || !assetType || !location || !availability || !condition || !details || !price) {
+    if (!assetProvider || !owner || !title || !assetType || !location || !availability || !condition || !details || !price) {
         return res.status(400).json({ message: 'Please fill in all required fields' });
     }
 
     try {
         const newAssetPosting = new AssetPosting({
+            assetProvider,
             owner,
             title,
             assetType,
@@ -72,21 +73,18 @@ const deleteAssetPosting = async (req, res) => {
 // update an asset posting by ID
 const updateAssetPosting = async (req, res) => {
     const { id } = req.params;
-    const { owner, title, assetType, location, availability, condition, details, benefits, applicants, price } = req.body;
+    const updates = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).send('Please input a valid id!');
     }
 
     try {
-        const updatedAssetPosting = await AssetPosting.findByIdAndUpdate(id, {
-            assetType,
-            location,
-            availability,
-            details,
-            benefits,
-            applicants // Include applicants in the update
-        }, { new: true });
+        const updatedAssetPosting = await AssetPosting.findOneAndUpdate(
+            { _id: id },
+            { $set: updates },
+            { new: true, runValidators: false }
+        );
 
         if (!updatedAssetPosting) {
             return res.status(404).send('Asset posting not found');

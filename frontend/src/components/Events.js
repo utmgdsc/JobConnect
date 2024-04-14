@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EventPostingsService from "../services/EventServices";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Events = () => {
   const [eventPostings, setEventPostings] = useState([]);
@@ -16,7 +16,7 @@ const Events = () => {
 
   useEffect(() => {
     fetchEventPostings();
-  }, [eventPostings]);
+  }, []);
 
   const fetchEventPostings = async () => {
     try {
@@ -67,6 +67,15 @@ const Events = () => {
         <option value="Networking Event">Networking Event</option>
         <option value="Webinar">Webinar</option>
       </select>
+      {localStorage.getItem("type") === "employer" &&
+        <div className="row">
+          <div className="col">
+            <Link to="/create/event" className="btn btn-primary mb-3 w-100">
+              Create event
+            </Link>
+          </div>
+        </div>
+      }
       <div className="event-listings">
         {filteredEventPostings.map((event) => (
           <div key={event._id} className="event-posting">
@@ -85,20 +94,16 @@ const Events = () => {
             <p>{event.location}</p>
             <p>Type: {event.eventType}</p>
             {expandedEventId === event._id && (
-              <div className="event-details">
-                <p>Description: {event.details.description}</p>
-                {event.registrationRequired && (
-                  <button
-                    className="register-button"
-                    onClick={() =>
-                      navigateToRegistration(event._id)
-                    }
-                  >
-                    Register
-                  </button>
-                )}
-              </div>
-            )}
+  <div className="event-details">
+    <p>Description: {event.details.description}</p>
+    <button
+      className="register-button"
+      onClick={() => navigateToRegistration(event._id)}
+    >
+      Register
+    </button>
+  </div>
+)}
           </div>
         ))}
       </div>

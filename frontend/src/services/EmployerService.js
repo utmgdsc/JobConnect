@@ -23,8 +23,8 @@ const updateEmployer = async (id, newData) => {
   return response.data;
 };
 
-const addInfo = async (newData) => {
-  const response = await axios.patch(API_URL + `/add/${newData}`);
+const addEmployerInfo = async (id, newData) => {
+  const response = await axios.patch(API_URL + `/add/${id}`, newData);
   return response.data;
 };
 
@@ -33,7 +33,7 @@ const EmployerService = {
   deleteEmployer,
   getEmployer,
   updateEmployer,
-  addInfo,
+  addEmployerInfo,
 };
 
 export default EmployerService;
