@@ -3,10 +3,10 @@ const Event = require('../models/eventsModel'); // Ensure this path is correct
 
 // Create an event
 const createEvent = asyncHandler(async (req, res) => {
-    const { eventOwner, eventName, organizer, location, eventType, startDate, endDate, details, registrationRequired, registrationLink, postedBy, eventDate, startTime, endTime } = req.body;
+    const { eventOwner, eventName, organizer, location, eventType, startDate, endDate, details, registrationRequired, registrationLink, postedBy } = req.body;
 
     // Basic validation
-    if (!eventOwner || !eventName || !organizer || !location || !eventType || !startDate || !endDate || !eventDate || !startTime || !endTime) {
+    if (!eventOwner || !eventName || !organizer || !location || !eventType || !startDate || !endDate) {
         return res.status(400).json({ message: 'Please add all required fields' });
     }
 
@@ -22,10 +22,7 @@ const createEvent = asyncHandler(async (req, res) => {
             details,
             registrationRequired,
             registrationLink,
-            postedBy,
-            eventDate,
-            startTime,
-            endTime
+            postedBy
         });
 
         if (event) {
