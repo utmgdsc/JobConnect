@@ -28,7 +28,7 @@ const AssetPostings = () => {
 
   const navigateToApplication = (assetId, event) => {
     event.stopPropagation(); // Stop the event from bubbling up to the div
-    navigate(`/apply-asset/${assetId}`);
+    navigate(`/asset/${assetId}`);
   };
 
   const filteredAssetPostings = assetPostings.filter((posting) => {

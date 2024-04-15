@@ -112,12 +112,12 @@ function EventDetails() {
                     </div>
                 )}
                 <div className="px-4">
-                    <button
+                    {localStorage.getItem("type") === "applicant" &&<button
                         className="btn btn-primary btn-md"
                         onClick={() => navigateToRegistration(event._id)}
                     >
                         Register
-                    </button>
+                    </button>}
                 </div>
             </div>
         </div>
