@@ -341,7 +341,10 @@ function ManagePostings() {
                                         </div>
                                         <div className="d-flex">
                                             <h5>{event.eventType}</h5>
-                                            <h5 className="ms-auto">{new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}</h5>
+                                            <h5 className="ms-auto">{new Date(event.startDate).toLocaleDateString()}</h5>
+                                        </div>
+                                        <div className="d-flex">
+                                            <h5 className="ms-auto">{event.startTime + " - " + event.endTime}</h5>
                                         </div>
                                     </div>
                                     {Postings("event", event._id)}
