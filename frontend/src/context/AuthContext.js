@@ -3,9 +3,10 @@ import { createContext, useCallback, useState } from "react";
 import apiList from "../lib/apiList";
 import isAuth from "../lib/isAuth";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
-
 export const AuthContextProvider = ({ children }) => {
+  // const navigate = useNavigate();
   const [popup, setPopup] = useState({
     open: false,
     severity: "",
@@ -220,6 +221,7 @@ export const AuthContextProvider = ({ children }) => {
         });
         // console.log("this is user", response.data)
         setUser(response.data);
+        // window.location.reload()
       } catch {
         setIsLoginLoading(false);
         setPopup({

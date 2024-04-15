@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Alert, Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
 import {TextField, MenuItem, Grid} from "@mui/material"
@@ -360,10 +360,10 @@ const Register = () => {
                     education={education}
                     setEducation={setEducation}
                   />
-                  <h3>Resume</h3>
+                  {/* <h3>Resume</h3>
                   <FileUploadInput
                   updateRegisterInfo={updateRegisterInfo}
-                  registerInfo={registerInfo}/>
+                  registerInfo={registerInfo}/> */}
                 </>
               )
               }
