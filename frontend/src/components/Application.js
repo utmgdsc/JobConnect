@@ -84,6 +84,18 @@ const Application = () => {
         referrals:[]
       };
 
+      const allApplications = await applicationService.getApplications();
+    
+      // Filter applications for the current asset posting
+      const relatedApplications = allApplications.filter(app => app.jobPosting === jobDetails._id);
+  
+      // Check if the current user has already applied
+      const hasApplied = relatedApplications.some(app => app.jobSeeker === currentUser._id);
+      if (hasApplied) {
+        toast.warn('You have already applied to this asset posting.');
+        return;
+      }
+
       await applicationService.addApplication(application);
 
       submitImage();
@@ -101,7 +113,6 @@ const Application = () => {
       updatedApplicants.push(latestApplication._id);
       await jobPostingsService.updateJobPosting(jobDetails._id, { applicants: updatedApplicants });
 
-      navigate("/")
 
       toast.success("Application Submitted Successfully!", {
         position: "bottom-left",

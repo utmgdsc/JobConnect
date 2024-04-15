@@ -69,11 +69,15 @@ const Jobs = () => {
   };
 
   const filteredJobPostings = jobPostings.filter((posting) => {
-    return (
-      posting.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (filter === "All" || posting.jobType === filter) &&
-      posting.location.toLowerCase().includes(locationInput.toLowerCase())
+    const titleMatch = posting.jobTitle.toLowerCase().includes(searchTerm.toLowerCase());
+    const keywordMatch = posting.keywords && posting.keywords.some(keyword => 
+      keyword.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  
+    const locationMatch = posting.location.toLowerCase().includes(locationInput.toLowerCase());
+    const typeMatch = (filter === "All" || posting.jobType === filter);
+  
+    return (titleMatch || keywordMatch) && locationMatch && typeMatch;
   });
 
   const handlePostalCodeChange = async (e) => {
@@ -239,6 +243,8 @@ const Jobs = () => {
                   <li key={index}>{item}</li>
                 ))}
               </ul>
+              <br />
+              <p>Tags: {selectedJob.keywords.join(", ")}</p>
               <button
                 className="btn btn-primary btn-md"
                 onClick={() => navigate(`/job/${selectedJobId}`)}

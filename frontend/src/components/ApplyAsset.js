@@ -95,6 +95,18 @@ const ApplyAsset = () => {
     };
   
     try {
+      const allApplications = await applicationService.getApplications();
+    
+      // Filter applications for the current asset posting
+      const relatedApplications = allApplications.filter(app => app.assetPosting === assetDetails._id);
+  
+      // Check if the current user has already applied
+      const hasApplied = relatedApplications.some(app => app.jobSeeker === currentUser._id);
+      if (hasApplied) {
+        toast.warn('You have already applied to this asset posting.');
+        return;
+      }
+      
       await applicationService.addApplication(application);
       const app = await applicationService.getApplications();
       const latestApplication = app[app.length - 1];
