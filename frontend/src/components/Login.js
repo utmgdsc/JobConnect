@@ -1,15 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Alert, Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { AuthContext } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Redirect, Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { loginInfo, updateLoginInfo, loginUser, loginError, isLoginLoading, user } =
     useContext(AuthContext);
+    // const navigate = useNavigate();
+    // useEffect(() => {
+    //   // Reload the page after successful login
+    //   if (user && user.isVerified) {
+    //     window.location.reload();
+    //   }
+    // }, [user, navigate]);
 
-    return (user && user.isVerified) ? (
-    <Navigate to="/" />
-  ) : (
+    return (
     <>
       <Form onSubmit={loginUser}>
         <Row
