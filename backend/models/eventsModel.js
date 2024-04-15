@@ -29,12 +29,17 @@ const CareerEventSchema = new mongoose.Schema({
         required: true,
         enum: ['Workshop', 'Seminar', 'Job Fair', 'Networking Event', 'Webinar']
     },
-    startDate: {
+    date: {
         type: Date,
         required: true
     },
-    endDate: {
-        type: Date,
+  
+    startTime: {
+        type: String,
+        required: true
+    },
+    endTime: {
+        type: String,
         required: true
     },
     details: {
