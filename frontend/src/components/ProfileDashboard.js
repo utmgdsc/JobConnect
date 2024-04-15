@@ -95,7 +95,7 @@ function JobSeekerFetcher() {
                     const startDate = exp.startDate
                       ? new Date(exp.startDate).toLocaleDateString()
                       : "Not Provided";
-                    return `${exp.title} at ${exp.company}, from ${startDate}, ${exp.description}`;
+                    return `${exp.title} at ${exp.company}, from ${exp.startYear}, ${exp.endYear}`;
                   })
                   .join("; ")
                 : "None"}
@@ -108,7 +108,8 @@ function JobSeekerFetcher() {
                     const startDate = edu.startDate
                       ? new Date(edu.startDate).toLocaleDateString()
                       : "Not Provided";
-                    return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startDate}, ${edu.endDate}`;
+                    return `${edu.fieldOfStudy} at ${edu.institution}, from ${edu.startYear} ${edu.endYear ? new Date(edu.endYear).toLocaleDateString() : " - Present"}
+                    `;
                   })
                   .join("; ")
                 : "None"}

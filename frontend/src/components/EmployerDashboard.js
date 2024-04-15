@@ -124,7 +124,7 @@ function EmployerDashboard() {
                 <p>Website: {employer.website}</p>
             </div>
 
-            <section className="section">
+            {localStorage.getItem("type") == "applicant" && <section className="section">
                 <div className="p-3 py-3">
                     <div className="d-flex justify-content-between align-items-center">
                         <h4 className="text-right">Reviews</h4>
@@ -164,7 +164,7 @@ function EmployerDashboard() {
                         </ul>
                     </div>
                 </div>
-            </section>
+            </section>}
         </div>
     );
 };

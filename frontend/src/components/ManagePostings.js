@@ -168,7 +168,7 @@ function ManagePostings() {
                     {type === "job" &&
                         <a
                             className="btn btn-secondary p-2 mx-3 w-25"
-                            onClick={() => navigate(`get-applicants/${id}`)}
+                            onClick={() => navigate(`/get-applicants/${id}`)}
                         >
                             Applicants <i className="bi bi-person-fill"></i>
                         </a>
