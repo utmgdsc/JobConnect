@@ -62,5 +62,6 @@ app.use('/api/eventsRoutes', require("./routes/eventsRoutes"))
 app.use('/api/subscribe', require("./routes/subscribeRoutes"))
 app.use('/api/applicationRoutes', require('./routes/applicationRoutes'))
 
+app.listen(port, () => console.log(`Server started on port ${port}`));
 
 connectDB();
