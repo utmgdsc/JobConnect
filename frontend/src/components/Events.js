@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import EventPostingsService from "../services/EventServices";
+import "../jobs.css"; // Using the same CSS file for styling consistency
 import { useNavigate, Link } from "react-router-dom";
 
 const Events = () => {
   const [eventPostings, setEventPostings] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("All");
-  const [expandedEventId, setExpandedEventId] = useState(null); // State to track which event is expanded
 
   const navigate = useNavigate();
-
-  const navigateToDetails = (id) => {
-    navigate(`/event/${id}`);
-  };
 
   useEffect(() => {
     fetchEventPostings();
@@ -35,12 +31,8 @@ const Events = () => {
     setFilter(e.target.value);
   };
 
-  const toggleExpandEvent = (id) => {
-    setExpandedEventId(expandedEventId === id ? null : id);
-  };
-
-  const navigateToRegistration = (eventId) => {
-    navigate(`/register-event/${eventId}`);
+  const navigateToDetails = (id) => {
+    navigate(`/event/${id}`);
   };
 
   const filteredEventPostings = eventPostings.filter((event) => {
@@ -51,59 +43,54 @@ const Events = () => {
   });
 
   return (
-    <div className="events-page container p-5">
-      <h1>Event Postings</h1>
-      <input
-        type="text"
-        placeholder="Search events..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
-      <select value={filter} onChange={handleFilterChange}>
-        <option value="All">All Types</option>
-        <option value="Workshop">Workshop</option>
-        <option value="Seminar">Seminar</option>
-        <option value="Job Fair">Job Fair</option>
-        <option value="Networking Event">Networking Event</option>
-        <option value="Webinar">Webinar</option>
-      </select>
+    <div className="events-page container">
+      <div className="search-and-filter mb-3">
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search events..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <select className="custom-select" value={filter} onChange={handleFilterChange}>
+            <option value="All">All Types</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Seminar">Seminar</option>
+            <option value="Job Fair">Job Fair</option>
+            <option value="Networking Event">Networking Event</option>
+            <option value="Webinar">Webinar</option>
+          </select>
+        </div>
+      </div>
       {localStorage.getItem("type") === "employer" &&
         <div className="row">
           <div className="col">
             <Link to="/create/event" className="btn btn-primary mb-3 w-100">
-              Create event
+              Create Event
             </Link>
           </div>
         </div>
       }
-      <div className="event-listings">
+      <div className="row row-cols-1 row-cols-md-2 g-4">
         {filteredEventPostings.map((event) => (
-          <div key={event._id} className="event-posting">
-            <div
-              className="event-title-container"
-              onClick={() => toggleExpandEvent(event._id)}
-            >
-              <h3>{event.eventName}</h3>
-              <span
-                className={`arrow-icon ${expandedEventId === event._id ? "expanded" : ""}`}
-              >
-                &#9660;
-              </span>
+          <div key={event._id} className="col">
+            <div className="card h-100 mb-3">
+              <div className="card-header">
+                <h3>{event.eventName}</h3>
+              </div>
+              <div className="card-body">
+                <p>Organized by: {event.organizer}</p>
+                <p>{event.location}</p>
+                <p>Type: {event.eventType}</p>
+                <p>Description: {event.details.description}</p>
+              </div>
+              <div className="card-footer">
+                <button className="btn btn-primary" onClick={() => navigateToDetails(event._id)}>
+                  Details
+                </button>
+              </div>
             </div>
-            <p>Organized by: {event.organizer}</p>
-            <p>{event.location}</p>
-            <p>Type: {event.eventType}</p>
-            {expandedEventId === event._id && (
-  <div className="event-details">
-    <p>Description: {event.details.description}</p>
-    <button
-      className="register-button"
-      onClick={() => navigateToRegistration(event._id)}
-    >
-      Register
-    </button>
-  </div>
-)}
           </div>
         ))}
       </div>
