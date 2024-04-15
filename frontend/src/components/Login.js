@@ -1,193 +1,65 @@
-import { useContext, useEffect } from "react";
-import { Alert, Button, Col, Form, Row, Stack } from "react-bootstrap";
-import { AuthContext } from "../context/AuthContext";
-import { Redirect, Navigate, useNavigate } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
-  const { loginInfo, updateLoginInfo, loginUser, loginError, isLoginLoading, user } =
-    useContext(AuthContext);
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //   // Reload the page after successful login
-    //   if (user && user.isVerified) {
-    //     window.location.reload();
-    //   }
-    // }, [user, navigate]);
+  const navigate = useNavigate();
+  const {
+    loginInfo,
+    updateLoginInfo,
+    loginUser,
+    loginError,
+    isLoginLoading,
+  } = useContext(AuthContext);
 
-    return (
-    <>
-      <Form onSubmit={loginUser}>
-        <Row
-          style={{
-            height: "100vh",
-            justifyContent: "center",
-            paddingTop: "20%",
-          }}
-        >
-          <Col xs={6}>
-            <Stack gap={3}>
-              <h2>Login</h2>
+  const handleJoinNowClick = () => {
+    navigate('/register');
+  }
 
+  return (
+    <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+      <Card style={{ width: '320px', padding: '20px', boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)' }}>
+        <Card.Body>
+          <Form onSubmit={loginUser}>
+            <h2 className="text-center mb-4">Sign in</h2>
+            <Form.Group className="mb-3">
               <Form.Control
                 type="email"
-                placeholder="Email"
-                onChange={(e) =>
-                  updateLoginInfo({ ...loginInfo, email: e.target.value })
-                }
+                placeholder="Email or Phone"
+                onChange={(e) => updateLoginInfo({ ...loginInfo, email: e.target.value })}
                 value={loginInfo.email}
+                required
               />
+            </Form.Group>
+            <Form.Group className="mb-3">
               <Form.Control
                 type="password"
                 placeholder="Password"
-                onChange={(e) =>
-                  updateLoginInfo({
-                    ...loginInfo,
-                    password: e.target.value,
-                  })
-                }
+                onChange={(e) => updateLoginInfo({ ...loginInfo, password: e.target.value })}
                 value={loginInfo.password}
+                required
               />
-              <Button variant="primary" type="submit" disabled={isLoginLoading}>
-                {isLoginLoading ? "Getting you in..." : "Login"}
-              </Button>
-
-              {loginError?.error && (
-                <Alert variant="danger">
-                  <b>{`Error status code: ${loginError?.status}`}</b>
-                  <p>{loginError?.message}</p>
-                </Alert>
-              )}
-            </Stack>
-          </Col>
-        </Row>
-      </Form>
-    </>
+            </Form.Group>
+            <Button variant="primary" type="submit" disabled={isLoginLoading} className="w-100 mb-2">
+              {isLoginLoading ? "Getting you in..." : "Login"}
+            </Button>
+            {loginError?.error && (
+              <Alert variant="danger" className="mt-3">
+                <strong>Error status code: {loginError?.status}</strong>
+                <p>{loginError?.message}</p>
+              </Alert>
+            )}
+            <div className="d-flex justify-content-between mt-4">
+              <Button variant="link">Forgot password?</Button>
+              <Button variant="link" onClick={handleJoinNowClick}>Join now</Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
 export default Login;
-
-
-// import { useContext, useState } from "react";
-// import { Navigate } from "react-router-dom";
-// import axios from "axios";
-
-// import { SetPopupContext } from "../App";
-// import PasswordInput from "../lib/PasswordInput";
-// import EmailInput from "../lib/EmailInput";
-// // import apiList from "../lib/apiList";
-// import isAuth from "../lib/isAuth";
-// import { Container, Form, Button, Nav } from 'react-bootstrap';
-
-// const Login = (props) => {
-//   const setPopup = useContext(SetPopupContext);
-//   const [loggedin, setLoggedin] = useState(isAuth());
-
-//   const [loginDetails, setLoginDetails] = useState({
-//     email: "",
-//     password: "",
-//   });
-
-//   const [inputErrorHandler, setInputErrorHandler] = useState({
-//     email: {
-//       error: false,
-//       message: "",
-//     },
-//     password: {
-//       error: false,
-//       message: "",
-//     },
-//   });
-
-//   const handleInput = (key, value) => {
-//     setLoginDetails({
-//       ...loginDetails,
-//       [key]: value,
-//     });
-//   };
-
-//   const handleInputError = (key, status, message) => {
-//     setInputErrorHandler({
-//       ...inputErrorHandler,
-//       [key]: {
-//         error: status,
-//         message: message,
-//       },
-//     });
-//   };
-
-//   const handleLogin = () => {
-//     const verified = !Object.keys(inputErrorHandler).some((obj) => {
-//       return inputErrorHandler[obj].error;
-//     });
-//     if (verified) {
-//       axios
-//         .post('http://localhost:8000/api/auth/login', loginDetails)
-//         .then((response) => {
-//           localStorage.setItem("token", response.data.token);
-//           localStorage.setItem("type", response.data.type);
-//           setLoggedin(isAuth());
-//           setPopup({
-//             open: true,
-//             severity: "success",
-//             message: "Logged in successfully",
-//           });
-//           console.log(response);
-//         })
-//         .catch((err) => {
-//           setPopup({
-//             open: true,
-//             severity: "error",
-//             message: err.response.data.message,
-//           });
-//           console.log(err.response);
-//         });
-//     } else {
-//       setPopup({
-//         open: true,
-//         severity: "error",
-//         message: "Incorrect Input",
-//       });
-//     }
-//   };
-
-//   return loggedin ? (
-//     <Navigate to="/" />
-//   ) : (
-//     <Container className="mt-5">
-//       <Form>
-//         <h3 className="text-center">Login</h3>
-//         <Form.Group className="mb-3" controlId="formBasicEmail">
-//           <EmailInput
-//             label="Email"
-//             value={loginDetails.email}
-//             onChange={(event) =>
-//               handleInput("email", event.target.value)
-//             }
-//             inputErrorHandler={inputErrorHandler}
-//             handleInputError={handleInputError}
-//           />
-//         </Form.Group>
-
-//         <Form.Group className="mb-3" controlId="formBasicPassword">
-//           <PasswordInput
-//             label="Password"
-//             value={loginDetails.password}
-//             onChange={(event) =>
-//               handleInput("password", event.target.value)
-//             }
-//           />
-//         </Form.Group>
-//         <Button
-//           variant="primary"
-//           type="button"
-//           onClick={() => handleLogin()}
-//         >
-//           Login
-//         </Button>
-//       </Form>
-//     </Container>
-//   );
-// };
-
-// export default Login;
