@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; // Import useParams
 import EmployersService from "../services/EmployerService";
 import { ToastContainer, toast } from "react-toastify";
-import "../dashboard.css";
+import "../edashboard.css";
 
 function EmployerDashboard() {
     const [employer, setEmployer] = useState({

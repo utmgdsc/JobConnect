@@ -1,0 +1,88 @@
+/* Resets */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  /* Employer Dashboard Styles */
+  .dashboard {
+    max-width: 960px;
+    width: 90%;
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: #fff; /* White background for the dashboard */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    color: #212529; /* Dark text for readability */
+  }
+  
+  .section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff; /* White background for sections */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for sections */
+    border-left: 5px solid #59a6ff; /* Accent color for the sections */
+  }
+  
+  .section h3, .section h4 {
+    color: #000; /* Black color for headings */
+  }
+  
+  .section p, .section a, .section li {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #212529; /* Dark text color for readability */
+  }
+  
+  .section a {
+    color: #59a6ff; /* Link color */
+    text-decoration: none;
+  }
+  
+  .section a:hover {
+    text-decoration: underline;
+  }
+  
+  .form .btn-primary {
+    background-color: #007bff; /* Primary button color */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #fff; /* White text for buttons */
+    transition: background-color 0.3s ease;
+  }
+  
+  .form .btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
+  
+  .card {
+    background: #f8f9fa; /* Light background for card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for cards */
+    border-radius: 8px;
+  }
+  
+  blockquote {
+    border-left: 5px solid #59a6ff; /* Accent color for blockquote */
+    padding-left: 1rem;
+    margin-left: 0;
+  }
+  
+  .fa-star {
+    color: #ffc107; /* Star color */
+  }
+  
+  .fa-quote-left {
+    font-size: 2rem;
+    color: #59a6ff; /* Quote icon color */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .dashboard {
+      width: auto;
+      margin: 20px;
+    }
+  }
+  
