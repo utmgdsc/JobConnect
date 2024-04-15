@@ -181,8 +181,8 @@ function UserProfile() {
     const newExperience = {
       title: e.target.title.value,
       company: e.target.company.value,
-      startDate: e.target.startDate.value,
-      endDate: e.target.endDate.value,
+      startYear: e.target.startYear.value,
+      endYear: e.target.endYear.value,
       description: e.target.description.value,
     }
 
@@ -212,8 +212,8 @@ function UserProfile() {
       institution: e.target.institution.value,
       degree: e.target.degree.value,
       fieldOfStudy: e.target.fieldOfStudy.value,
-      startDate: e.target.startDate.value,
-      endDate: e.target.endDate.value,
+      startYear: e.target.startYear.value,
+      endDYear: e.target.endYear.value,
     }
 
     setJobSeeker((prevJobSeeker) => {
@@ -286,6 +286,7 @@ function UserProfile() {
       await jobSeekersService.deleteJobSeeker(id)
         .then(() => {
           toast.success("Successfully deleted account!");
+          navigate("/logout");
         })
         .catch(error => {
           toast.error("Failed to delete account.");
@@ -475,10 +476,10 @@ function UserProfile() {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <input type="text" className="form-control" placeholder="Start Date" name="startDate" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
+                      <input type="text" className="form-control" placeholder="Start Date" name="startYear" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
                     </div>
                     <div className="col-md-6">
-                      <input type="text" className="form-control" placeholder="End Date" name="endDate" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
+                      <input type="text" className="form-control" placeholder="End Date" name="endYear" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
                     </div>
                   </div>
                   <button className="btn btn-primary" type="submit">Add</button>
@@ -493,7 +494,7 @@ function UserProfile() {
                             <i className="bi bi-x-lg close-icon ms-auto" onClick={() => deleteEducation(index)}></i>
                           </div>
                           <p>
-                            {edu.endDate ? new Date(edu.endDate).toLocaleDateString() : new Date(edu.startDate).toLocaleDateString() + " - Present"}
+                            {edu.endYear ? new Date(edu.endYear).toLocaleDateString() : new Date(edu.startYear).toLocaleDateString() + " - Present"}
                           </p>
                           <h6 className="card-subtitle mb-2 text-muted">{edu.degree}</h6>
                           <p className="card-text">{edu.fieldOfStudy}</p>
@@ -524,10 +525,10 @@ function UserProfile() {
                   </div>
                   <div className="row">
                     <div className="col-md-6">
-                      <input type="text" className="form-control" placeholder="Start Date" name="startDate" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
+                      <input type="text" className="form-control" placeholder="Start Date" name="startYear" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
                     </div>
                     <div className="col-md-6">
-                      <input type="text" className="form-control" placeholder="End Date" name="endDate" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
+                      <input type="text" className="form-control" placeholder="End Date" name="endYear" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} />
                     </div>
                   </div>
                   <textarea type="text" className="form-control" placeholder="Description" name="description" />
@@ -543,7 +544,7 @@ function UserProfile() {
                             <i className="bi bi-x-lg close-icon ms-auto" onClick={() => deleteExperience(index)}></i>
                           </div>
                           <p>
-                            {exp.endDate ? new Date(exp.endDate).toLocaleDateString() : new Date(exp.startDate).toLocaleDateString() + " - Present"}
+                            {exp.endYear ? new Date(exp.endYear).toLocaleDateString() : new Date(exp.startYear).toLocaleDateString() + " - Present"}
                           </p>
                           <h6 className="card-subtitle mb-2 text-muted">{exp.company}</h6>
                           <p className="card-text">{exp.description}</p>
@@ -595,11 +596,11 @@ function UserProfile() {
                       <p>Location: {event.location}</p>
                       <p>
                         Start Date:{" "}
-                        {new Date(event.startDate).toLocaleDateString()}
+                        {new Date(event.startYear).toLocaleDateString()}
                       </p>
                       <p>
                         End Date:{" "}
-                        {new Date(event.endDate).toLocaleDateString()}
+                        {new Date(event.endYear).toLocaleDateString()}
                       </p>
                     </li>
                   ))

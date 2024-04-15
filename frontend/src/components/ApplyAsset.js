@@ -242,7 +242,7 @@ const ApplyAsset = () => {
         <input type="checkbox" className="form-check-input" id="termsAccepted" checked={termsAccepted} onChange={handleTermsAcceptance} required />
         <label className="form-check-label" for="exampleCheck1">I agree to the terms and conditions.</label>
       </div>
-      <div className="application-action">
+       <div className="application-action">
         <button className="application-button" onClick={handleApplyNow}>Apply Now</button>
       </div>
     </div>

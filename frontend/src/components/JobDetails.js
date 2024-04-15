@@ -101,20 +101,20 @@ function JobDetails() {
                     </div>
                 )}
                 <div className="px-4">
-                    <button
+                    {localStorage.getItem("type") == "applicant" && <button
                         className="btn btn-primary btn-md"
                         onClick={() => navigate(`/application/${id}`)}
                     >
                         Apply Now
-                    </button>
+                    </button>}
                 </div>
                 <div className="px-4">
-                    <button
+                    {localStorage.getItem("type") == "applicant" && <button
                         className="btn btn-primary btn-md"
                         onClick={() => navigate(`/refer/${id}`)}
                     >
                         Refer a friend
-                    </button>
+                    </button>}
                 </div>
             </div>
         </div>

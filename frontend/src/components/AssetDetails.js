@@ -76,13 +76,13 @@ function AssetDetails() {
                     </div>
                 )}
                 <div className="px-4">
-                    <button
+                    {localStorage.getItem("type") == "applicant" && <button
                         className="btn btn-primary btn-md"
                         onClick={() => navigate(`/apply-asset/${asset._id}`)
                         }
                     >
-                        Rent asset
-                    </button>
+                        Apply
+                    </button>}
                 </div>
             </div>
         </div>

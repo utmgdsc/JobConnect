@@ -20,14 +20,15 @@ function EventDetails() {
             sponsors: [],
         },
         registrationRequired: false,
-        registrationLink: "",
+        
     });
 
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const navigateToRegistration = (registrationLink) => {
-        navigate("/application");
+    const navigateToRegistration = (id) => {
+        navigate(`/register-event/${id}`);
+
     };
 
     useEffect(() => {
@@ -111,12 +112,12 @@ function EventDetails() {
                     </div>
                 )}
                 <div className="px-4">
-                    <button
+                    {localStorage.getItem("type") === "applicant" &&<button
                         className="btn btn-primary btn-md"
-                        onClick={() => navigateToRegistration(event.registrationLink)}
+                        onClick={() => navigateToRegistration(event._id)}
                     >
                         Register
-                    </button>
+                    </button>}
                 </div>
             </div>
         </div>
