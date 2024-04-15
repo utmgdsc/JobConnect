@@ -52,21 +52,21 @@ function UserProfile() {
 
   const fetchApplications = async () => {
     try {
-      if (applications.length === 0 && postings.length === 0 && jobSeeker.applicationHistory.length > 0) {
-        jobSeeker.applicationHistory.map(async (application) => {
-          const app = await ApplicationsService.getApplicationByID(application)
-          let posting = {}
-          try {
-            posting = await JobPostingsService.getJobPostingById(app.jobPosting)
-          } catch (error) {
-            posting = await AssetPostingsService.getAssetPostingById(app.assetPosting)
-          }
-          if (applications.length < jobSeeker.applicationHistory.length && postings.length < jobSeeker.applicationHistory.length) {
-            setApplications((prevApplications) => [...prevApplications, app])
-            setPostings((prevPostings) => [...prevPostings, posting])
-          }
-        })
-      }
+      setApplications([])
+      setPostings([])
+      jobSeeker.applicationHistory.map(async (application) => {
+        const app = await ApplicationsService.getApplicationByID(application)
+        let posting = {}
+        try {
+          posting = await JobPostingsService.getJobPostingById(app.jobPosting)
+        } catch (error) {
+          posting = await AssetPostingsService.getAssetPostingById(app.assetPosting)
+        }
+        if (applications.length < jobSeeker.applicationHistory.length && postings.length < jobSeeker.applicationHistory.length) {
+          setApplications((prevApplications) => [...prevApplications, app])
+          setPostings((prevPostings) => [...prevPostings, posting])
+        }
+      })
     } catch (error) {
       console.error("Failed to fetch applications:", error);
     }
