@@ -60,7 +60,11 @@ function UserProfile() {
         try {
           posting = await JobPostingsService.getJobPostingById(app.jobPosting)
         } catch (error) {
-          posting = await AssetPostingsService.getAssetPostingById(app.assetPosting)
+          try {
+            posting = await AssetPostingsService.getAssetPostingById(app.assetPosting)
+          } catch (error) {
+            console.error("Failed to fetch posting:", error);
+          }
         }
         if (applications.length < jobSeeker.applicationHistory.length && postings.length < jobSeeker.applicationHistory.length) {
           setApplications((prevApplications) => [...prevApplications, app])
@@ -595,12 +599,12 @@ function UserProfile() {
                       <p>Event Name: {event.eventName}</p>
                       <p>Location: {event.location}</p>
                       <p>
-                        Start Date:{" "}
-                        {new Date(event.startYear).toLocaleDateString()}
+                        Date:{" "}
+                        {new Date(event.date).toLocaleDateString()}
                       </p>
                       <p>
-                        End Date:{" "}
-                        {new Date(event.endYear).toLocaleDateString()}
+                        Time:{" "}
+                        {event.startTime + " - " + event.endTime}
                       </p>
                     </li>
                   ))
