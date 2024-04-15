@@ -15,8 +15,9 @@ function CreateEvent() {
         organizer: "",
         location: "",
         eventType: "",
-        startDate: "",
-        endDate: "",
+        date: "",
+        startTime: "",
+        endTime: "",
         details: {
             description: "",
             targetAudience: [],
@@ -144,7 +145,7 @@ function CreateEvent() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if (event.startDate > event.endDate) {
+        if (event.startTime > event.endTime) {
             toast.error("Start date must be less than end date");
             return;
         }
@@ -212,14 +213,18 @@ function CreateEvent() {
                     <label className="form-label">Location:</label>
                     <input required type="text" name="location" value={event.location} onChange={handleChange} className="form-control" />
                 </div>
+                <div className="mb-3">
+                    <label className="form-label">Date:</label>
+                    <input required type="date" name="date" value={event.date} onChange={handleChange} className="form-control" />
+                </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <label className="form-label">Start Date:</label>
-                        <input required type="text" className="form-control" name="startDate" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={handleChange} />
+                        <label className="form-label">Start Time:</label>
+                        <input required type="time" className="form-control" name="startTime" onFocus={(e) => e.target.type = 'time'} onBlur={(e) => e.target.type = 'text'} onChange={handleChange} />
                     </div>
                     <div className="col-md-6">
-                        <label className="form-label">End Date:</label>
-                        <input required type="text" className="form-control" name="endDate" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={handleChange} />
+                        <label className="form-label">End Time:</label>
+                        <input required type="time" className="form-control" name="endTime" onFocus={(e) => e.target.type = 'time'} onBlur={(e) => e.target.type = 'text'} onChange={handleChange} />
                     </div>
                 </div>
                 <div className="row">
