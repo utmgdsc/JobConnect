@@ -146,15 +146,6 @@ const Jobs = () => {
               value={locationInput}
               onChange={handleLocationInputChange}
             />
-            <button
-              className="btn btn-outline-secondary dropdown-toggle btn-variant-1"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Filter
-            </button>
             <ul className="dropdown-menu">
               {locationSuggestions.length > 0 &&
                 locationSuggestions.map((suggestion, index) => (
