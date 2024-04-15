@@ -58,8 +58,7 @@ function EmployerDashboard() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        let r = []
-        r = [...employer.reviews, reviews]
+        const r = [...employer.reviews, reviews]
         try {
             EmployersService.updateEmployer(
                 employer._id,
@@ -68,7 +67,7 @@ function EmployerDashboard() {
                 toast.success("Successfully added data!");
             })
                 .catch(error => {
-                    toast.error("Failed to update data.");
+                    toast.error("Failed to update data.", error);
                 });
         } catch (error) {
             console.error("Failed to update job seeker:", error);

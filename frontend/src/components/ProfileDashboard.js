@@ -24,7 +24,7 @@ function JobSeekerFetcher() {
   });
   const { id } = useParams();
 
-  
+
   const fetchJobSeeker = async () => {
     try {
       const data = await jobSeekersService.getJobSeeker(id);
@@ -49,7 +49,6 @@ function JobSeekerFetcher() {
         jobSeeker.applicationHistory.map(async (application) => {
           const app = await ApplicationsService.getApplicationByID(application)
           if (applications.length < jobSeeker.applicationHistory.length && jobs.length < jobSeeker.applicationHistory.length) {
-            console.log(jobSeeker.applicationHistory.length);
             setApplications((prevApplications) => [...prevApplications, app])
           }
         })
@@ -66,7 +65,7 @@ function JobSeekerFetcher() {
   }, [jobSeeker]);
 
 
-  
+
 
   return (
     <div className="dashboard">
