@@ -17,6 +17,29 @@
   text-align: left;
 }
 
+.events-page {
+  padding-top: 20px;
+}
+
+.rounded-dropdown {
+  border-radius: 3px; /* Rounded corners */
+  margin: auto; /* Center the dropdown */
+  height: 38px;
+  /* grey outline */
+  border: 1px solid #ccc;
+  /* move "all types" text to the middle */
+  padding: 0 10px;
+}
+
+.centered-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 0;
+}
+
+
 .assets-container {
   padding-top: 20px;
   display: flex;
@@ -68,6 +91,15 @@ footer {
   padding-right: 20px;
   overflow-y: auto; /* Allows vertical scrolling if content overflows */
   overflow-x: hidden; /* Keeps the content from spilling out sideways */
+}
+
+.footerclass {
+  /* span full width of page BIGGER than 100% */
+  width: 100vw;
+  /* center its stuck to the left */
+  /* adding space above it */
+  margin-top: 20px;
+  margin-left: -16vw;
 }
 
 .apply-button {

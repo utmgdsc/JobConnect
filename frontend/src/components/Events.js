@@ -53,14 +53,15 @@ const Events = () => {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <select className="custom-select" value={filter} onChange={handleFilterChange}>
-            <option value="All">All Types</option>
-            <option value="Workshop">Workshop</option>
-            <option value="Seminar">Seminar</option>
-            <option value="Job Fair">Job Fair</option>
-            <option value="Networking Event">Networking Event</option>
-            <option value="Webinar">Webinar</option>
+          <select className="custom-select rounded-dropdown" value={filter} onChange={handleFilterChange}>
+              <option value="All">All Types</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Seminar">Seminar</option>
+              <option value="Job Fair">Job Fair</option>
+              <option value="Networking Event">Networking Event</option>
+              <option value="Webinar">Webinar</option>
           </select>
+
         </div>
       </div>
       {localStorage.getItem("type") === "employer" &&
@@ -94,6 +95,15 @@ const Events = () => {
           </div>
         ))}
       </div>
+      <footer className="p-5 bg-dark text-white text-center position-relative footerclass">
+        <div className="container">
+          <p className="lead">Copyright &copy; 2024 JobConnect</p>
+
+          <a href="#" className="position-absolute bottom-0 end-0 p-5">
+            <i className="bi bi-arrow-up-circle h1"></i>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };
