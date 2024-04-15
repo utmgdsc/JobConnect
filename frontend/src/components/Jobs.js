@@ -70,13 +70,13 @@ const Jobs = () => {
 
   const filteredJobPostings = jobPostings.filter((posting) => {
     const titleMatch = posting.jobTitle.toLowerCase().includes(searchTerm.toLowerCase());
-    const keywordMatch = posting.keywords && posting.keywords.some(keyword => 
+    const keywordMatch = posting.keywords && posting.keywords.some(keyword =>
       keyword.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  
+
     const locationMatch = posting.location.toLowerCase().includes(locationInput.toLowerCase());
     const typeMatch = (filter === "All" || posting.jobType === filter);
-  
+
     return (titleMatch || keywordMatch) && locationMatch && typeMatch;
   });
 
@@ -207,7 +207,7 @@ const Jobs = () => {
                 onClick={() => selectJob(posting)}
               >
                 <h3>{posting.jobTitle}</h3>
-                <p>Posted by: <a href={`/employer-dashboard/${posting._id}`}>{posting.company}</a></p>
+                <p>Posted by: <a href={`/employer-dashboard/${posting.employer}`}>{posting.company}</a></p>
                 <p>{posting.location}</p>
                 <p>Type: {posting.jobType}</p>
               </div>
