@@ -160,7 +160,10 @@ function EmployerProfile() {
 						<div className="text-center">
 							<button className="btn btn-primary profile-button mt-4" form="save" type="submit">Save Profile</button>
 						</div>
-						<div className="text-center">
+						<div className="text-center mt-4">
+							<button className="btn btn-danger" onClick={logout}>Logout</button>
+						</div>
+						<div className="text-center mt-4">
 							<button className="btn btn-danger profile-button"
 								data-bs-toggle="modal"
 								data-bs-target={`#deleteModal${id}`}
@@ -168,9 +171,7 @@ function EmployerProfile() {
 								Delete Account
 							</button>
 						</div>
-						<div className="text-center mt-4">
-							<button className="btn btn-danger" onClick={logout}>Logout</button>
-						</div>
+
 						{/* Modal for delete */}
 						<div className="modal fade" id={`deleteModal${id}`} tabIndex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
 							<div className="modal-dialog">

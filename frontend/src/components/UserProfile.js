@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import jobSeekersService from "../services/jobSeekersService";
 import JobPostingsService from "../services/jobPostingsService";
 import AssetPostingsService from "../services/AssetPostingsService";
-import EventServices from "../services/EventServices";
 import ApplicationsService from "../services/applicationService";
 import EventService from "../services/EventServices";
 import { useParams } from "react-router-dom"; // Import useParams
@@ -328,16 +327,16 @@ function UserProfile() {
             <div className="text-center">
               <button className="btn btn-primary profile-button mt-4" form="save" type="submit">Save Profile</button>
             </div>
-            <div className="text-center">
+            <div className="text-center mt-4">
+              <button className="btn btn-danger" onClick={logout}>Logout</button>
+            </div>
+            <div className="text-center mt-4">
               <button className="btn btn-danger profile-button"
                 data-bs-toggle="modal"
                 data-bs-target={`#deleteModal${id}`}
               >
                 Delete Account
               </button>
-              <div className="text-center mt-4">
-                <button className="btn btn-danger" onClick={logout}>Logout</button>
-              </div>
             </div>
 
             {/* Modal for delete */}
