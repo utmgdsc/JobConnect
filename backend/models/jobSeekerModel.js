@@ -68,12 +68,17 @@ const jobSeekerSchema = mongoose.Schema({
     eventRegistrations: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'CareerEvent',
-        required: false
     }],
     applicationHistory: [{ // Modified part
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Application',
-        required: false
+    }],
+    notifications: [{
+        message: String,
+        isRead: {
+            type: Boolean,
+            default: false,
+        }
     }]
 }, {
     timestamps: true // Adds createdAt and updatedAt timestamps
