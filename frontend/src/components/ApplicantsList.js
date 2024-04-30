@@ -148,9 +148,12 @@ function ApplicantsList() {
           rating: application.rating // Include the rating in the update
         });
         await jobSeekersService.updateJobSeeker(application.jobSeeker, {
-          notifications: {
-            message: `Your application for the job ${jobDetails.jobTitle} has been updated to ${application.status}.`,
-          }
+          notifications: [
+            ...application.jobSeekerDetails.notifications,
+            {
+              message: `Your application for the job ${jobDetails.jobTitle} has been updated to ${application.status.toLowerCase()}.`,
+            }
+          ]
         });
       }
       alert('Application details updated successfully.');
