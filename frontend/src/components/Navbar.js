@@ -91,7 +91,7 @@ const Navbar = () => {
                                 <a href="#" className="nav-link dropdown-toggle" onClick={toggleDropdown} role="button" aria-expanded={dropdownOpen}>
                                     <img src={BellIcon} alt="Notifications" className="icon-custom-size2" />
                                     {notifications.filter(notif => !notif.isRead).length > 0 && (
-                                        <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                        <span className="position-absolute position translate-middle p-1 bg-danger border border-light rounded-circle">
                                             <span className="visually-hidden">New alerts</span>
                                         </span>
                                     )}
@@ -108,22 +108,14 @@ const Navbar = () => {
                                                         <div className="text-muted small">{formatDistanceToNow(new Date(notification.date), { addSuffix: true })}</div>
                                                     </div>
                                                     <div className="form-check">
-                                                        <input
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            value=""
-                                                            id={`flexCheckDefault-${index}`}
-                                                            onChange={() => handleRead(index)}
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`flexCheckDefault-${index}`}>
+                                                        <button className="btn btn-sm btn-primary mb-0" htmlFor={`flexCheckDefault-${index}`} onClick={() => handleRead(index)}>
                                                             Dismiss
-                                                        </label>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             )
                                         ))
                                     )}
-                                    <div className="dropdown-divider"></div>
                                     <div className="d-flex justify-content-around p-2">
                                         <Link className="btn btn-outline-secondary" to={`/user/${id}`}>View all</Link>
                                         <button className="btn btn-outline-danger" onClick={handleClearAll}>Clear All</button>

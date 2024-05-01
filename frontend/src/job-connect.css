@@ -18,13 +18,22 @@ body::before {
 
 /* in your job-connect.css */
 .icon-custom-size {
-  width: 24px;  /* Keep width constant */
-  height: 18px; /* New height */
+  width: 24px;
+  /* Keep width constant */
+  height: 18px;
+  /* New height */
 }
 
 .icon-custom-size2 {
-  width: 24px;  /* Keep width constant */
-  height: 28px; /* New height */
+  width: 24px;
+  /* Keep width constant */
+  height: 28px;
+  /* New height */
+}
+
+.position {
+  bottom: 45%;
+  right: 30%;
 }
 
 
@@ -34,27 +43,32 @@ body::before {
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    min-height: 350px; /* Adjust based on your content */
+  display: flex;
+  flex-direction: column;
+  min-height: 350px;
+  /* Adjust based on your content */
 }
-  
+
 .card-body {
-display: flex;
-flex-direction: column;
-height: 100%; /* This ensures the card body fills the card */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* This ensures the card body fills the card */
 }
 
 .btn {
-margin-top: auto; /* This pushes the button to the bottom */
-align-self: center; /* Add this to keep the button width normal */
-width: auto; /* Add this to keep the button width normal */
+  margin-top: auto;
+  /* This pushes the button to the bottom */
+  align-self: center;
+  /* Add this to keep the button width normal */
+  width: auto;
+  /* Add this to keep the button width normal */
 }
 
-.btn-lg { 
-    height: 50px;
-    margin-top: 9px;
-    margin-bottom: 10px;
+.btn-lg {
+  height: 50px;
+  margin-top: 9px;
+  margin-bottom: 10px;
 }
 
 .accordion-button:hover {
@@ -68,42 +82,58 @@ width: auto; /* Add this to keep the button width normal */
   box-shadow: none !important;
 }
 
-.accordion-button:not(.collapsed), .accordion-button:active {
-  background-color: transparent !important; /* Makes the background color transparent */
-  color: inherit !important; /* Optional: ensures the text color remains consistent */
+.accordion-button:not(.collapsed),
+.accordion-button:active {
+  background-color: transparent !important;
+  /* Makes the background color transparent */
+  color: inherit !important;
+  /* Optional: ensures the text color remains consistent */
 }
 
 /* Ensures the dropdown menu is wide enough to fit longer text */
 .navbar .dropdown-menu {
-    min-width: 300px;  /* You can adjust this width based on your design needs */
-    max-width: none;   /* Prevents Bootstrap from limiting the dropdown width */
+  min-width: 300px;
+  /* You can adjust this width based on your design needs */
+  max-width: none;
+  /* Prevents Bootstrap from limiting the dropdown width */
 }
 
 /* Styles for the notification items */
 .navbar .dropdown-item {
-    white-space: normal;  /* Allows text to wrap instead of one long line */
-    text-overflow: ellipsis;  /* Adds an ellipsis if the text is too long to fit */
-    overflow: hidden;  /* Prevents text from spilling outside the container */
-    display: block;    /* Ensures the text occupies its own line */
-    padding: 10px 15px;  /* Adds some padding for better text readability */
+  white-space: normal;
+  /* Allows text to wrap instead of one long line */
+  text-overflow: ellipsis;
+  /* Adds an ellipsis if the text is too long to fit */
+  overflow: hidden;
+  /* Prevents text from spilling outside the container */
+  display: block;
+  /* Ensures the text occupies its own line */
+  padding: 10px 15px;
+  /* Adds some padding for better text readability */
 }
 
 /* Style for 'View all' link at the bottom of the dropdown */
 .navbar .dropdown-menu .view-all {
-    text-align: center;  /* Centers the text */
-    padding: 10px;       /* Adds padding for better spacing */
-    display: block;      /* Makes sure it's on a new line */
-    color: #007bff;      /* Bootstrap primary color for links */
+  text-align: center;
+  /* Centers the text */
+  padding: 10px;
+  /* Adds padding for better spacing */
+  display: block;
+  /* Makes sure it's on a new line */
+  color: #007bff;
+  /* Bootstrap primary color for links */
 }
 
 /* Hover effect for clickable items */
 .navbar .dropdown-item:hover {
-    background-color: #f8f9fa; /* Slightly changes color on hover for better user feedback */
+  background-color: #f8f9fa;
+  /* Slightly changes color on hover for better user feedback */
 }
 
 /* Notification dropdown styling */
 .navbar .dropdown-menu {
-  width: 350px;  /* Set the width of the dropdown */
+  width: 350px;
+  /* Set the width of the dropdown */
   padding: 0.5rem;
 }
 
@@ -120,16 +150,19 @@ width: auto; /* Add this to keep the button width normal */
 
 /* Adjusting the font size for notification message */
 .dropdown-item div:first-child div:first-child {
-  font-size: 0.85rem;  /* Smaller font size for the message */
+  font-size: 0.85rem;
+  /* Smaller font size for the message */
 }
 
 /* Adjusting the font size for the date (small text) */
 .text-muted {
-  font-size: 0.75rem;  /* Even smaller font size for the date */
+  font-size: 0.75rem;
+  /* Even smaller font size for the date */
 }
 
 .dropdown-item:hover {
-  background-color: #f8f9fa;  /* Light gray background on hover for better user feedback */
+  background-color: #f8f9fa;
+  /* Light gray background on hover for better user feedback */
 }
 
 .form-check-input {
@@ -140,31 +173,43 @@ width: auto; /* Add this to keep the button width normal */
 /* Additional styling as needed */
 /* Dropdown menu button styling */
 .navbar .dropdown-menu .d-flex {
-  justify-content: center; /* Center the buttons horizontally */
-  padding: 10px; /* Add padding around the buttons for better spacing */
+  justify-content: center;
+  /* Center the buttons horizontally */
+  padding: 10px;
+  /* Add padding around the buttons for better spacing */
 }
 
-.btn-outline-secondary, .btn-outline-danger {
-  flex-basis: auto; /* Adjust each button to grow as needed */
-  margin: 5px; /* Adds margin around each button */
+.btn-outline-secondary,
+.btn-outline-danger {
+  flex-basis: auto;
+  /* Adjust each button to grow as needed */
+  margin: 5px;
+  /* Adds margin around each button */
 }
 
 /* Custom button styling for better control */
-.btn-outline-secondary, .btn-outline-danger {
-  padding: 5px 15px; /* Adjust padding inside buttons */
-  border: 2px solid; /* Add border for better visibility */
+.btn-outline-secondary,
+.btn-outline-danger {
+  padding: 5px 15px;
+  /* Adjust padding inside buttons */
+  border: 2px solid;
+  /* Add border for better visibility */
 }
 
 .btn-outline-danger {
-  border-color: #dc3545; /* Red border for the 'Clear All' button */
-  color: #dc3545; /* Red text color for 'Clear All' button */
+  border-color: #dc3545;
+  /* Red border for the 'Clear All' button */
+  color: #dc3545;
+  /* Red text color for 'Clear All' button */
 }
 
 .btn-outline-secondary {
-  border-color: #6c757d; /* Grey border for the 'View all' button */
+  border-color: #6c757d;
+  /* Grey border for the 'View all' button */
 }
 
 /* Add a horizontal line (divider) between each notification */
 .navbar .dropdown-item:not(:last-child) {
-  border-bottom: 1px solid #dee2e6; /* Adds a light gray line between notifications */
+  border-bottom: 1px solid #dee2e6;
+  /* Adds a light gray line between notifications */
 }
