@@ -62,6 +62,8 @@ const Navbar = () => {
         setNotifications(allReadNotifications);
     };
 
+    const allNotificationsRead = notifications.every(notification => notification.isRead);
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
@@ -87,7 +89,7 @@ const Navbar = () => {
                             {!type && <li className="nav-item"><Link to="/login" className="nav-link">Login</Link></li>}
                             <li className="nav-item dropdown">
                                 <a href="#" className="nav-link dropdown-toggle" onClick={toggleDropdown} role="button" aria-expanded={dropdownOpen}>
-                                    <img src={BellIcon} alt="Notifications" className="icon-custom-size" />
+                                    <img src={BellIcon} alt="Notifications" className="icon-custom-size2" />
                                     {notifications.filter(notif => !notif.isRead).length > 0 && (
                                         <span className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                             <span className="visually-hidden">New alerts</span>
@@ -95,7 +97,7 @@ const Navbar = () => {
                                     )}
                                 </a>
                                 <div className={`dropdown-menu${dropdownOpen ? " show" : ""}`} aria-labelledby="navbarDropdownMenuLink">
-                                    {notifications.length === 0 ? (
+                                    {notifications.length === 0 || allNotificationsRead ? (
                                         <div className="dropdown-item text-center">There are no notifications.</div>
                                     ) : (
                                         notifications.map((notification, index) => (
