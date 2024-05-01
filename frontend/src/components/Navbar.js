@@ -53,6 +53,7 @@ const Navbar = () => {
             return notification;
         });
         const updatedNoti = updatedNotifications;
+        jobSeekersService.updateJobSeeker(id, { notifications: updatedNoti })
         setNotifications(updatedNoti);
     };
 
