@@ -44,7 +44,7 @@ const Navbar = () => {
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
-
+    // .
     const handleRead = (index) => {
         const updatedNotifications = notifications.map((notification, i) => {
             if (i === index) {
