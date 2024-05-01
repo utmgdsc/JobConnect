@@ -72,10 +72,9 @@ const Referral = () => {
                   updateReferralInfo({ ...referralInfo, relationship: e.target.value })
                 }
               >
-                <MenuItem value="workedTogether">We directly worked together</MenuItem>
-                <MenuItem value="studiedTogether">We studied together</MenuItem>
-                <MenuItem value="friends">We're friends</MenuItem>
-                <MenuItem value="justMet">We just met</MenuItem>
+                <MenuItem value="Colleague">We directly worked together</MenuItem>
+                <MenuItem value="Peer">We studied together</MenuItem>
+                <MenuItem value="Friend">We're friends</MenuItem>
               </TextField>
               <TextField
                   label="Recommendation"
