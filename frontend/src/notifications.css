@@ -1,0 +1,15 @@
+.read {
+    color: grey;
+  }
+  
+.unread {
+    font-weight: bold;
+    color: black;
+}
+
+/* move the page down away from the navbar */
+
+.container2 {
+    margin-top: 50px;
+}
+  
