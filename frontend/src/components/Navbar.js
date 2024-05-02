@@ -9,6 +9,7 @@ import '../job-connect.css';
 const Navbar = () => {
     const [type, setType] = useState("");
     const [id, setId] = useState("");
+    const [name, setName] = useState("");
     const [notifications, setNotifications] = useState([]);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -17,6 +18,7 @@ const Navbar = () => {
             try {
                 const user = await jobSeekersService.fetchCurrentUser();
                 setId(user._id);
+                setName(user.personalInformation.name.split(' ')[0]);
                 setType(localStorage.getItem("type"));
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -39,10 +41,10 @@ const Navbar = () => {
                 }
             }
         };
-    
+
         fetchNotifications();
     }, [id]);
-    
+
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -65,12 +67,12 @@ const Navbar = () => {
             ...notification,
             isRead: true
         }));
-    
+
         jobSeekersService.updateJobSeeker(id, { notifications: updatedNotifications });
-    
+
         setNotifications(updatedNotifications);
     };
-    
+
 
     const allNotificationsRead = notifications.every(notification => notification.isRead);
 
@@ -97,51 +99,54 @@ const Navbar = () => {
                             <li className="nav-item"><a href="/#questions" className="nav-link">FAQ</a></li>
                             {!type && <li className="nav-item"><Link to="/register" className="nav-link">Sign Up</Link></li>}
                             {!type && <li className="nav-item"><Link to="/login" className="nav-link">Login</Link></li>}
-                            <li className="nav-item dropdown">
-                                <a href="#" className="nav-link dropdown-toggle" onClick={toggleDropdown} role="button" aria-expanded={dropdownOpen}>
-                                    <img src={BellIcon} alt="Notifications" className="icon-custom-size2" />
-                                    {notifications.filter(notif => !notif.isRead).length > 0 && (
-                                        <span className="position-absolute position translate-middle p-1 bg-danger border border-light rounded-circle">
-                                            <span className="visually-hidden">New alerts</span>
-                                        </span>
-                                    )}
-                                </a>
-                                <div className={`dropdown-menu${dropdownOpen ? " show" : ""}`} aria-labelledby="navbarDropdownMenuLink">
-                                    {notifications.length === 0 || allNotificationsRead ? (
-                                        <div className="dropdown-item text-center">There are no notifications.</div>
-                                    ) : (
-                                        notifications.map((notification, index) => (
-                                            !notification.isRead && (
-                                                <div key={index} className="dropdown-item d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <div>{notification.message}</div>
-                                                        <div className="text-muted small">{formatDistanceToNow(new Date(notification.date), { addSuffix: true })}</div>
+                            {type === "applicant" &&
+                                <li className="nav-item dropdown">
+                                    <a href="#" className="nav-link dropdown-toggle" onClick={toggleDropdown} role="button" aria-expanded={dropdownOpen}>
+                                        <img src={BellIcon} alt="Notifications" className="icon-custom-size2" />
+                                        {notifications.filter(notif => !notif.isRead).length > 0 && (
+                                            <span className="position-absolute position translate-middle p-1 bg-danger border border-light rounded-circle">
+                                                <span className="visually-hidden">New alerts</span>
+                                            </span>
+                                        )}
+                                    </a>
+                                    <div className={`dropdown-menu${dropdownOpen ? " show" : ""}`} aria-labelledby="navbarDropdownMenuLink">
+                                        {notifications.length === 0 || allNotificationsRead ? (
+                                            <div className="dropdown-item text-center">There are no notifications.</div>
+                                        ) : (
+                                            notifications.map((notification, index) => (
+                                                !notification.isRead && (
+                                                    <div key={index} className="dropdown-item d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <div>{notification.message}</div>
+                                                            <div className="text-muted small">{formatDistanceToNow(new Date(notification.date), { addSuffix: true })}</div>
+                                                        </div>
+                                                        <div className="form-check">
+                                                            <button className="btn btn-sm btn-primary mb-0" htmlFor={`flexCheckDefault-${index}`} onClick={() => handleRead(index)}>
+                                                                Dismiss
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div className="form-check">
-                                                        <button className="btn btn-sm btn-primary mb-0" htmlFor={`flexCheckDefault-${index}`} onClick={() => handleRead(index)}>
-                                                            Dismiss
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            )
-                                        ))
-                                    )}
-                                    <div className="d-flex justify-content-around p-2">
-                                        <Link className="btn btn-outline-secondary" to={`/user/${id}`}>View all</Link>
-                                        <button className="btn btn-outline-danger" onClick={handleClearAll}>Clear All</button>
+                                                )
+                                            ))
+                                        )}
+                                        <div className="d-flex justify-content-around p-2">
+                                            <Link className="btn btn-outline-secondary" to={`/user/${id}`}>View all</Link>
+                                            <button className="btn btn-outline-danger" onClick={handleClearAll}>Clear All</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            }
                             {type && <li className="nav-item">
                                 <Link to={type === "employer" ? `/employer/${id}` : `/user/${id}`} className="nav-link">
                                     <img src={ProfileIcon} alt="Profile" className="icon-custom-size" />
+                                    <span className="ms-1">{name}</span>
                                 </Link>
                             </li>}
                         </ul>
                     </div>
                 </div>
-            </nav>
-        </div>
+            </nav >
+        </div >
     );
 };
 
