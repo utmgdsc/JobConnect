@@ -25,7 +25,6 @@ exports.verifyEmail = async (req, res) => {
   try {
     const emailToken = req.body.emailToken;
     data = req.body
-    console.log(data)
     if (!emailToken) return res.status(404).json("EmailToken not found...");
     const user = await User.findOne({ emailToken });
     if (user) {
@@ -43,7 +42,6 @@ exports.verifyEmail = async (req, res) => {
       })
     } else res.status(404).json("Email verification failed, invalid token!")
   } catch (error) {
-    console.log(error);
     res.status(500).json(error.message)
   }
 }
@@ -51,7 +49,6 @@ exports.verifyEmail = async (req, res) => {
 exports.register = async (req, res) => {
   const { name, email, password, type } = req.body;
   const data = req.body
-  console.log("ini data", data)
   try {
     let user = await User.findOne({ email });
     if (user) return res.status(400).json("User already exists...");
@@ -77,7 +74,6 @@ exports.register = async (req, res) => {
     // user.password = await bcrypt.hash(user.password, salt);
     // console.log("password after encryption", user.password)
     await user.save();
-    console.log("user", user)
     const userDetails =
       user.type == "employer"
         ? new employer({
@@ -118,12 +114,10 @@ exports.register = async (req, res) => {
     sendVerificationMail(user);
 
     const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-    console.log(token);
     res
       .status(200)
       .json({ _id: user._id, name, email, type, token, isVerified: user.isVerified });
   } catch (error) {
-    console.log(error);
     res.status(500).json(error);
   }
 };
@@ -206,16 +200,13 @@ exports.register = async (req, res) => {
 // };
 
 exports.login = async (req, res) => {
-  console.log(req.body)
   const { email, password } = req.body;
   try {
     let user = await User.findOne({ email });
     if (!user) return res.status(401).json("Invalid email");
     user.login(password)
     .then(() => {
-      console.log("login success")
       const token = jwt.sign({ _id: user._id }, authKeys.jwtSecretKey);
-      console.log(token);
       res.status(200).json({
         _id: user._id,
         name: user.name,
@@ -234,7 +225,6 @@ exports.login = async (req, res) => {
     // if (!(user.login(password)))
     //   return res.status(400).json("Invalid password");
   } catch (error) {
-    console.log(error);
     res.status(500).json(error);
   }
 };

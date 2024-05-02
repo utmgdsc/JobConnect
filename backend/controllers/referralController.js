@@ -6,13 +6,10 @@ const addReferral = asyncHandler(async (req, res) => {
     const {name, email, phone} = req.user;
     const { relationship, description} = req.body; 
     applicantEmail = req.body.email
-    console.log(applicantEmail)
     let jobSeeker = await User.findOne({ email: applicantEmail });
     jobSeeker = await JobSeeker.findOne({ userId: jobSeeker._id });
-    console.log(jobSeeker)
     referralInfo = {name: name, email: email, phone: phone, relationship: relationship, recommendation: description}
     const { id } = req.params;
-    console.log(id)
     try {
         const application = await Application.findOneAndUpdate(
             {
@@ -25,7 +22,6 @@ const addReferral = asyncHandler(async (req, res) => {
         );
 
         // Check if application exists
-        console.log("here")
         if (application) {
             return res.status(200).json(referralInfo)
         } else {

@@ -31,15 +31,18 @@ const Navbar = () => {
             if (id) {
                 try {
                     const jobSeekerNotifications = await jobSeekersService.getJobSeekerNotifications(id);
-                    setNotifications(jobSeekerNotifications);
+                    const unreadNotifications = jobSeekerNotifications.filter(notification => !notification.isRead);
+                    console.log(unreadNotifications, 'unreadNotifications');
+                    setNotifications(unreadNotifications);
                 } catch (error) {
                     console.log('Failed to fetch notifications:', error);
                 }
             }
         };
-
+    
         fetchNotifications();
     }, [id]);
+    
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
@@ -58,9 +61,16 @@ const Navbar = () => {
     };
 
     const handleClearAll = () => {
-        const allReadNotifications = notifications.map(notification => ({ ...notification, isRead: true }));
-        setNotifications(allReadNotifications);
+        const updatedNotifications = notifications.map(notification => ({
+            ...notification,
+            isRead: true
+        }));
+    
+        jobSeekersService.updateJobSeeker(id, { notifications: updatedNotifications });
+    
+        setNotifications(updatedNotifications);
     };
+    
 
     const allNotificationsRead = notifications.every(notification => notification.isRead);
 

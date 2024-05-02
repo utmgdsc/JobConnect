@@ -17,7 +17,6 @@ const getApplicationById = asyncHandler(async (req, res) => {
 });
 
 const createApplication = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const application = new Application(req.body);
     const createdApplication = await application.save();
     res.status(201).json(createdApplication);

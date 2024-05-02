@@ -90,9 +90,7 @@ function EmployerDashboard() {
         return stars;
     }
 
-    console.log(employer);
 
-    // ... inside your component's return statement
     return (
         <div className="dashboard">
             <ToastContainer

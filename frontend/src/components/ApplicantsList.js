@@ -147,6 +147,7 @@ function ApplicantsList() {
           notes: application.notes,
           rating: application.rating // Include the rating in the update
         });
+        console.log("here");
         await jobSeekersService.updateJobSeeker(application.jobSeeker, {
           notifications: [
             ...application.jobSeekerDetails.notifications,
@@ -206,19 +207,6 @@ function ApplicantsList() {
                       <p>Relocation: {application.relocation ? "Yes" : "No"}</p>
                       <p>Authorized: {application.authorized ? "Yes" : "No"}</p>
                       <p>Experience: {application.experience}</p>
-                      <p>Referrals:</p>
-                      <ul>
-                      {application.referrals.map((referral, index) => (
-                        <li key={index}>
-                          <div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "5px", marginBottom: "10px" }}>
-                            <p><strong>Referrer Name:</strong> {referral.name}</p>
-                            <p><strong>Referrer Email:</strong> {referral.email}</p>
-                            <p><strong>Relationship:</strong> {referral.relationship}</p>
-                            <p><strong>Recommendation:</strong> {referral.recommendation}</p>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
                     </div>
                     <input
                       type="number"

@@ -154,9 +154,7 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
         // Access user information from req.user
         const user = req.user;
 
-        console.log(user)
     if (user.type === "employer") {
-        console.log(user);
         Employer.findOne({ userId: user._id })
         .then((recruiter) => {
             if (recruiter == null) {
@@ -196,7 +194,6 @@ const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
     try {
         // Access user information from req.user
         const user = req.user;
-        console.log(user)
     if (user.type === "employer") {
         res.status(404).json({
             message: "User must be a jobSeeker",

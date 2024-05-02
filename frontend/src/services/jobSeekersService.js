@@ -47,7 +47,6 @@ const fetchCurrentUser = async () => {
     };
 
     const response = await axios.get(apiList.user, config);
-    // console.log("this is the user", response)
     return response.data;
   } catch (error) {
     console.error('Error fetching current user:', error);
