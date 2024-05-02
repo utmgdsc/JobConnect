@@ -129,11 +129,12 @@ const Recommend = () => {
 
   return (
     <div>
-        <h1
+    <h1
       style={{
         textAlign: "center",
         color: "#4b5563",
         fontWeight: "bold",
+        marginTop: "20px", // Adjust the value to increase or decrease the space
       }}
     >
       Recommended Jobs for you
