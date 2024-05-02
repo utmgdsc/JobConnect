@@ -7,11 +7,13 @@ const {
     updateJobSeeker,
     addJobSeekerInfo,
     deleteJobSeeker,
-    getCurrentJobSeeker
+    getCurrentJobSeeker,
+    recommendCurrentJobSeeker
 } = require('../controllers/jobSeekersController')
 
 // router.route("/:id").get(getJobSeeker)
 router.get('/', jwtAuth, getCurrentJobSeeker)
+router.get('/recommend', jwtAuth, recommendCurrentJobSeeker)
 router.get('/:id', getJobSeeker)
 
 // router.post('/', registerJobSeeker)

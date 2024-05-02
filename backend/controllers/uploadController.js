@@ -1,9 +1,6 @@
 const multer = require("multer");
 const mongoose = require("mongoose");
 const PdfDetails = require("../models/pdfDetails");
-
-
-
 const PdfSchema = mongoose.model("PdfDetails");
 
 const uploadResume = async (req, res) => {

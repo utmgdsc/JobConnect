@@ -25,6 +25,7 @@ export const AuthContextProvider = ({ children }) => {
     phone: "",
     company: "",
     address: "",
+    city: "",
     skills: [],
     experience: [],
     education: [],

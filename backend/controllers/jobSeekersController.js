@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const JobSeeker = require('../models/jobSeekerModel'); // Ensure this path is correct
 const Employer = require('../models/employerModel');
+const { KNN } = require('ml-knn');
 
 const registerJobSeeker = async (req, res) => {
     // Destructuring nested properties from req.body
@@ -191,6 +192,48 @@ const getCurrentJobSeeker = asyncHandler(async (req, res) => {
     } 
 );
 
+const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
+    try {
+        // Access user information from req.user
+        const user = req.user;
+        console.log(user)
+    if (user.type === "employer") {
+        res.status(404).json({
+            message: "User must be a jobSeeker",
+        });
+    } else {
+        jobApplicant = JobSeeker.findOne({ userId: user._id })
+        if (jobApplicant == null) {
+            res.status(404).json({
+                message: "User does not exist",
+            });
+            return;
+        }
+        const allJobs = await JobPosting.find({});
+        const X = preprocessJobs(allJobs);
+
+        // Initialize KNN model
+        const knn = new KNN(X, [], { k: 5 }); // Initialize KNN model with k=5
+
+        // Fit KNN model
+        knn.train();
+
+        // Find nearest neighbors
+        const indices = knn.predict([userPreferences.personalInformation.skills, userPreferences.jobPreferences, userPreferences.location]);
+
+        // Get top 5 matching jobs
+        const topJobs = indices.map(index => allJobs[index]).slice(0, 5);
+
+        res.json({ topJobs });
+
+        }
+    } catch (error) {
+        console.error('Error fetching job seeker:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+    } 
+);
+
 
 module.exports = {
     registerJobSeeker,
@@ -198,5 +241,6 @@ module.exports = {
     getJobSeeker,
     updateJobSeeker,
     addJobSeekerInfo,
-    getCurrentJobSeeker
+    getCurrentJobSeeker,
+    recommendCurrentJobSeeker
 };

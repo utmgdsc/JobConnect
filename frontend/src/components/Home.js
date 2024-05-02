@@ -169,6 +169,9 @@ const Home = () => {
               <Link to="/jobs" className="btn btn-light mt-3">
                 <i className="bi bi-chevron-right"></i> View Job Listings
               </Link>
+              <Link to="/recommend" className="btn btn-light mt-3 ms-3">
+                <i className="bi bi-chevron-right"></i> Get Recommendations
+              </Link>
             </div>
             <div className="col-md">
               {/* Consider replacing this image with something more relevant to job searching or career growth */}

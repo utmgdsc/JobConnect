@@ -1,18 +1,20 @@
 const express = require('express')
-
+const jwtAuth = require("../lib/jwtAuth");
 const {
     getJobPostings,
     createJobPosting,
     deleteJobPosting,
     getJobPostingById,
-    updateJobPosting
+    updateJobPosting,
 } = require('../controllers/jobPostingsController')
+
+const {recommendCurrentJobSeeker} = require('../controllers/recommendController')
 
 const router = express.Router()
 
 // GET all job postings
 router.get('/', getJobPostings)
-
+router.get('/recommend', jwtAuth, recommendCurrentJobSeeker)
 // GET a job posting by ID
 router.get('/:id', getJobPostingById)
 
