@@ -4,7 +4,6 @@ import { AuthContext} from "../context/AuthContext";
 
 const Chat = () => {
     const { user } = useContext(AuthContext);
-    console.log("User:", user )
 
     return (
         <Container>

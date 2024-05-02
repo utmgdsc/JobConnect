@@ -124,7 +124,6 @@ export const AuthContextProvider = ({ children }) => {
             }),
         };
   
-        console.log("UPDATED DETAILS", updatedDetails)
         var response = await (axios.post(apiList.register, updatedDetails))
         setIsRegisterLoading(false);
         if (response.error) {
@@ -134,14 +133,12 @@ export const AuthContextProvider = ({ children }) => {
 
         localStorage.setItem("User", user);
         localStorage.setItem("type", user.type)
-        console.log("success2")
         setUser(response);
         setPopup({
           open: true,
           severity: "success",
           message: "Verification email has been sent to " + registerInfo.email,
         });
-        console.log("success2")
       } catch {
         setIsLoginLoading(false)
         setPopup({
@@ -163,7 +160,6 @@ export const AuthContextProvider = ({ children }) => {
           ...referralInfo,
         };
   
-        console.log("Referral Info", updatedDetails);
         const token = isAuth();
         if (!token) {
           throw new Error('User is not authenticated');
@@ -213,14 +209,11 @@ export const AuthContextProvider = ({ children }) => {
         localStorage.setItem("User", response.data);
         localStorage.setItem("type", response.data.type)
         localStorage.setItem("token", response.data.token)
-        console.log("user", response.data)
-        console.log("type", response.data.type)
         setPopup({
           open: true,
           severity: "success",
           message: "Logged in successfully",
         });
-        // console.log("this is user", response.data)
         setUser(response.data);
         // window.location.reload()
       } catch {

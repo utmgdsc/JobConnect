@@ -81,7 +81,6 @@ function preprocessJobSeeker(jobSeeker) {
 }
 
 const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
-    console.log("recommend called")
     try {
         // Access user information from req.user
         const user = req.user;
@@ -99,7 +98,6 @@ const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
             });
             return;
         }
-        console.log(jobApplicant.userId)
         const allJobPostings = await JobPosting.find({});
         const preprocessedJobPostings = allJobPostings.map(preprocessJobPosting);
         const preprocessedJobSeeker = preprocessJobSeeker(jobApplicant);
@@ -125,7 +123,6 @@ const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
 
             // Update the KNN model with the new data
         }
-        console.log(top5MatchingJobs)
         res.json(top5MatchingJobs)
     } 
     } catch (error) {

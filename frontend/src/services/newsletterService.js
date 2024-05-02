@@ -5,7 +5,6 @@ const API_URL = 'http://localhost:8000/api/subscribe'; // Update with your actua
 const subscribeToNewsletter = async (email) => {
   try {
     const response = await axios.post(API_URL, { email });
-    console.log('Successfully subscribed:', response.data);
     return response.data;
   } catch (error) {
     // Handle or throw the error as needed

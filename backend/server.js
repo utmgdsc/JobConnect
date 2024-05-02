@@ -25,7 +25,6 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         if (req.path === '/api/analyze-resume') {
             cb(null, 'uploads/'); // Temporary folder for processing
-            console.log("working")
         } else {
             cb(null, './files'); // Permanent storage folder
         }

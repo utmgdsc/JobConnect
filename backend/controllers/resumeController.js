@@ -4,7 +4,6 @@ const pdfParse = require('pdf-parse');
 const axios = require('axios');
 
 const analyzeResume = async (req, res) => {
-  console.log("working");
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
@@ -13,10 +12,8 @@ const analyzeResume = async (req, res) => {
     if (req.file.mimetype === 'application/pdf') {
       const dataBuffer = fs.readFileSync(req.file.path);
       const data = await pdfParse(dataBuffer);
-      console.log(req.file.path);
 
       const textContent = data.text; // Extracted text content from the PDF
-      console.log(textContent);
       // Construct the payload for the OpenAI Chat API with gpt-3.5-turbo model
       const payload = {
         model: "gpt-3.5-turbo", // Specify the model
@@ -33,14 +30,12 @@ const analyzeResume = async (req, res) => {
       };
 
       // Make the request to the OpenAI Chat API
-      console.log("hello");
       const openAIResponse = await axios.post('https://api.openai.com/v1/chat/completion', payload, {
         headers: {
             'Authorization': 'Bearer ',
             'Content-Type': 'application/json',
         },
       });
-      console.log(openAIResponse.data.choices[0].message.content)
 
       // Process the OpenAI response and send back the relevant information
       return res.json({ analysisResult: openAIResponse.data.choices[0].message.content });
