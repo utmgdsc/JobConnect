@@ -18,8 +18,12 @@ const Navbar = () => {
             try {
                 const user = await jobSeekersService.fetchCurrentUser();
                 setId(user._id);
-                setName(user.personalInformation.name.split(' ')[0]);
                 setType(localStorage.getItem("type"));
+                if (type === "employer") {
+                    setName(user.company);
+                } else {
+                    setName(user.personalInformation.name.split(' ')[0]);
+                }
             } catch (error) {
                 console.error('Error fetching user:', error);
             }
