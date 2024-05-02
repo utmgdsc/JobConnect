@@ -39,6 +39,7 @@ const jobPostingSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        
         responsibilities: [String],
         requirements: [String],
         benefits: [String]

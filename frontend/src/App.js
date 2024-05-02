@@ -26,6 +26,7 @@ import CreateJobPosting from "./components/CreateJobPosting";
 import CreateAssetPosting from "./components/CreateAssetPosting";
 import CreateEvent from "./components/CreateEvent";
 import ManagePostings from "./components/ManagePostings";
+import Recommend from "./components/Recommend"
 import Login from "./components/Login"
 import Logout from "./components/Logout"
 import Register from "./components/Register"
@@ -58,6 +59,7 @@ function App() {
             <Route path="/employer-dashboard/:id" element={<EmployerDashboard />} />
             <Route path="/get-applicants/:jobId" element={<ApplicantsList />} />
             <Route path="/jobs" element={<Jobs />} />
+            <Route path="/recommend" element={<Recommend />} />
             <Route path="/assets" element={<AssetPostings />} />
             <Route path="/events" element={<Events />} />
             <Route path="/job/:id" element={<JobDetails />} />

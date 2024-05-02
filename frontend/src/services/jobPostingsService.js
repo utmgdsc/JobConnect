@@ -1,11 +1,33 @@
 import axios from "axios";
-
+import apiList from "../lib/apiList"
+import isAuth from "../lib/isAuth";
 const API_URL = "http://localhost:8000/api/jobPostingRoutes"; // Base URL for job postings API
 
 // Fetch all job postings
 const getAllJobPostings = async () => {
   try {
     const response = await axios.get(API_URL);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Fetch all job postings
+const recommendJobPosting = async () => {
+  try {
+    const token = isAuth();
+    if (!token) {
+      throw new Error('User is not authenticated');
+    }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await axios.get(apiList.recommend, config);
+    // const response = await axios.get(API_URL);
     return response.data;
   } catch (error) {
     throw error;
@@ -58,5 +80,6 @@ const jobPostingsService = {
   createJobPosting,
   updateJobPosting,
   deleteJobPosting,
+  recommendJobPosting,
 };
 export default jobPostingsService;
