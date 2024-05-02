@@ -55,13 +55,25 @@ const fetchCurrentUser = async () => {
   }
 };
 
+const getJobSeekerNotifications = async (id) => {
+  try {
+    const jobSeekerData = await getJobSeeker(id);
+    return jobSeekerData.notifications; // Assuming 'notifications' are stored in the job seeker document
+  } catch (error) {
+    console.error('Error fetching notifications:', error);
+    throw error;
+  }
+};
+
+
 const jobSeekersService = {
   createJobSeeker,
   deleteJobSeeker,
   getJobSeeker,
   addInfo,
   updateJobSeeker,
-  fetchCurrentUser
+  fetchCurrentUser,
+  getJobSeekerNotifications
 };
 
 export default jobSeekersService;
