@@ -38,17 +38,6 @@ function oneHotEncode(value, possibleValues) {
     return encoding;
 }
 
-function preprocessCategoricalFeatures(location, jobType) {
-    const locations = ['New York', 'San Francisco', 'Los Angeles']; // Add all possible locations
-    const jobTypes = ['Full-Time', 'Part-Time', 'Contract', 'Temporary', 'Internship'];
-    
-    const locationEncoding = oneHotEncode(location, locations);
-    const jobTypeEncoding = oneHotEncode(jobType, jobTypes);
-    
-    // Combine the one-hot encoded vectors
-    return [...locationEncoding, ...jobTypeEncoding];
-}
-
 function preprocessJobPosting(jobPosting) {
     const text = [
         ...jobPosting.details.description,
@@ -105,7 +94,7 @@ const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
         const top5MatchingJobs = [];
 
         // Loop 5 times to find the nearest neighbor and remove it each time
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 10; i++) {
             const knn = new KNN(preprocessedJobPostings, allJobPostings.map((_, index) => index), { k: 1 });
             // Predict the nearest neighbor for the job seeker
             const nearestNeighborIndex = knn.predict(preprocessedJobSeeker);
@@ -115,6 +104,7 @@ const recommendCurrentJobSeeker = asyncHandler(async (req, res) => {
 
             // Add the nearest job posting to the result array
             top5MatchingJobs.push(nearestJobPosting);
+            console.log(nearestJobPosting);
 
             // Remove the nearest neighbor from the job postings and preprocessed data
             allJobPostings.splice(nearestNeighborIndex, 1);

@@ -25,8 +25,11 @@ const recommendJobPosting = async () => {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    const response = await axios.get(apiList.recommend, config);
+    console.log(config)
+    var response = await axios.get(apiList.user, config);
+    const user = response.data
+    console.log(user)
+    response = await axios.get(apiList.recommend, user);
     // const response = await axios.get(API_URL);
     return response.data;
   } catch (error) {
