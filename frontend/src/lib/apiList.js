@@ -13,7 +13,7 @@ const apiList = {
   verify: `${server}/auth/verify-email`,
   refer: `${server}/referralRoutes`,
   // recommend: `${server}/jobPostingRoutes/recommend`,
-  recommend: `https://localhost:5000/recommend`
+  recommend: `http://localhost:5000/recommend`
 };
 
 export default apiList;

@@ -23,6 +23,7 @@ const recommendJobPosting = async () => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*",
       },
     };
     console.log(config)
