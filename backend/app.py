@@ -11,7 +11,11 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+# CORS(
+#         app,
+#         resources={r"/recommend": {"origins": "http://localhost:3000"}},
+#         supports_credentials=True,
+#     )
 # Initialize MongoDB client and get the necessary collections
 mongo_uri = os.getenv('MONGO_URI')
 client = MongoClient(mongo_uri)
@@ -41,9 +45,9 @@ def preprocess_job_seeker(a, b, c, d):
     return preprocess_text(text)
 
 @app.route('/recommend', methods=['GET'])
-@cross_origin(origin='*')
+# @cross_origin(origin='localhost', headers=['Content-Type', 'Authorization'])
 def recommend():
-    print("0")
+    print("start")
     job_preferences = request.args.get('jobPreferences')
     desired_industry = job_preferences.get('desiredIndustry')
     job_type = job_preferences.get('jobType')
@@ -64,22 +68,9 @@ def recommend():
     print(indices)
     # Predict the nearest job postings for the job seeker
     top5_matching_jobs = [all_job_postings[idx] for idx in indices]
-    # for i in range(5):
-    #     nearest_neighbor_index = knn.predict([preprocessed_job_seeker])[0]
-        
-    #     nearest_job_posting = all_job_postings[nearest_neighbor_index]
-
-    #     # Add the nearest job posting to the result array
-    #     top5_matching_jobs.append(nearest_job_posting)
-
-    #     # Remove the nearest neighbor from the job postings and preprocessed data
-    #     all_job_postings.pop(nearest_neighbor_index)
-    #     preprocessed_job_postings.pop(nearest_neighbor_index)
-
-    #     # Refit the KNN model
-    #     knn.fit(preprocessed_job_postings, list(range(len(all_job_postings))))
-
-    return jsonify(top5_matching_jobs)
+    res = jsonify(top5_matching_jobs)
+    print("finished")
+    return res
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

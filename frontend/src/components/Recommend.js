@@ -32,6 +32,27 @@ const Recommend = () => {
       console.error("Error fetching job postings:", error);
     }
   };
+  // const fetchJobPostings = async () => {
+  //   try {
+  //     const data = await fetch('http://localhost:5000/recommend', {
+  //       method: 'GET', // or 'POST', 'PUT', 'DELETE', etc.
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         // You can add any additional headers if required
+  //       },
+  //       // You can include a request body for POST or PUT requests
+  //       // body: JSON.stringify({ key: 'value' })
+  //     })
+
+  //     console.log(data)
+    
+  //     setJobPostings(data);
+  //   } catch (error) {
+  //     console.error("Error fetching job postings:", error);
+  //   }
+  // };
+
+  
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);

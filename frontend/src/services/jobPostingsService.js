@@ -15,15 +15,14 @@ const getAllJobPostings = async () => {
 
 // Fetch all job postings
 const recommendJobPosting = async () => {
-  try {
     const token = isAuth();
+    console.log(token)
     if (!token) {
       throw new Error('User is not authenticated');
     }
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Access-Control-Allow-Origin": "*",
       },
     };
     console.log(config)
@@ -33,9 +32,7 @@ const recommendJobPosting = async () => {
     response = await axios.get(apiList.recommend, user);
     // const response = await axios.get(API_URL);
     return response.data;
-  } catch (error) {
-    throw error;
-  }
+  
 };
 
 // Fetch a single job posting by ID
